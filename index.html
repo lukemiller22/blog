@@ -10,6 +10,9 @@
       padding: 0;
       background-color: #fffff8;
       font-family: et-book, serif;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
     }
 
     .container {
@@ -18,29 +21,12 @@
       align-items: flex-start;
       gap: 4rem;
       max-width: 1100px;
-      margin: 0 auto;
+      width: 100%;
       padding: 3rem;
     }
 
     .content-left {
       flex: 1;
-    }
-
-    .content-right {
-      width: 240px;
-      text-align: right;
-    }
-
-    .content-right hr {
-      border: none;
-      border-top: 2px solid black;
-      margin: 0;
-    }
-
-    .content-right h1 {
-      margin: 0.5rem 0 0 0;
-      white-space: nowrap;
-      font-size: 2.4rem;
     }
 
     .post-list {
@@ -65,7 +51,8 @@
 <body>
   <div class="container">
     <div class="content-left">
-      <p>Hello there, this is a collection of my projects and thoughts.</p>
+    <h1>Luke Miller</h1>
+        <p>Hello there, this is a collection of my projects and thoughts.</p>
       <p>Emailing <em>mostly anything at</em> <a href="mailto:lukemiller@example.com">lukemiller@example.com</a> is the easiest way to contact me.</p>
 
       <p><em>Links to my stuff</em>:
@@ -83,11 +70,6 @@
       <ul class="post-list">
         <li><span class="date">Dec 5</span> <a href="/posts/2024-12-05-another-post.html">Another Post</a></li>
       </ul>
-    </div>
-
-    <div class="content-right">
-      <hr />
-      <h1>Luke Miller</h1>
     </div>
   </div>
 </body>
