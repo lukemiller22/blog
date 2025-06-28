@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Reading - Luke Miller</title>
+  <link rel="stylesheet" href="tufte-css/tufte.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fffff8;
+      font-family: et-book, serif;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 4rem;
+      max-width: 1100px;
+      width: 100%;
+      padding: 3rem;
+    }
+
+    .content-left {
+      flex: 1;
+    }
+
+    /* Ensure links follow Tufte CSS styling */
+    a:link,
+    a:visited {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 0.1em;
+      text-decoration-thickness: 0.05em;
+    }
+
+    /* Book list table */
+    .book-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+      font-size: 1rem;
+    }
+
+    .book-table th {
+      text-align: left;
+      padding: 0.5rem 1rem 0.5rem 0;
+      border-bottom: 1px solid #ddd;
+      font-weight: normal;
+      font-variant: small-caps;
+      color: #666;
+    }
+
+    .book-table td {
+      padding: 0.5rem 1rem 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+
+    .book-table tr:hover {
+      background-color: #fafafa;
+    }
+
+    /* Column widths */
+    .book-table .title-col {
+      width: 35%;
+    }
+
+    .book-table .author-col {
+      width: 25%;
+    }
+
+    .book-table .date-col {
+      width: 15%;
+      font-variant: small-caps;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .book-table .rating-col {
+      width: 15%;
+      text-align: center;
+    }
+
+    .book-table .review-col {
+      width: 10%;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="content-left">
+      <h1>Reading</h1>
+
+      <table class="book-table">
+        <thead>
+          <tr>
+            <th class="title-col">Title</th>
+            <th class="author-col">Author</th>
+            <th class="date-col">Date Added</th>
+            <th class="rating-col">Rating</th>
+            <th class="review-col">Review</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="title-col">Abolition of Man</td>
+            <td class="author-col">C.S. Lewis</td>
+            <td class="date-col">06/27/2025</td>
+            <td class="rating-col">★★★★★</td>
+            <td class="review-col"><a href="#">Review</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
