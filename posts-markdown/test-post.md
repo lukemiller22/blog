@@ -2,8 +2,8 @@
 title: Introduction to Tufte CSS
 short_title: Tufte
 date: Mon May 6 '19
-categories: [Web Design, CSS]
-tags: [tufte, typography, design, minimalism]
+categories: [Technology]
+tags: [essay]
 ---
 
 This is an example of applying tufte-css to reST markup.{^This is a sidenote explaining something.}
