@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Introduction to Tufte CSS - Luke Miller</title>
   <link rel="stylesheet" href="../tufte-css/tufte.css" />
   <style>
@@ -89,7 +90,7 @@
     .back-link a {
       color: #666;
       text-decoration: none;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
     }
 
     .back-link a:hover {
@@ -102,15 +103,14 @@
   <div class="container">
     <div class="content-left">
       <div class="back-link">
-        <a href="../index.html">← Back </a>
+        <a href="#" onclick="history.back(); return false;">← Back</a>
       </div>
       
       <article>
         <h1>Introduction to Tufte CSS</h1>
-        <div class="post-date">Mon May 6 '19</div>
+        <div class="post-date">Mon May 6, 2019</div>
         
-        <p>This is an example of applying tufte-css to reST markup.</p>
-<p>I don&#39;t have a blog because I never write anything. But maybe I should. I&#39;d like to believe that if I made a blog I would write neat stuff in it. But I probably won&#39;t.<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"/><span class="sidenote">This is a sidenote explaining my procrastination with writing.</span></p>
+        <p>This is an example of applying tufte-css to reST markup.<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"/><span class="sidenote">This is a sidenote explaining something.</span></p>
 <h2>The Beauty of Simplicity</h2>
 <p>Edward Tufte&#39;s approach to information design emphasizes clarity and simplicity.<label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle"/><span class="sidenote">Edward Tufte is a statistician and professor emeritus of political science, statistics, and computer science at Yale University.</span> His principles have influenced not just print design, but web design as well.</p>
 <p>Some key principles include:</p>
@@ -149,11 +149,11 @@
     <div class="content-right">
       <div class="post-metadata">
         <div class="categories">
-        <span class="label">Categories:</span><br>Web Design, CSS
+        <span class="label">Categories:</span><br><a href="../categories/technology.html">Technology</a>
       </div>
         
         <div class="tags">
-        <span class="label">Tags:</span><br>tufte, typography, design, minimalism
+        <span class="label">Tags:</span><br><a href="../tags/essay.html">Essay</a>
       </div>
       </div>
     </div>
