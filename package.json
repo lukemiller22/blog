@@ -4,7 +4,7 @@
     "description": "Personal blog with Tufte CSS styling",
     "main": "build.js",
     "scripts": {
-      "build": "node build.js --all",
+      "build": "node build.js --all --force",
       "build-post": "node build.js",
       "build-force": "node build.js --all --force",
       "clean": "rm -rf posts/*.html",
