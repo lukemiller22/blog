@@ -332,7 +332,6 @@ function generateFilteredPostsPage(posts, title, outputPath) {
     .post-list a {
       color: inherit;
       text-decoration: none;
-      font-size: 1.1rem;
       line-height: 1.4;
     }
 
