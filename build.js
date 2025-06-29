@@ -406,10 +406,10 @@ if (require.main === module) {
   const outputDir = args[2] || 'posts';
   const forceRebuild = args.includes('--force');
   
-  // Temporarily override shouldRebuild if force flag is set
-  const originalShouldRebuild = shouldRebuild;
+  // Override shouldRebuild function if force flag is set
   if (forceRebuild) {
-    global.shouldRebuild = () => true;
+    // Override the shouldRebuild function to always return true
+    shouldRebuild = () => true;
   }
   
   if (args[0] === '--all') {
