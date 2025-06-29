@@ -448,7 +448,7 @@ label.margin-toggle:not(.sidenote-number) {
     img {
         width: 100%;
     }
-
+}
    /* Enhanced mobile responsiveness */
 @media (max-width: 768px) {
     html {
