@@ -3,7 +3,7 @@ title: Introduction to Tufte CSS
 short_title: Tufte
 date: Mon May 6, 2019
 categories: [Technology]
-tags: [essay]
+tags: [Essay]
 ---
 
 This is an example of applying tufte-css to reST markup.{^This is a sidenote explaining something.}
