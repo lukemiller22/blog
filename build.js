@@ -251,7 +251,7 @@ function generateFilteredPostsPage(posts, title, outputPath) {
         });
         
         postsHtml += `  <li>
-          <span class="post-date">${formattedDate}</span>
+          <span class="date">${formattedDate}</span>
           <a href="../posts/${post.filename}">${post.title || 'Untitled'}</a>
         </li>\n`;
       });
@@ -315,18 +315,15 @@ function generateFilteredPostsPage(posts, title, outputPath) {
     }
 
     .post-list li {
-      margin-bottom: 0.8rem;
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
+      margin-bottom: 0.5rem;
     }
 
-    .post-list .post-date {
-      font-size: 0.9rem;
-      color: #999;
+    .date {
+      display: inline-block;
+      width: 4rem;
+      color: #888;
       font-variant: small-caps;
-      min-width: 80px;
-      flex-shrink: 0;
+      font-size: 0.9rem;
     }
 
     .post-list a {
