@@ -6,9 +6,7 @@ categories: [Web Design, CSS]
 tags: [tufte, typography, design, minimalism]
 ---
 
-This is an example of applying tufte-css to reST markup.
-
-I don't have a blog because I never write anything. But maybe I should. I'd like to believe that if I made a blog I would write neat stuff in it. But I probably won't.{^This is a sidenote explaining my procrastination with writing.}
+This is an example of applying tufte-css to reST markup.{^This is a sidenote explaining something.}
 
 ## The Beauty of Simplicity 
 
