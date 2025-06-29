@@ -52,11 +52,18 @@
     text-decoration: none !important;
     color: inherit;
     transition: all 0.2s ease;
-    }      
+    cursor: pointer;
+    }    
 
     .project-card:hover {
     border-bottom-color: #333;
     text-decoration: none !important;
+    }
+
+    .project-card:hover .project-title {
+    text-decoration: underline;
+    text-underline-offset: 0.1em;
+    text-decoration-thickness: 0.05em;
     }
 
     .project-icon {
@@ -83,6 +90,7 @@
     margin: 0 0 0.5rem 0;
     color: #111;
     font-style: normal;
+    transition: text-decoration 0.2s ease;
     }
 
     .project-description {
