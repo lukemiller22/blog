@@ -448,4 +448,50 @@ label.margin-toggle:not(.sidenote-number) {
     img {
         width: 100%;
     }
+
+   /* Enhanced mobile responsiveness */
+@media (max-width: 768px) {
+    html {
+        font-size: 18px; /* Increase from 15px for better readability */
+    }
+    
+    body {
+        width: 90%;
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 1rem;
+        max-width: none;
+    }
+    
+    .container {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1.5rem;
+        max-width: none;
+    }
+    
+    h1 {
+        font-size: 2.5rem; /* Slightly smaller than desktop */
+        line-height: 1.2;
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+    
+    p, li {
+        font-size: 1.2rem; /* Larger than default */
+        line-height: 1.6;
+    }
+    
+    /* Make links more touch-friendly */
+    a {
+        padding: 0.2rem 0;
+        margin: 0.1rem 0;
+        display: inline-block;
+    }
 }
