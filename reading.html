@@ -108,27 +108,35 @@
 
   /* Mobile responsiveness */
 @media (max-width: 768px) {
+  body {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+    width: 90% !important;
+  }
+  
   .container {
     flex-direction: column;
     gap: 1rem;
     padding: 1.5rem !important;
+    width: 100% !important;
+    max-width: none !important;
   }
   
   .content-left {
     width: 100%;
   }
   
-  /* Table wrapper for horizontal scrolling */
+  /* Remove table wrapper - let table extend naturally */
   .table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 1rem -1.5rem;
-    padding: 0 1.5rem;
+    overflow: visible;
+    margin: 1rem 0;
+    padding: 0;
   }
   
   .book-table {
     min-width: 600px;
     font-size: 1.1rem;
+    width: auto; /* Let it be wider than screen */
   }
 }
     
