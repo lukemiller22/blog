@@ -1,7 +1,7 @@
 ---
 title: Introduction to Tufte CSS
 short_title: Tufte
-date: Mon May 6 '19
+date: Mon May 6 2019
 categories: [Web Design, CSS]
 tags: [tufte, typography, design, minimalism]
 ---
