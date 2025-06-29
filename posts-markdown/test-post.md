@@ -8,7 +8,7 @@ tags: [Essay]
 
 This is an example of applying tufte-css to reST markup.{^This is a sidenote explaining something.}
 
-## The Beauty of Simplicity 
+## The Beauty of Simplicity
 
 Edward Tufte's approach to information design emphasizes clarity and simplicity.{^Edward Tufte is a statistician and professor emeritus of political science, statistics, and computer science at Yale University.} His principles have influenced not just print design, but web design as well.
 
