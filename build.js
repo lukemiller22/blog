@@ -89,6 +89,15 @@ function shouldRebuild(markdownFile, outputFile, templatePath) {
   return markdownTime > outputTime || templateTime > outputTime;
 }
 
+function createTagCategoryLinks(items, type) {
+  if (!items || !Array.isArray(items)) return '';
+  
+  return items.map(item => {
+    const slug = item.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    return `<a href="../${type}/${slug}.html">${item}</a>`;
+  }).join(', ');
+}
+
 function buildPost(markdownFile, templatePath, outputDir) {
   const basename = path.basename(markdownFile, '.md');
   const outputFile = path.join(outputDir, basename + '.html');
@@ -115,26 +124,26 @@ function buildPost(markdownFile, templatePath, outputDir) {
     .replace(/\{\{DATE\}\}/g, frontmatter.date || '')
     .replace(/\{\{CONTENT\}\}/g, content);
   
-  // Handle categories as comma-separated list
+  // Handle categories with clickable links
   if (frontmatter.categories && Array.isArray(frontmatter.categories)) {
-    const categoriesList = frontmatter.categories.join(', ');
-    html = html.replace(/\{\{CATEGORIES_LIST\}\}/g, categoriesList);
+    const categoriesLinks = createTagCategoryLinks(frontmatter.categories, 'categories');
+    html = html.replace(/\{\{CATEGORIES_LIST\}\}/g, categoriesLinks);
     html = html.replace(/\{\{#if CATEGORIES\}\}[\s\S]*?\{\{\/if\}\}/g, 
       `<div class="categories">
-        <span class="label">Categories:</span><br>${categoriesList}
+        <span class="label">Categories:</span><br>${categoriesLinks}
       </div>`);
   } else {
     html = html.replace(/\{\{#if CATEGORIES\}\}[\s\S]*?\{\{\/if\}\}/g, '');
     html = html.replace(/\{\{CATEGORIES_LIST\}\}/g, '');
   }
   
-  // Handle tags as comma-separated list
+  // Handle tags with clickable links
   if (frontmatter.tags && Array.isArray(frontmatter.tags)) {
-    const tagsList = frontmatter.tags.join(', ');
-    html = html.replace(/\{\{TAGS_LIST\}\}/g, tagsList);
+    const tagsLinks = createTagCategoryLinks(frontmatter.tags, 'tags');
+    html = html.replace(/\{\{TAGS_LIST\}\}/g, tagsLinks);
     html = html.replace(/\{\{#if TAGS\}\}[\s\S]*?\{\{\/if\}\}/g, 
       `<div class="tags">
-        <span class="label">Tags:</span><br>${tagsList}
+        <span class="label">Tags:</span><br>${tagsLinks}
       </div>`);
   } else {
     html = html.replace(/\{\{#if TAGS\}\}[\s\S]*?\{\{\/if\}\}/g, '');
@@ -156,10 +165,189 @@ function buildPost(markdownFile, templatePath, outputDir) {
   };
 }
 
+function generateTagCategoryPages(posts) {
+  // Collect all tags and categories
+  const tagPosts = {};
+  const categoryPosts = {};
+  
+  posts.forEach(post => {
+    // Process tags
+    if (post.tags && Array.isArray(post.tags)) {
+      post.tags.forEach(tag => {
+        const slug = tag.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        if (!tagPosts[slug]) {
+          tagPosts[slug] = { name: tag, posts: [] };
+        }
+        tagPosts[slug].posts.push(post);
+      });
+    }
+    
+    // Process categories
+    if (post.categories && Array.isArray(post.categories)) {
+      post.categories.forEach(category => {
+        const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        if (!categoryPosts[slug]) {
+          categoryPosts[slug] = { name: category, posts: [] };
+        }
+        categoryPosts[slug].posts.push(post);
+      });
+    }
+  });
+  
+  // Generate tag pages
+  if (!fs.existsSync('tags')) {
+    fs.mkdirSync('tags', { recursive: true });
+  }
+  
+  Object.entries(tagPosts).forEach(([slug, data]) => {
+    generateFilteredPostsPage(data.posts, `Posts tagged "${data.name}"`, `tags/${slug}.html`);
+  });
+  
+  // Generate category pages
+  if (!fs.existsSync('categories')) {
+    fs.mkdirSync('categories', { recursive: true });
+  }
+  
+  Object.entries(categoryPosts).forEach(([slug, data]) => {
+    generateFilteredPostsPage(data.posts, `Posts in "${data.name}"`, `categories/${slug}.html`);
+  });
+  
+  console.log(`Generated ${Object.keys(tagPosts).length} tag pages and ${Object.keys(categoryPosts).length} category pages`);
+}
+
+function generateFilteredPostsPage(posts, title, outputPath) {
+  // Sort posts by date (most recent first)
+  const sortedPosts = posts.sort((a, b) => {
+    // You might need to adjust this based on your date format
+    return new Date(b.date) - new Date(a.date);
+  });
+  
+  // Group posts by year
+  const postsByYear = {};
+  sortedPosts.forEach(post => {
+    // Extract year from date - you might need to adjust this based on your date format
+    const year = post.date ? new Date(post.date).getFullYear() || '2025' : '2025';
+    if (!postsByYear[year]) {
+      postsByYear[year] = [];
+    }
+    postsByYear[year].push(post);
+  });
+  
+  // Generate the HTML content
+  let postsHtml = '';
+  Object.keys(postsByYear)
+    .sort((a, b) => b - a) // Sort years in descending order
+    .forEach(year => {
+      postsHtml += `<h2>${year}</h2>\n<ul class="post-list">\n`;
+      postsByYear[year].forEach(post => {
+        // Format the date for display
+        const dateObj = post.date ? new Date(post.date) : new Date();
+        const formattedDate = dateObj.toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric' 
+        });
+        
+        postsHtml += `  <li><span class="date">${formattedDate}</span> <a href="../posts/${post.filename}">${post.title}</a></li>\n`;
+      });
+      postsHtml += '</ul>\n';
+    });
+  
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title} - Luke Miller</title>
+  <link rel="stylesheet" href="../tufte-css/tufte.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #fffff8;
+      font-family: et-book, serif;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 4rem;
+      max-width: 1100px;
+      width: 100%;
+      padding: 3rem;
+    }
+
+    .content-left {
+      flex: 1;
+    }
+
+    .post-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .post-list li {
+      margin-bottom: 0.5rem;
+    }
+
+    .date {
+      display: inline-block;
+      width: 4rem;
+      color: #888;
+      font-variant: small-caps;
+      font-size: 0.9rem;
+    }
+
+    /* Ensure links follow Tufte CSS styling */
+    a:link,
+    a:visited {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 0.1em;
+      text-decoration-thickness: 0.05em;
+    }
+
+    /* Back link */
+    .back-link {
+      margin-bottom: 2rem;
+    }
+    
+    .back-link a {
+      color: #666;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+    
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="content-left">
+      <div class="back-link">
+        <a href="#" onclick="history.back(); return false;">← Back</a>
+      </div>
+      <h1>${title}</h1>
+
+      ${postsHtml}
+    </div>
+  </div>
+</body>
+</html>`;
+  
+  fs.writeFileSync(outputPath, html);
+  console.log(`Generated ${outputPath}`);
+}
+
 function updateIndex(posts) {
-  // This would update your main index.html with the new posts
-  // You'd need to implement this based on your index structure
-  console.log('Posts to add to index:', posts);
+  // Generate tag and category pages
+  generateTagCategoryPages(posts);
 }
 
 // Main execution
