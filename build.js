@@ -109,6 +109,7 @@ function buildPost(markdownFile, templatePath, outputDir) {
     const { frontmatter } = parseMarkdownPost(markdownFile);
     return {
       filename: basename + '.html',
+      rebuilt: false,
       ...frontmatter
     };
   }
@@ -161,6 +162,7 @@ function buildPost(markdownFile, templatePath, outputDir) {
   
   return {
     filename: basename + '.html',
+    rebuilt: true,
     ...frontmatter
   };
 }
@@ -243,15 +245,20 @@ function generateFilteredPostsPage(posts, title, outputPath) {
         // Format the date for display
         const dateObj = post.date ? new Date(post.date) : new Date();
         const formattedDate = dateObj.toLocaleDateString('en-US', { 
+          year: 'numeric', 
           month: 'short', 
           day: 'numeric' 
         });
         
-        postsHtml += `  <li><span class="date">${formattedDate}</span> <a href="../posts/${post.filename}">${post.title}</a></li>\n`;
+        postsHtml += `  <li>
+          <span class="post-date">${formattedDate}</span>
+          <a href="../posts/${post.filename}">${post.title || 'Untitled'}</a>
+        </li>\n`;
       });
       postsHtml += '</ul>\n';
     });
   
+  // Create the full HTML page
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -274,8 +281,7 @@ function generateFilteredPostsPage(posts, title, outputPath) {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 4rem;
-      max-width: 1100px;
+      max-width: 900px;
       width: 100%;
       padding: 3rem;
     }
@@ -284,21 +290,54 @@ function generateFilteredPostsPage(posts, title, outputPath) {
       flex: 1;
     }
 
+    .content-left h1 {
+      font-style: italic;
+      font-weight: 400;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 2.8rem;
+      line-height: 1.2;
+    }
+
+    .content-left h2 {
+      font-style: normal;
+      font-weight: 400;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      color: #666;
+    }
+
     .post-list {
-      list-style-type: none;
-      padding-left: 0;
+      list-style: none;
+      padding: 0;
+      margin: 0 0 2rem 0;
     }
 
     .post-list li {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
     }
 
-    .date {
-      display: inline-block;
-      width: 4rem;
-      color: #888;
-      font-variant: small-caps;
+    .post-list .post-date {
       font-size: 0.9rem;
+      color: #999;
+      font-variant: small-caps;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+
+    .post-list a {
+      color: inherit;
+      text-decoration: none;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+
+    .post-list a:hover {
+      text-decoration: underline;
     }
 
     /* Ensure links follow Tufte CSS styling */
@@ -396,26 +435,16 @@ if (require.main === module) {
       buildPost(file, templatePath, outputDir)
     );
     
-    const rebuiltCount = builtPosts.filter(post => post.rebuilt !== false).length;
-    console.log(`\nCompleted! ${rebuiltCount} file(s) built, ${markdownFiles.length - rebuiltCount} skipped (up to date)`);
+    // IMPORTANT: Generate tag and category pages after building all posts
+    console.log('\nGenerating tag and category pages...');
+    generateTagCategoryPages(builtPosts);
     
-    updateIndex(builtPosts);
+    const rebuiltCount = builtPosts.filter(post => post.rebuilt !== false).length;
+    console.log(`\nCompleted! Built ${rebuiltCount} post(s)`);
+    
   } else {
     // Build single file
-    const markdownFile = args[0];
-    if (!fs.existsSync(markdownFile)) {
-      console.error(`File ${markdownFile} does not exist`);
-      process.exit(1);
-    }
-    
-    const post = buildPost(markdownFile, templatePath, outputDir);
-    console.log('Built post:', post);
-  }
-  
-  // Restore original function
-  if (forceRebuild) {
-    global.shouldRebuild = originalShouldRebuild;
+    const result = buildPost(args[0], templatePath, outputDir);
+    console.log(`Built: ${result.filename}`);
   }
 }
-
-module.exports = { buildPost, parseMarkdownPost };
