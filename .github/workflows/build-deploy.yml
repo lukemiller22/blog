@@ -4,7 +4,7 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: read
+  contents: write  # Changed from 'read' to 'write' to allow commits
   pages: write
   id-token: write
 
@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -25,6 +27,20 @@ jobs:
         
       - name: Build posts
         run: npm run build
+        
+      - name: Commit generated files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add posts/*.html
+          git add tags/ || true
+          git add categories/ || true
+          if ! git diff --staged --quiet; then
+            git commit -m "Auto-update generated HTML files [skip ci]"
+            git push
+          else
+            echo "No changes to commit"
+          fi
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
