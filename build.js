@@ -167,15 +167,68 @@ function buildPost(markdownFile, templatePath, outputDir) {
   };
 }
 
+function cleanupOrphanedFiles(posts, outputDir) {
+  // Clean up orphaned HTML posts
+  if (fs.existsSync(outputDir)) {
+    const htmlFiles = fs.readdirSync(outputDir).filter(file => file.endsWith('.html'));
+    const markdownBasenames = posts.map(post => post.filename);
+    
+    htmlFiles.forEach(htmlFile => {
+      if (!markdownBasenames.includes(htmlFile)) {
+        const orphanPath = path.join(outputDir, htmlFile);
+        fs.unlinkSync(orphanPath);
+        console.log(`Deleted orphaned HTML file: ${orphanPath}`);
+      }
+    });
+  }
+}
+
+function cleanupOrphanedTagCategoryPages(activeTags, activeCategories) {
+  // Clean up orphaned tag pages
+  if (fs.existsSync('tags')) {
+    const tagFiles = fs.readdirSync('tags').filter(file => file.endsWith('.html'));
+    const activeTagSlugs = activeTags.map(tag => 
+      tag.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.html'
+    );
+    
+    tagFiles.forEach(tagFile => {
+      if (!activeTagSlugs.includes(tagFile)) {
+        const orphanPath = path.join('tags', tagFile);
+        fs.unlinkSync(orphanPath);
+        console.log(`Deleted orphaned tag page: ${orphanPath}`);
+      }
+    });
+  }
+  
+  // Clean up orphaned category pages
+  if (fs.existsSync('categories')) {
+    const categoryFiles = fs.readdirSync('categories').filter(file => file.endsWith('.html'));
+    const activeCategorySlugs = activeCategories.map(category => 
+      category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.html'
+    );
+    
+    categoryFiles.forEach(categoryFile => {
+      if (!activeCategorySlugs.includes(categoryFile)) {
+        const orphanPath = path.join('categories', categoryFile);
+        fs.unlinkSync(orphanPath);
+        console.log(`Deleted orphaned category page: ${orphanPath}`);
+      }
+    });
+  }
+}
+
 function generateTagCategoryPages(posts) {
   // Collect all tags and categories
   const tagPosts = {};
   const categoryPosts = {};
+  const allActiveTags = new Set();
+  const allActiveCategories = new Set();
   
   posts.forEach(post => {
     // Process tags
     if (post.tags && Array.isArray(post.tags)) {
       post.tags.forEach(tag => {
+        allActiveTags.add(tag);
         const slug = tag.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
         if (!tagPosts[slug]) {
           tagPosts[slug] = { name: tag, posts: [] };
@@ -187,6 +240,7 @@ function generateTagCategoryPages(posts) {
     // Process categories
     if (post.categories && Array.isArray(post.categories)) {
       post.categories.forEach(category => {
+        allActiveCategories.add(category);
         const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
         if (!categoryPosts[slug]) {
           categoryPosts[slug] = { name: category, posts: [] };
@@ -195,6 +249,9 @@ function generateTagCategoryPages(posts) {
       });
     }
   });
+  
+  // Clean up orphaned tag/category pages before generating new ones
+  cleanupOrphanedTagCategoryPages(Array.from(allActiveTags), Array.from(allActiveCategories));
   
   // Generate tag pages
   if (!fs.existsSync('tags')) {
@@ -433,6 +490,10 @@ if (require.main === module) {
     // IMPORTANT: Generate tag and category pages after building all posts
     console.log('\nGenerating tag and category pages...');
     generateTagCategoryPages(builtPosts);
+    
+    // Clean up orphaned HTML posts
+    console.log('\nCleaning up orphaned files...');
+    cleanupOrphanedFiles(builtPosts, outputDir);
     
     const rebuiltCount = builtPosts.filter(post => post.rebuilt !== false).length;
     console.log(`\nCompleted! Built ${rebuiltCount} post(s)`);
