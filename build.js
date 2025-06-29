@@ -242,10 +242,9 @@ function generateFilteredPostsPage(posts, title, outputPath) {
     .forEach(year => {
       postsHtml += `<h2>${year}</h2>\n<ul class="post-list">\n`;
       postsByYear[year].forEach(post => {
-        // Format the date for display
+        // Format the date for display (just month and day like Writing page)
         const dateObj = post.date ? new Date(post.date) : new Date();
         const formattedDate = dateObj.toLocaleDateString('en-US', { 
-          year: 'numeric', 
           month: 'short', 
           day: 'numeric' 
         });
@@ -281,7 +280,8 @@ function generateFilteredPostsPage(posts, title, outputPath) {
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      max-width: 900px;
+      gap: 4rem;
+      max-width: 1100px;
       width: 100%;
       padding: 3rem;
     }
@@ -304,14 +304,13 @@ function generateFilteredPostsPage(posts, title, outputPath) {
       font-weight: 400;
       margin-top: 2rem;
       margin-bottom: 1rem;
-      font-size: 1.8rem;
-      color: #666;
+      font-size: 2rem;
+      color: #333;
     }
 
     .post-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 2rem 0;
+      list-style-type: none;
+      padding-left: 0;
     }
 
     .post-list li {
