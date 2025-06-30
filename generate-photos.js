@@ -76,12 +76,15 @@ class SimplePhotoGenerator {
     }
 
     extractCreationDate(tags, filename) {
-        // Try various EXIF date fields in order of preference
+        // Try XnViewMP specific fields first, then standard EXIF fields
         const dateFields = [
+            'Date taken',           // XnViewMP specific field
             'DateTimeOriginal',
             'CreateDate', 
             'DateTime',
-            'DateTimeDigitized'
+            'DateTimeDigitized',
+            'DateCreated',
+            'Date'
         ];
         
         for (const field of dateFields) {
@@ -89,20 +92,43 @@ class SimplePhotoGenerator {
                 try {
                     let dateStr = tags[field].description || tags[field].value;
                     if (typeof dateStr === 'string') {
-                        // EXIF dates are typically "YYYY:MM:DD HH:MM:SS"
-                        dateStr = dateStr.replace(/:/g, '-').replace(/-(\d{2}:\d{2}:\d{2})/, ' $1');
+                        console.log(`✅ Found date in ${field}: ${dateStr}`);
+                        
+                        // Handle XnViewMP format: "9/29/23 - 1:25:09 PM PDT"
+                        if (dateStr.includes('/') && dateStr.includes(' - ')) {
+                            const datePart = dateStr.split(' - ')[0]; // "9/29/23"
+                            const date = new Date(datePart);
+                            if (!isNaN(date.getTime())) {
+                                console.log(`✅ Successfully parsed XnViewMP date: ${date}`);
+                                return date;
+                            }
+                        }
+                        
+                        // Handle standard EXIF format: "YYYY:MM:DD HH:MM:SS"
+                        if (dateStr.includes(':') && dateStr.length >= 19) {
+                            dateStr = dateStr.replace(/:/g, '-').replace(/-(\d{2}:\d{2}:\d{2})/, ' $1');
+                            const date = new Date(dateStr);
+                            if (!isNaN(date.getTime()) && date.getFullYear() > 1990) {
+                                console.log(`✅ Successfully parsed EXIF date: ${date}`);
+                                return date;
+                            }
+                        }
+                        
+                        // Try direct parsing
                         const date = new Date(dateStr);
                         if (!isNaN(date.getTime()) && date.getFullYear() > 1990) {
+                            console.log(`✅ Successfully parsed date directly: ${date}`);
                             return date;
                         }
                     }
                 } catch (e) {
-                    // Continue to next field
+                    console.log(`❌ Error parsing ${field}: ${e.message}`);
                 }
             }
         }
 
         // Fallback: try to extract date from filename
+        console.log('No EXIF date found, trying filename patterns...');
         const datePatterns = [
             /(\d{4})-(\d{2})-(\d{2})/,           // YYYY-MM-DD
             /(\d{4})(\d{2})(\d{2})/,             // YYYYMMDD
@@ -118,13 +144,14 @@ class SimplePhotoGenerator {
                 
                 if (year >= 2000 && year <= new Date().getFullYear() && 
                     month >= 0 && month <= 11 && day >= 1 && day <= 31) {
+                    console.log(`✅ Found date in filename: ${year}-${month+1}-${day}`);
                     return new Date(year, month, day);
                 }
             }
         }
 
         // Last resort: use current date
-        console.warn(`  ⚠️  No date found for ${filename}, using current date`);
+        console.warn(`⚠️ No date found for ${filename}, using current date`);
         return new Date();
     }
 
@@ -145,15 +172,29 @@ class SimplePhotoGenerator {
     }
 
     extractDescription(tags) {
-        // Only try XMP Description field - make it truly optional
-        if (tags['Description']) {
-            const desc = tags['Description'].description || tags['Description'].value;
-            if (desc && desc.trim()) {
-                return desc.trim();
+        // XnViewMP stores description in the "description" field under dc namespace
+        const descriptionFields = [
+            'description',          // XnViewMP specific field from dc namespace
+            'Description',
+            'dc:description',
+            'dc.description', 
+            'XMP.dc.description',
+            'ImageDescription',
+            'Caption-Abstract',
+            'UserComment'
+        ];
+
+        for (const field of descriptionFields) {
+            if (tags[field]) {
+                const desc = tags[field].description || tags[field].value;
+                if (desc && desc.trim()) {
+                    console.log(`✅ Found description in ${field}: ${desc.trim()}`);
+                    return desc.trim();
+                }
             }
         }
 
-        // Return null if no XMP description found (don't fall back to other fields)
+        console.log('❌ No description found');
         return null;
     }
 
