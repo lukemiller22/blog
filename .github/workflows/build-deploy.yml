@@ -4,7 +4,7 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: write  # Changed from 'read' to 'write' to allow commits
+  contents: write
   pages: write
   id-token: write
 
@@ -28,6 +28,9 @@ jobs:
       - name: Build posts
         run: npm run build
         
+      - name: Generate photos pages
+        run: npm run photos
+        
       - name: Commit generated files
         run: |
           git config --local user.email "action@github.com"
@@ -35,6 +38,8 @@ jobs:
           git add posts/*.html
           git add tags/ || true
           git add categories/ || true
+          git add photos.html || true
+          git add photos/*.html || true
           if ! git diff --staged --quiet; then
             git commit -m "Auto-update generated HTML files [skip ci]"
             git push
