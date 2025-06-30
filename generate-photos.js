@@ -52,20 +52,23 @@ class SimplePhotoGenerator {
             const tags = ExifReader.load(buffer);
             
             const date = this.extractCreationDate(tags, filename);
-            const caption = this.extractDescription(tags, filename);
+            const name = this.extractNameFromFilename(filename);
+            const description = this.extractDescription(tags); // XMP Description only
             
             const photo = {
                 filename,
                 src: `../photos/${filename}`, // Relative from year page
                 date,
-                caption,
+                name,
+                description, // Optional XMP description
                 year: date.getFullYear(),
                 month: date.getMonth(),
                 monthName: new Intl.DateTimeFormat('en', { month: 'long' }).format(date)
             };
 
             this.photos.push(photo);
-            console.log(`  📸 ${filename} - ${photo.year} ${photo.monthName} - "${caption}"`);
+            const descText = description ? ` - "${description}"` : '';
+            console.log(`  📸 ${filename} - ${photo.year} ${photo.monthName}${descText}`);
             
         } catch (error) {
             console.warn(`  ⚠️  Error processing ${filename}:`, error.message);
@@ -125,8 +128,24 @@ class SimplePhotoGenerator {
         return new Date();
     }
 
-    extractDescription(tags, filename) {
-        // Try XMP Description first (this is what you'll be editing)
+    extractNameFromFilename(filename) {
+        // Extract clean name from filename
+        let name = filename
+            .replace(/\.[^/.]+$/, '')  // Remove extension
+            .replace(/^\d{4}-\d{2}-\d{2}[-_]?/, '')  // Remove date prefix if present
+            .replace(/[_-]/g, ' ')  // Replace underscores/hyphens with spaces
+            .replace(/\b\w/g, l => l.toUpperCase());  // Title case
+
+        // If still just numbers, make it generic
+        if (/^\d+\s*$/.test(name.trim())) {
+            name = 'Untitled Photo';
+        }
+
+        return name;
+    }
+
+    extractDescription(tags) {
+        // Only try XMP Description field - make it truly optional
         if (tags['Description']) {
             const desc = tags['Description'].description || tags['Description'].value;
             if (desc && desc.trim()) {
@@ -134,36 +153,8 @@ class SimplePhotoGenerator {
             }
         }
 
-        // Try other description fields
-        const descriptionFields = [
-            'ImageDescription',
-            'XPComment',
-            'UserComment',
-            'Caption-Abstract'
-        ];
-
-        for (const field of descriptionFields) {
-            if (tags[field]) {
-                const desc = tags[field].description || tags[field].value;
-                if (desc && desc.trim()) {
-                    return desc.trim();
-                }
-            }
-        }
-
-        // Fallback: create caption from filename
-        let caption = filename
-            .replace(/\.[^/.]+$/, '')  // Remove extension
-            .replace(/^\d{4}-\d{2}-\d{2}[-_]?/, '')  // Remove date prefix
-            .replace(/[_-]/g, ' ')  // Replace underscores/hyphens with spaces
-            .replace(/\b\w/g, l => l.toUpperCase());  // Title case
-
-        // If still just numbers, make it generic
-        if (/^\d+\s*$/.test(caption.trim())) {
-            caption = 'Untitled Photo';
-        }
-
-        return caption;
+        // Return null if no XMP description found (don't fall back to other fields)
+        return null;
     }
 
     organizePhotos() {
@@ -425,17 +416,25 @@ ${years.map(year => `                <li class="year-item">
             flex: 1;
         }
 
-        .photo-caption {
-            font-size: 1.1rem;
-            line-height: 1.3;
-            color: #666;
-            font-style: italic;
+        .photo-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
             margin: 0 0 0.5rem 0;
         }
 
         .photo-date {
             color: #888;
             font-size: 0.9rem;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .photo-description {
+            font-size: 1rem;
+            line-height: 1.4;
+            color: #666;
+            font-style: italic;
+            margin: 0;
         }
 
         /* Mobile responsiveness */
@@ -512,9 +511,9 @@ ${this.generateYearPhotosHTML(photosByMonth)}
 
                 monthPhotos.forEach(photo => {
                     html += `                <div class="photo-entry">\n`;
-                    html += `                    <img src="${photo.src}" alt="${this.escapeHtml(photo.caption)}" loading="lazy">\n`;
+                    html += `                    <img src="${photo.src}" alt="${this.escapeHtml(photo.name)}" loading="lazy">\n`;
                     html += `                    <div class="photo-caption-container">\n`;
-                    html += `                        <div class="photo-caption">${this.escapeHtml(photo.caption)}</div>\n`;
+                    html += `                        <div class="photo-name">${this.escapeHtml(photo.name)}</div>\n`;
                     
                     const dateStr = photo.date.toLocaleDateString('en-US', { 
                         year: 'numeric', 
@@ -522,6 +521,12 @@ ${this.generateYearPhotosHTML(photosByMonth)}
                         day: 'numeric'
                     });
                     html += `                        <div class="photo-date">${dateStr}</div>\n`;
+                    
+                    // Only add description if it exists
+                    if (photo.description) {
+                        html += `                        <div class="photo-description">${this.escapeHtml(photo.description)}</div>\n`;
+                    }
+                    
                     html += `                    </div>\n`;
                     html += `                </div>\n`;
                 });
