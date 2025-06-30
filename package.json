@@ -10,7 +10,7 @@
     "clean": "rm -rf posts/*.html",
     "dev": "python3 -m http.server 8000",
     "new-post": "node new-post.js",
-    "photos": "node scripts/generate-photos.js"
+    "photos": "node generate-photos.js"
   },
   "dependencies": {
     "marked": "^4.3.0",
