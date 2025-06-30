@@ -143,7 +143,7 @@ class SimplePhotoGenerator {
         // Extract clean name from filename, removing MM-DD-YYYY prefix
         let name = filename
             .replace(/\.[^/.]+$/, '')  // Remove extension
-            .replace(/^\d{2}-\d{2}-\d{4}-?/, '')  // Remove MM-DD-YYYY prefix
+            .replace(/^\d{2}-\d{2}-\d{2,4}-?/, '')  // Remove MM-DD-YY or MM-DD-YYYY prefix
             .replace(/[_-]/g, ' ')  // Replace underscores/hyphens with spaces
             .replace(/\b\w/g, l => l.toUpperCase());  // Title case
 
