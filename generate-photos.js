@@ -86,40 +86,38 @@ class SimplePhotoGenerator {
     }
 
     extractCreationDate(tags, filename) {
-        // Try XnViewMP specific fields first, then standard EXIF fields
-        const dateFields = [
-            'Date taken',           // XnViewMP specific field
-            'DateTimeOriginal',
-            'CreateDate', 
-            'DateTime',
-            'DateTimeDigitized',
-            'DateCreated',
-            'Date'
-        ];
+        // First, try to extract date from filename in MM-DD-YYYY format
+        const datePattern = /^(\d{2})-(\d{2})-(\d{4})/; // MM-DD-YYYY at start
+        const match = filename.match(datePattern);
+        
+        if (match) {
+            const month = parseInt(match[1]) - 1; // 0-indexed for JavaScript Date
+            const day = parseInt(match[2]);
+            const year = parseInt(match[3]);
+            
+            if (year >= 2000 && year <= new Date().getFullYear() && 
+                month >= 0 && month <= 11 && day >= 1 && day <= 31) {
+                const date = new Date(year, month, day);
+                console.log(`✅ Found date in filename: ${month+1}/${day}/${year}`);
+                return date;
+            }
+        }
+
+        // If filename parsing fails, try EXIF (but don't expect it to work with GitHub uploads)
+        const dateFields = ['Date taken', 'DateTimeOriginal', 'CreateDate', 'DateTime'];
         
         for (const field of dateFields) {
             if (tags[field]) {
                 try {
                     let dateStr = tags[field].description || tags[field].value;
                     if (typeof dateStr === 'string') {
-                        console.log(`✅ Found date in ${field}: ${dateStr}`);
+                        console.log(`✅ Found date in EXIF ${field}: ${dateStr}`);
                         
                         // Handle XnViewMP format: "9/29/23 - 1:25:09 PM PDT"
                         if (dateStr.includes('/') && dateStr.includes(' - ')) {
-                            const datePart = dateStr.split(' - ')[0]; // "9/29/23"
+                            const datePart = dateStr.split(' - ')[0];
                             const date = new Date(datePart);
                             if (!isNaN(date.getTime())) {
-                                console.log(`✅ Successfully parsed XnViewMP date: ${date}`);
-                                return date;
-                            }
-                        }
-                        
-                        // Handle standard EXIF format: "YYYY:MM:DD HH:MM:SS"
-                        if (dateStr.includes(':') && dateStr.length >= 19) {
-                            dateStr = dateStr.replace(/:/g, '-').replace(/-(\d{2}:\d{2}:\d{2})/, ' $1');
-                            const date = new Date(dateStr);
-                            if (!isNaN(date.getTime()) && date.getFullYear() > 1990) {
-                                console.log(`✅ Successfully parsed EXIF date: ${date}`);
                                 return date;
                             }
                         }
@@ -127,35 +125,11 @@ class SimplePhotoGenerator {
                         // Try direct parsing
                         const date = new Date(dateStr);
                         if (!isNaN(date.getTime()) && date.getFullYear() > 1990) {
-                            console.log(`✅ Successfully parsed date directly: ${date}`);
                             return date;
                         }
                     }
                 } catch (e) {
                     console.log(`❌ Error parsing ${field}: ${e.message}`);
-                }
-            }
-        }
-
-        // Fallback: try to extract date from filename
-        console.log('No EXIF date found, trying filename patterns...');
-        const datePatterns = [
-            /(\d{4})-(\d{2})-(\d{2})/,           // YYYY-MM-DD
-            /(\d{4})(\d{2})(\d{2})/,             // YYYYMMDD
-            /(\d{4})[_-](\d{2})[_-](\d{2})/      // YYYY_MM_DD
-        ];
-
-        for (const pattern of datePatterns) {
-            const match = filename.match(pattern);
-            if (match) {
-                const year = parseInt(match[1]);
-                const month = parseInt(match[2]) - 1; // 0-indexed
-                const day = parseInt(match[3]);
-                
-                if (year >= 2000 && year <= new Date().getFullYear() && 
-                    month >= 0 && month <= 11 && day >= 1 && day <= 31) {
-                    console.log(`✅ Found date in filename: ${year}-${month+1}-${day}`);
-                    return new Date(year, month, day);
                 }
             }
         }
@@ -166,15 +140,15 @@ class SimplePhotoGenerator {
     }
 
     extractNameFromFilename(filename) {
-        // Extract clean name from filename
+        // Extract clean name from filename, removing MM-DD-YYYY prefix
         let name = filename
             .replace(/\.[^/.]+$/, '')  // Remove extension
-            .replace(/^\d{4}-\d{2}-\d{2}[-_]?/, '')  // Remove date prefix if present
+            .replace(/^\d{2}-\d{2}-\d{4}-?/, '')  // Remove MM-DD-YYYY prefix
             .replace(/[_-]/g, ' ')  // Replace underscores/hyphens with spaces
             .replace(/\b\w/g, l => l.toUpperCase());  // Title case
 
-        // If still just numbers, make it generic
-        if (/^\d+\s*$/.test(name.trim())) {
+        // If nothing left after removing date, use a generic name
+        if (!name || name.trim() === '') {
             name = 'Untitled Photo';
         }
 
