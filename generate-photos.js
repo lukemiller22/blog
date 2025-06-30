@@ -49,7 +49,17 @@ class SimplePhotoGenerator {
         try {
             const filePath = path.join(this.photosDir, filename);
             const buffer = await fs.readFile(filePath);
-            const tags = ExifReader.load(buffer);
+            
+            console.log(`Processing ${filename} (${buffer.length} bytes)`);
+            
+            let tags = {};
+            try {
+                tags = ExifReader.load(buffer);
+                console.log(`✅ Successfully loaded EXIF data for ${filename}`);
+            } catch (exifError) {
+                console.log(`⚠️ Could not read EXIF data from ${filename}: ${exifError.message}`);
+                console.log('Proceeding without EXIF data...');
+            }
             
             const date = this.extractCreationDate(tags, filename);
             const name = this.extractNameFromFilename(filename);
