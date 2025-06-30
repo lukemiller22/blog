@@ -67,7 +67,7 @@ class SimplePhotoGenerator {
             
             const photo = {
                 filename,
-                src: `../photos/${filename}`, // Relative from year page
+                src: `${filename}`, // Same directory as the year page
                 date,
                 name,
                 description, // Optional XMP description
