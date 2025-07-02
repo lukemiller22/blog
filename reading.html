@@ -72,16 +72,21 @@
   }
   .book-table .rating-col {
     width: 15%;
-    text-align: center;
     position: relative;
   }
   .book-table .review-col {
     width: 10%;
-    text-align: center;
   }
   
-  /* Rating tooltip */
-  .book-table .rating-col:hover::after {
+  /* Rating info symbol and tooltip */
+  .rating-info {
+    color: #999;
+    cursor: help;
+    position: relative;
+    font-size: 0.9em;
+  }
+  
+  .rating-info:hover::after {
     content: "3★ Canon | 2★ Favorite | 1★ Good";
     position: absolute;
     bottom: 100%;
@@ -96,7 +101,8 @@
     z-index: 1000;
     margin-bottom: 5px;
   }
-  .book-table .rating-col:hover::before {
+  
+  .rating-info:hover::before {
     content: "";
     position: absolute;
     bottom: 100%;
@@ -173,7 +179,7 @@
             <th class="title-col">Title</th>
             <th class="author-col">Author</th>
             <th class="date-col">Date Read</th>
-            <th class="rating-col">Rating</th>
+            <th class="rating-col">Rating <span class="rating-info">*</span></th>
             <th class="review-col">Review</th>
           </tr>
         </thead>
