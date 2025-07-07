@@ -45,39 +45,27 @@
     }
 
     .project-card {
-    display: block;
-    padding: 1.5rem 0;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid #e8e8e8;
-    text-decoration: none !important;
-    color: inherit;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    }    
+      display: block;
+      padding: 1.5rem 0 1.5rem 1rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid transparent;
+      text-decoration: none !important;
+      color: inherit;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
 
     .project-card:hover {
-    border-bottom-color: #333;
-    text-decoration: none !important;
+      border-left-color: #333;
+      background-color: #fafaf8;
+      padding-left: 1.5rem;
+      text-decoration: none !important;
     }
-
+    
     .project-card:hover .project-title {
-    text-decoration: underline;
-    text-underline-offset: 0.1em;
-    text-decoration-thickness: 0.05em;
-    }
-
-    .project-icon {
-    display: none;
-    }
-
-    .grid-icon {
-      width: 24px;
-      height: 24px;
-      background-image: 
-        linear-gradient(#333 0px, #333 2px, transparent 2px, transparent 6px),
-        linear-gradient(90deg, #333 0px, #333 2px, transparent 2px, transparent 6px);
-      background-size: 6px 6px;
-      background-position: 2px 2px;
+      text-decoration: underline;
+      text-underline-offset: 0.1em;
+      text-decoration-thickness: 0.05em;
     }
 
     .project-content {
@@ -127,9 +115,6 @@
 
       <div class="projects-grid">
         <a href="https://notes.lukemiller.site" class="project-card">
-          <div class="project-icon">
-            <div class="grid-icon"></div>
-          </div>
           <div class="project-content">
             <h3 class="project-title">Digital Garden</h3>
             <p class="project-description">A collection of evergreen notes on how we make sense of things through knowledge elements, patterns, and structures. It’s built around a simple question: What are the parts of meaning and how do they fit together? These working notes explore that question across different fields, using a custom framework to track what shows up again and again in good thinking and writing.</p>
