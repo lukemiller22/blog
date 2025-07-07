@@ -27,7 +27,10 @@
     }
 
     .content-left {
-      flex: 1;
+      /* Updated: Set a specific max-width for desktop while maintaining flexibility */
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
     }
 
     .post-list {
@@ -46,6 +49,45 @@
       font-variant: small-caps;
       font-size: 0.9rem;
     }
+
+    /* Enhanced mobile responsiveness - this preserves your mobile layout */
+    @media (max-width: 768px) {
+      body {
+        width: 90% !important;
+        padding-left: 5% !important;
+        padding-right: 5% !important;
+      }
+      
+      .container {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1.5rem;
+        max-width: none;
+      }
+      
+      .content-left {
+        max-width: none;
+        width: 100%;
+        margin: 0;
+      }
+      
+      h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.2;
+      }
+      
+      p, li {
+        font-size: 1.2rem !important;
+        line-height: 1.6;
+      }
+      
+      /* Make links more touch-friendly */
+      a {
+        padding: 0.2rem 0;
+        margin: 0.1rem 0;
+        display: inline-block;
+      }
+    }
   </style>
 </head>
 
@@ -55,8 +97,11 @@
     <h1>Luke Miller</h1>
     
     <p>I'm Luke - Christian, husband, father of three, and co-founder at <a href="https://buildonline.io">Buildonline</a>. I care about words, quiet disciplines, and the hard work of building things that last.</p>
+    
     <p>This site is my small attempt to tend the digital commons through <a href="writing.html">writing</a> - essays, book reviews, and other experiments in structure and form. I also wanted a place to track <a href="reading.html">books I've read</a> and link to <a href="projects.html">personal projects</a> I'm working on. There is a <a href="glossary.html">glossary of concepts</a> I return to often and a <a href="chrestomathy.html">collection of writing selections</a> that inspire me to read, write, and live.</p>
+    
     <p>There is more <a href="about.html">about me</a> if you're curious. Plus <a href="photos.html">photos</a> from life on the road and at home.</p>
+    
     <p>Want to get in touch? Not spam? Contact me <a href="https://x.com/lukeallenmiller">here</a>.</p>
   </div>
 </div>
