@@ -27,10 +27,18 @@
     }
 
     .content-left {
-      /* Changed: Use flex: 1 like other pages for left justification */
+      /* Use flex: 1 for left justification like other pages */
       flex: 1;
-      /* Keep narrow text width for home page content */
+    }
+
+    /* Constrain text width specifically for paragraphs to keep narrow reading column */
+    .content-left p {
       max-width: 600px;
+    }
+
+    .content-left h1 {
+      /* Keep h1 unconstrained for full-width impact */
+      max-width: none;
     }
 
     .post-list {
@@ -69,6 +77,10 @@
         max-width: none;
         width: 100%;
         margin: 0;
+      }
+      
+      .content-left p {
+        max-width: none;
       }
       
       h1 {
