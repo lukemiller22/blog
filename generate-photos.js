@@ -232,126 +232,49 @@ class SimplePhotoGenerator {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photos</title>
+    <title>Photos - Luke Miller</title>
     <link rel="stylesheet" href="tufte-css/tufte.css" />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #fffff8;
-            font-family: et-book, serif;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 4rem;
-            max-width: 1100px;
-            width: 100%;
-            padding: 3rem;
-        }
-
-        .content-left {
-            flex: 1;
-        }
-
-        .back-link {
-            margin-bottom: 2rem;
-        }
-
-        .back-link a {
-            color: #666;
-            text-decoration: none;
-            font-size: 1.1rem;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        .year-list {
-            list-style: none;
-            padding: 0;
-            margin: 2rem 0;
-        }
-
-        .year-item {
-            margin-bottom: 1.5rem;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .year-item:last-child {
-            border-bottom: none;
-        }
-
-        .year-link {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.2s ease;
-        }
-
-        .year-link:hover {
-            text-decoration: none;
-        }
-
-        .year-link:hover .year-title {
-            text-decoration: underline;
-        }
-
-        .year-title {
-            font-size: 2rem;
-            font-weight: 400;
-            margin: 0 0 0.5rem 0;
-            color: #111;
-        }
-
-        .year-count {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .total-count {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #eee;
-            color: #888;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="universal-styles.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="content-left">
-            <div class="back-link">
-                <a href="index.html">← Back</a>
-            </div>
-            
-            <h1>Photos</h1>
-            
-            <ul class="year-list">
-${years.map(year => `                <li class="year-item">
-                    <a href="photos/${year}.html" class="year-link">
-                        <div class="year-title">${year}</div>
-                        <div class="year-count">${yearCounts[year]} photo${yearCounts[year] !== 1 ? 's' : ''}</div>
-                    </a>
-                </li>`).join('\n')}
-            </ul>
-            
-            <div class="total-count">
-                ${this.photos.length} total photo${this.photos.length !== 1 ? 's' : ''} • Last updated: ${new Date().toLocaleDateString('en-US', { 
+  <!-- Top Navigation -->
+  <nav class="nav-top">
+    <div class="nav-container">
+      <ul class="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="writing.html">Writing</a></li>
+        <li><a href="reading.html">Reading</a></li>
+        <li><a href="photos.html">Photos</a></li>
+        <li><a href="glossary.html">Glossary</a></li>
+        <li><a href="chrestomathy.html">Chrestomathy</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <main class="content-main">            
+      <h1>Photos</h1>
+      
+      <ul class="year-list">
+${years.map(year => `          <li class="year-item">
+              <a href="photos/${year}.html" class="year-link">
+                  <div class="year-title">${year}</div>
+                  <div class="year-count">${yearCounts[year]} photo${yearCounts[year] !== 1 ? 's' : ''}</div>
+              </a>
+          </li>`).join('\n')}
+      </ul>
+      
+      <div class="total-count">
+          ${this.photos.length} total photo${this.photos.length !== 1 ? 's' : ''} • Last updated: ${new Date().toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
                 })}
-            </div>
-        </div>
-    </div>
+      </div>
+    </main>
+  </div>
 </body>
 </html>`;
 
@@ -368,146 +291,38 @@ ${years.map(year => `                <li class="year-item">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photos - ${year}</title>
+    <title>Photos - ${year} - Luke Miller</title>
     <link rel="stylesheet" href="../tufte-css/tufte.css" />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #fffff8;
-            font-family: et-book, serif;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 4rem;
-            max-width: 1100px;
-            width: 100%;
-            padding: 3rem;
-        }
-
-        .content-left {
-            flex: 1;
-        }
-
-        .back-link {
-            margin-bottom: 2rem;
-        }
-
-        .back-link a {
-            color: #666;
-            text-decoration: none;
-            font-size: 1.1rem;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        .month-section {
-            margin-bottom: 3rem;
-        }
-
-        .month-header {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            color: #333;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.5rem;
-        }
-
-        .photo-entry {
-            margin-bottom: 4rem;
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
-        }
-
-        .photo-entry img {
-            flex: 0 0 auto;
-            max-width: 400px;
-            height: auto;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .photo-caption-container {
-            flex: 1;
-        }
-
-        .photo-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .photo-date {
-            color: #888;
-            font-size: 0.9rem;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .photo-description {
-            font-size: 1rem;
-            line-height: 1.4;
-            color: #666;
-            font-style: italic;
-            margin: 0;
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
-            }
-            
-            .photo-entry {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .photo-entry img {
-                max-width: 100%;
-            }
-            
-            .photo-caption-container {
-                border-top: 1px solid #eee;
-                padding-top: 1rem;
-            }
-        }
-
-        .year-stats {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #eee;
-            color: #888;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="../universal-styles.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="content-left">
-            <div class="back-link">
-                <a href="../photos.html">← Back to Photos</a>
-            </div>
-            
-            <h1>${year}</h1>
-            
-${this.generateYearPhotosHTML(photosByMonth)}
-            
-            <div class="year-stats">
-                ${yearPhotos.length} photo${yearPhotos.length !== 1 ? 's' : ''} from ${year}
-            </div>
-        </div>
+  <!-- Top Navigation -->
+  <nav class="nav-top">
+    <div class="nav-container">
+      <ul class="nav-list">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../writing.html">Writing</a></li>
+        <li><a href="../reading.html">Reading</a></li>
+        <li><a href="../photos.html">Photos</a></li>
+        <li><a href="../glossary.html">Glossary</a></li>
+        <li><a href="../chrestomathy.html">Chrestomathy</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
     </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <main class="content-main">
+      <h1>${year}</h1>
+      
+${this.generateYearPhotosHTML(photosByMonth)}
+      
+      <div class="year-stats">
+          ${yearPhotos.length} photo${yearPhotos.length !== 1 ? 's' : ''} from ${year}
+      </div>
+    </main>
+  </div>
 </body>
 </html>`;
 
@@ -528,35 +343,35 @@ ${this.generateYearPhotosHTML(photosByMonth)}
 
         monthOrder.forEach(month => {
             if (photosByMonth[month]) {
-                html += `            <div class="month-section">\n`;
-                html += `                <div class="month-header">${month}</div>\n`;
+                html += `      <div class="month-section">\n`;
+                html += `          <div class="month-header">${month}</div>\n`;
 
                 // Sort photos within month by date (newest first)
                 const monthPhotos = photosByMonth[month].sort((a, b) => b.date - a.date);
 
                 monthPhotos.forEach(photo => {
-                    html += `                <div class="photo-entry">\n`;
-                    html += `                    <img src="${photo.src}" alt="${this.escapeHtml(photo.name)}" loading="lazy">\n`;
-                    html += `                    <div class="photo-caption-container">\n`;
-                    html += `                        <div class="photo-name">${this.escapeHtml(photo.name)}</div>\n`;
+                    html += `          <div class="photo-entry">\n`;
+                    html += `              <img src="${photo.src}" alt="${this.escapeHtml(photo.name)}" loading="lazy">\n`;
+                    html += `              <div class="photo-caption-container">\n`;
+                    html += `                  <div class="photo-name">${this.escapeHtml(photo.name)}</div>\n`;
                     
                     const dateStr = photo.date.toLocaleDateString('en-US', { 
                         year: 'numeric', 
                         month: 'long',
                         day: 'numeric'
                     });
-                    html += `                        <div class="photo-date">${dateStr}</div>\n`;
+                    html += `                  <div class="photo-date">${dateStr}</div>\n`;
                     
                     // Only add description if it exists
                     if (photo.description) {
-                        html += `                        <div class="photo-description">${this.escapeHtml(photo.description)}</div>\n`;
+                        html += `                  <div class="photo-description">${this.escapeHtml(photo.description)}</div>\n`;
                     }
                     
-                    html += `                    </div>\n`;
-                    html += `                </div>\n`;
+                    html += `              </div>\n`;
+                    html += `          </div>\n`;
                 });
 
-                html += `            </div>\n`;
+                html += `      </div>\n`;
             }
         });
 
