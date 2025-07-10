@@ -11,44 +11,39 @@
       padding: 0;
       background-color: #fffff8;
       font-family: et-book, serif;
-      display: flex;
-      justify-content: center;
       min-height: 100vh;
     }
 
-    .container {
+    /* Top navigation bar */
+    .nav-top {
+      background-color: #fffff8;
+      border-bottom: 1px solid #eee;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      gap: 2.5rem; /* Reduced from 4rem to bring content closer to nav */
-      max-width: 1100px;
-      width: 100%;
-      padding: 3rem;
-      padding-left: 2rem; /* Consistent left padding across all pages */
-    }
-
-    /* Navigation sidebar */
-    .nav-left {
-      width: 140px;
-      flex-shrink: 0;
-    }
-
-    .nav-left h2 {
-      font-size: 1.2rem;
-      font-weight: 400;
-      margin: 0 0 1rem 0;
-      color: #111;
-      font-style: normal;
+      align-items: center;
     }
 
     .nav-list {
       list-style: none;
       padding: 0;
       margin: 0;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
     }
 
     .nav-list li {
-      margin-bottom: 0.3rem;
+      margin: 0;
     }
 
     .nav-list a {
@@ -56,8 +51,9 @@
       text-decoration: none;
       font-size: 1rem;
       line-height: 1.4;
-      display: block;
       transition: color 0.2s ease;
+      display: block;
+      padding: 0.25rem 0;
     }
 
     .nav-list a:hover {
@@ -65,14 +61,26 @@
       text-decoration: underline;
     }
 
-    /* Main content area */
+    /* Main container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Content area - positioned to match your original h1 placement */
     .content-main {
-      flex: 1;
+      width: 100%;
       max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .content-main h1 {
       margin-top: 0;
+      margin-bottom: 1.5rem;
     }
 
     /* Ensure content links maintain Tufte styling */
@@ -86,38 +94,18 @@
 
     /* Mobile responsiveness */
     @media (max-width: 768px) {
-      body {
-        width: 90% !important;
-        padding-left: 5% !important;
-        padding-right: 5% !important;
+      .nav-container {
+        padding: 0 1rem;
+      }
+      
+      .nav-list {
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
       }
       
       .container {
-        flex-direction: column;
-        gap: 2rem;
-        padding: 1.5rem;
-        max-width: none;
-      }
-      
-      .nav-left {
-        width: 100%;
-        margin-bottom: 2rem;
-        border-bottom: 1px solid #eee;
-        padding-bottom: 1.5rem;
-      }
-
-      .nav-left h2 {
-        margin-bottom: 0.5rem;
-      }
-
-      .nav-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-      }
-
-      .nav-list li {
-        margin-bottom: 0;
+        padding: 2rem 1rem;
       }
       
       .content-main {
@@ -146,9 +134,11 @@
 </head>
 
 <body>
-  <div class="container">
-    <nav class="nav-left">
+  <!-- Top Navigation -->
+  <nav class="nav-top">
+    <div class="nav-container">
       <ul class="nav-list">
+        <li><a href="index.html">Home</a></li>
         <li><a href="writing.html">Writing</a></li>
         <li><a href="reading.html">Reading</a></li>
         <li><a href="photos.html">Photos</a></li>
@@ -156,8 +146,11 @@
         <li><a href="chrestomathy.html">Chrestomathy</a></li>
         <li><a href="about.html">About</a></li>
       </ul>
-    </nav>
+    </div>
+  </nav>
 
+  <!-- Main Content -->
+  <div class="container">
     <main class="content-main">
       <h1>Luke Miller</h1>
       
