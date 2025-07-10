@@ -26,39 +26,64 @@
       padding: 3rem;
     }
 
-    .content-left {
-      /* Use flex: 1 for left justification like other pages */
-      flex: 1;
+    /* Navigation sidebar */
+    .nav-left {
+      width: 140px;
+      flex-shrink: 0;
     }
 
-    /* Constrain text width specifically for paragraphs to keep narrow reading column */
-    .content-left p {
+    .nav-left h2 {
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin: 0 0 1rem 0;
+      color: #111;
+      font-style: normal;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-list li {
+      margin-bottom: 0.3rem;
+    }
+
+    .nav-list a {
+      color: #666;
+      text-decoration: none;
+      font-size: 1rem;
+      line-height: 1.4;
+      display: block;
+      transition: color 0.2s ease;
+    }
+
+    .nav-list a:hover {
+      color: #111;
+      text-decoration: underline;
+    }
+
+    /* Main content area */
+    .content-main {
+      flex: 1;
       max-width: 600px;
     }
 
-    .content-left h1 {
-      /* Keep h1 unconstrained for full-width impact */
-      max-width: none;
+    .content-main h1 {
+      margin-top: 0;
     }
 
-    .post-list {
-      list-style-type: none;
-      padding-left: 0;
+    /* Ensure content links maintain Tufte styling */
+    .content-main a:link,
+    .content-main a:visited {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 0.1em;
+      text-decoration-thickness: 0.05em;
     }
 
-    .post-list li {
-      margin-bottom: 0.5rem;
-    }
-
-    .date {
-      display: inline-block;
-      width: 4rem;
-      color: #888;
-      font-variant: small-caps;
-      font-size: 0.9rem;
-    }
-
-    /* Enhanced mobile responsiveness - this preserves your mobile layout */
+    /* Mobile responsiveness */
     @media (max-width: 768px) {
       body {
         width: 90% !important;
@@ -73,14 +98,30 @@
         max-width: none;
       }
       
-      .content-left {
-        max-width: none;
+      .nav-left {
         width: 100%;
-        margin: 0;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 1.5rem;
+      }
+
+      .nav-left h2 {
+        margin-bottom: 0.5rem;
+      }
+
+      .nav-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .nav-list li {
+        margin-bottom: 0;
       }
       
-      .content-left p {
+      .content-main {
         max-width: none;
+        width: 100%;
       }
       
       h1 {
@@ -94,7 +135,7 @@
       }
       
       /* Make links more touch-friendly */
-      a {
+      .content-main a {
         padding: 0.2rem 0;
         margin: 0.1rem 0;
         display: inline-block;
@@ -105,17 +146,28 @@
 
 <body>
   <div class="container">
-  <div class="content-left">
-    <h1>Luke Miller</h1>
-    
-    <p>I'm Luke - Christian, husband, father of three, and co-founder at <a href="https://buildonline.io">Buildonline</a>. I care about words, quiet disciplines, and the hard work of building things that last.</p>
-    
-    <p>This site is my small attempt to tend the digital commons through <a href="writing.html">writing</a> - essays, book reviews, and other experiments in structure and form. I also wanted a place to track <a href="reading.html">books I've read</a> and link to <a href="projects.html">personal projects</a> I'm working on. There is a <a href="glossary.html">glossary of concepts</a> I return to often and a <a href="chrestomathy.html">collection of writing selections</a> that inspire me to read, write, and live.</p>
-    
-    <p>There is more <a href="about.html">about me</a> if you're curious. Plus <a href="photos.html">photos</a> from life on the road and at home.</p>
-    
-    <p>Want to get in touch? Not spam? Contact me <a href="https://x.com/lukeallenmiller">here</a>.</p>
+    <nav class="nav-left">
+      <h2>Luke Miller</h2>
+      <ul class="nav-list">
+        <li><a href="writing.html">Writing</a></li>
+        <li><a href="reading.html">Reading</a></li>
+        <li><a href="photos.html">Photos</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="glossary.html">Glossary</a></li>
+        <li><a href="chrestomathy.html">Chrestomathy</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+
+    <main class="content-main">      
+      <p>I'm Luke - Christian, husband, father of three, and co-founder at <a href="https://buildonline.io">Buildonline</a>. I care about words, quiet disciplines, and the hard work of building things that last.</p>
+      
+      <p>This site is my small attempt to tend the digital commons through <a href="writing.html">writing</a> - essays, book reviews, and other experiments in structure and form. I also wanted a place to track <a href="reading.html">books I've read</a> and link to <a href="projects.html">personal projects</a> I'm working on. There is a <a href="glossary.html">glossary of concepts</a> I return to often and a <a href="chrestomathy.html">collection of writing selections</a> that inspire me to read, write, and live.</p>
+      
+      <p>There is more <a href="about.html">about me</a> if you're curious. Plus <a href="photos.html">photos</a> from life on the road and at home.</p>
+      
+      <p>Want to get in touch? Not spam? Contact me <a href="https://x.com/lukeallenmiller">here</a>.</p>
+    </main>
   </div>
-</div>
 </body>
 </html>
