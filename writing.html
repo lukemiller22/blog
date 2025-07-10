@@ -5,73 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Writing - Luke Miller</title>
   <link rel="stylesheet" href="tufte-css/tufte.css" />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #fffff8;
-      font-family: et-book, serif;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 4rem;
-      max-width: 1100px;
-      width: 100%;
-      padding: 2rem;
-    }
-
-    .content-left {
-      flex: 1;
-      margin-left: 168px; /* 140px nav width + 28px gap = roughly where home content starts */
-
-    }
-
-    .post-list {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    .post-list li {
-      margin-bottom: 0.5rem;
-    }
-
-    .date {
-      display: inline-block;
-      width: 4rem;
-      color: #888;
-      font-variant: small-caps;
-      font-size: 0.9rem;
-    }
-
-    /* Ensure links follow Tufte CSS styling */
-    a:link,
-    a:visited {
-      color: inherit;
-      text-decoration: underline;
-      text-underline-offset: 0.1em;
-      text-decoration-thickness: 0.05em;
-    }
-
-  </style>
+  <link rel="stylesheet" href="universal-styles.css" />
 </head>
 
 <body>
-  <div class="container">
-    <div class="content-left">
+  <!-- Top Navigation -->
+  <nav class="nav-top">
+    <div class="nav-container">
+      <ul class="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="writing.html">Writing</a></li>
+        <li><a href="reading.html">Reading</a></li>
+        <li><a href="photos.html">Photos</a></li>
+        <li><a href="glossary.html">Glossary</a></li>
+        <li><a href="chrestomathy.html">Chrestomathy</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
 
+  <!-- Main Content -->
+  <div class="container">
+    <main class="content-main">
       <h1>Writing</h1>
 
       <h2>2025</h2>
       <ul class="post-list">
         <li><span class="date">Jun 27</span> <a href="posts/test-post.html">Test Post</a></li>
       </ul>
-    </div>
+    </main>
   </div>
 </body>
 </html>
