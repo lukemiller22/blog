@@ -22,7 +22,7 @@ body {
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -33,6 +33,7 @@ body {
   display: flex;
   gap: 2rem;
   align-items: center;
+  margin-left: calc((100% - 600px) / 2);
 }
 
 .nav-list li {
