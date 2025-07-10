@@ -1,0 +1,299 @@
+/* Universal styles for all pages */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fffff8;
+  font-family: et-book, serif;
+  min-height: 100vh;
+}
+
+/* Top navigation bar */
+.nav-top {
+  background-color: #fffff8;
+  border-bottom: 1px solid #eee;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-list li {
+  margin: 0;
+}
+
+.nav-list a {
+  color: #666;
+  text-decoration: none;
+  font-size: 1rem;
+  line-height: 1.4;
+  transition: color 0.2s ease;
+  display: block;
+  padding: 0.25rem 0;
+}
+
+.nav-list a:hover {
+  color: #111;
+  text-decoration: underline;
+}
+
+/* Main container */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Content area - positioned to match your original h1 placement */
+.content-main {
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.content-main h1 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+/* Ensure content links maintain Tufte styling */
+.content-main a:link,
+.content-main a:visited {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.1em;
+  text-decoration-thickness: 0.05em;
+}
+
+/* Specific styles for different page types */
+
+/* Writing page post list */
+.post-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.post-list li {
+  margin-bottom: 0.5rem;
+}
+
+.date {
+  display: inline-block;
+  width: 4rem;
+  color: #888;
+  font-variant: small-caps;
+  font-size: 0.9rem;
+}
+
+/* Reading page book table */
+.book-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}
+
+.book-table th {
+  text-align: left;
+  padding: 0.5rem 1rem 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+  font-weight: normal;
+  font-variant: small-caps;
+  color: #666;
+}
+
+.book-table td {
+  padding: 0.5rem 1rem 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.book-table tr:hover {
+  background-color: #fafafa;
+}
+
+.book-table .title-col { width: 35%; }
+.book-table .author-col { width: 25%; }
+.book-table .date-col { width: 20%; }
+.book-table .rating-col { width: 20%; }
+
+/* Glossary page styles */
+.letter-section {
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.letter-section:first-of-type {
+  margin-top: 2rem;
+}
+
+.letter-header {
+  font-size: 2.2rem;
+  font-style: normal;
+  font-weight: 400;
+  margin: 0 0 1rem 0;
+  color: #111;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.3rem;
+}
+
+.glossary-entry {
+  margin-bottom: 1.8rem;
+  line-height: 1.6;
+}
+
+.term {
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  font-size: 1.6rem;
+}
+
+.part-of-speech {
+  font-style: italic;
+  color: #666;
+  margin-left: 0.3rem;
+  font-size: 1.3rem;
+}
+
+.definition {
+  margin-left: 0.3rem;
+  font-size: 1.5rem;
+}
+
+/* Chrestomathy page quote styling */
+blockquote {
+  font-size: 1.1rem;
+  margin: 2rem 0;
+  padding: 0;
+  border: none;
+}
+
+blockquote p {
+  font-style: normal;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.6;
+}
+
+blockquote footer {
+  font-style: normal;
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+}
+
+blockquote footer:before {
+  content: "— ";
+}
+
+/* Photos page styles */
+.year-list {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.year-item {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.year-item:last-child {
+  border-bottom: none;
+}
+
+.year-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.year-link:hover {
+  text-decoration: none;
+}
+
+.year-link:hover .year-title {
+  text-decoration: underline;
+}
+
+.year-title {
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0 0 0.5rem 0;
+  color: #111;
+}
+
+.year-count {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.total-count {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+  color: #888;
+  text-align: center;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .nav-container {
+    padding: 0 1rem;
+  }
+  
+  .nav-list {
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .container {
+    padding: 2rem 1rem;
+  }
+  
+  .content-main {
+    max-width: none;
+    width: 100%;
+  }
+  
+  h1 {
+    font-size: 2.5rem !important;
+    line-height: 1.2;
+  }
+  
+  p, li {
+    font-size: 1.2rem !important;
+    line-height: 1.6;
+  }
+  
+  /* Make links more touch-friendly */
+  .content-main a {
+    padding: 0.2rem 0;
+    margin: 0.1rem 0;
+    display: inline-block;
+  }
+}
