@@ -3,259 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photos - 2023</title>
+    <title>Photos - 2023 - Luke Miller</title>
     <link rel="stylesheet" href="../tufte-css/tufte.css" />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #fffff8;
-            font-family: et-book, serif;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 4rem;
-            max-width: 1100px;
-            width: 100%;
-            padding: 3rem;
-        }
-
-        .content-left {
-            flex: 1;
-        }
-
-        .back-link {
-            margin-bottom: 2rem;
-        }
-
-        .back-link a {
-            color: #666;
-            text-decoration: none;
-            font-size: 1.1rem;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        .month-section {
-            margin-bottom: 3rem;
-        }
-
-        .month-header {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            color: #333;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.5rem;
-        }
-
-        .photo-entry {
-            margin-bottom: 4rem;
-            display: flex;
-            gap: 2rem;
-            align-items: flex-start;
-        }
-
-        .photo-entry img {
-            flex: 0 0 auto;
-            max-width: 400px;
-            height: auto;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .photo-caption-container {
-            flex: 1;
-        }
-
-        .photo-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #333;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .photo-date {
-            color: #888;
-            font-size: 0.9rem;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .photo-description {
-            font-size: 1rem;
-            line-height: 1.4;
-            color: #666;
-            font-style: italic;
-            margin: 0;
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1.5rem;
-            }
-            
-            .photo-entry {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .photo-entry img {
-                max-width: 100%;
-            }
-            
-            .photo-caption-container {
-                border-top: 1px solid #eee;
-                padding-top: 1rem;
-            }
-        }
-
-        .year-stats {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #eee;
-            color: #888;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="../universal-styles.css" />
 </head>
 <body>
-    <div class="container">
-        <div class="content-left">
-            <div class="back-link">
-                <a href="../photos.html">← Back to Photos</a>
-            </div>
-            
-            <h1>2023</h1>
-            
-            <div class="month-section">
-                <div class="month-header">October</div>
-                <div class="photo-entry">
-                    <img src="10-28-23-View-from-the-Boboli-Gardens,-Florence.jpg" alt="View From The Boboli Gardens, Florence" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">View From The Boboli Gardens, Florence</div>
-                        <div class="photo-date">October 28, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="10-28-23-Bronze-Doors-of-the-Duomo-di-Milano,-Florence.jpg" alt="Bronze Doors Of The Duomo Di Milano, Florence" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Bronze Doors Of The Duomo Di Milano, Florence</div>
-                        <div class="photo-date">October 28, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="10-25-23-Villa-at-Saint-Sauveur-de-Cruzieres,- France.jpg" alt="Villa At Saint Sauveur De Cruzieres,  France" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Villa At Saint Sauveur De Cruzieres,  France</div>
-                        <div class="photo-date">October 25, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="10-21-23-The-Calanques,-Marseille.jpg" alt="The Calanques, Marseille" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">The Calanques, Marseille</div>
-                        <div class="photo-date">October 21, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="10-15-23-Worship-at-the-Protestant-Temple-of-Ales.jpg" alt="Worship At The Protestant Temple Of Ales" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Worship At The Protestant Temple Of Ales</div>
-                        <div class="photo-date">October 15, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="10-02-23-Jardin-des-La-Fontaine,-Nimes.jpg" alt="Jardin Des La Fontaine, Nimes" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Jardin Des La Fontaine, Nimes</div>
-                        <div class="photo-date">October 2, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="10-01-23-Roman-Mosaic-Detail,-Musee-de-la-Romanite,-Nimes.jpg" alt="Roman Mosaic Detail, Musee De La Romanite, Nimes" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Roman Mosaic Detail, Musee De La Romanite, Nimes</div>
-                        <div class="photo-date">October 1, 2023</div>
-                    </div>
-                </div>
-            </div>
-            <div class="month-section">
-                <div class="month-header">September</div>
-                <div class="photo-entry">
-                    <img src="09-30-23-Arc-de-Triomphe,-Paris.jpg" alt="Arc De Triomphe, Paris" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Arc De Triomphe, Paris</div>
-                        <div class="photo-date">September 30, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="09-30-23-West-Facade-of-Notre-Dame-Cathedral,-Paris.jpg" alt="West Facade Of Notre Dame Cathedral, Paris" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">West Facade Of Notre Dame Cathedral, Paris</div>
-                        <div class="photo-date">September 30, 2023</div>
-                        <div class="photo-description">photographed during restoration work following the 2019 fire</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="09-30-23-Starry-Night-Over-the-Rhône,-Vincent-van-Gogh,-Musée-d’Orsay,-Paris.jpg" alt="Starry Night Over The RhôNe, Vincent Van Gogh, MuséE D’Orsay, Paris" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Starry Night Over The RhôNe, Vincent Van Gogh, MuséE D’Orsay, Paris</div>
-                        <div class="photo-date">September 30, 2023</div>
-                        <div class="photo-description">the starry night Van Gogh saw over Arles before he painted the more famous one from memory in an asylum a year later</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="09-29-23-Eiffel-Tower-at-Twilight,-Paris.jpg" alt="Eiffel Tower At Twilight, Paris" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Eiffel Tower At Twilight, Paris</div>
-                        <div class="photo-date">September 29, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="09-29-23-South-Parterre,-Versailles.jpg" alt="South Parterre, Versailles" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">South Parterre, Versailles</div>
-                        <div class="photo-date">September 29, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="09-28-23-Detail-of-Achaemenid-Glazed-Brickwork,-The Louvre,-Paris.jpg" alt="Detail Of Achaemenid Glazed Brickwork, The Louvre, Paris" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Detail Of Achaemenid Glazed Brickwork, The Louvre, Paris</div>
-                        <div class="photo-date">September 28, 2023</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="09-29-23-Winged-Victory-of-Samothrace,-The-Louvre,-Paris.jpg" alt="Winged Victory Of Samothrace, The Louvre, Paris" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Winged Victory Of Samothrace, The Louvre, Paris</div>
-                        <div class="photo-date">September 28, 2023</div>
-                        <div class="photo-description">discovered in pieces on a Greek island in 1863</div>
-                    </div>
-                </div>
-                <div class="photo-entry">
-                    <img src="09-28-23-Medici-Fountain,-Jardin-de-Luxembourg,-Paris.jpg" alt="Medici Fountain, Jardin De Luxembourg, Paris" loading="lazy">
-                    <div class="photo-caption-container">
-                        <div class="photo-name">Medici Fountain, Jardin De Luxembourg, Paris</div>
-                        <div class="photo-date">September 28, 2023</div>
-                    </div>
-                </div>
-            </div>
-
-            
-            <div class="year-stats">
-                15 photos from 2023
-            </div>
-        </div>
+  <!-- Top Navigation -->
+  <nav class="nav-top">
+    <div class="nav-container">
+      <ul class="nav-list">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../writing.html">Writing</a></li>
+        <li><a href="../reading.html">Reading</a></li>
+        <li><a href="../photos.html">Photos</a></li>
+        <li><a href="../glossary.html">Glossary</a></li>
+        <li><a href="../chrestomathy.html">Chrestomathy</a></li>
+        <li><a href="../about.html">About</a></li>
+      </ul>
     </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <main class="content-main">
+      <h1>2023</h1>
+      
+      <div class="month-section">
+          <div class="month-header">October</div>
+          <div class="photo-entry">
+              <img src="10-28-23-View-from-the-Boboli-Gardens,-Florence.jpg" alt="View From The Boboli Gardens, Florence" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">View From The Boboli Gardens, Florence</div>
+                  <div class="photo-date">October 28, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="10-28-23-Bronze-Doors-of-the-Duomo-di-Milano,-Florence.jpg" alt="Bronze Doors Of The Duomo Di Milano, Florence" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Bronze Doors Of The Duomo Di Milano, Florence</div>
+                  <div class="photo-date">October 28, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="10-25-23-Villa-at-Saint-Sauveur-de-Cruzieres,- France.jpg" alt="Villa At Saint Sauveur De Cruzieres,  France" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Villa At Saint Sauveur De Cruzieres,  France</div>
+                  <div class="photo-date">October 25, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="10-21-23-The-Calanques,-Marseille.jpg" alt="The Calanques, Marseille" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">The Calanques, Marseille</div>
+                  <div class="photo-date">October 21, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="10-15-23-Worship-at-the-Protestant-Temple-of-Ales.jpg" alt="Worship At The Protestant Temple Of Ales" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Worship At The Protestant Temple Of Ales</div>
+                  <div class="photo-date">October 15, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="10-02-23-Jardin-des-La-Fontaine,-Nimes.jpg" alt="Jardin Des La Fontaine, Nimes" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Jardin Des La Fontaine, Nimes</div>
+                  <div class="photo-date">October 2, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="10-01-23-Roman-Mosaic-Detail,-Musee-de-la-Romanite,-Nimes.jpg" alt="Roman Mosaic Detail, Musee De La Romanite, Nimes" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Roman Mosaic Detail, Musee De La Romanite, Nimes</div>
+                  <div class="photo-date">October 1, 2023</div>
+              </div>
+          </div>
+      </div>
+      <div class="month-section">
+          <div class="month-header">September</div>
+          <div class="photo-entry">
+              <img src="09-30-23-Arc-de-Triomphe,-Paris.jpg" alt="Arc De Triomphe, Paris" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Arc De Triomphe, Paris</div>
+                  <div class="photo-date">September 30, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="09-30-23-West-Facade-of-Notre-Dame-Cathedral,-Paris.jpg" alt="West Facade Of Notre Dame Cathedral, Paris" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">West Facade Of Notre Dame Cathedral, Paris</div>
+                  <div class="photo-date">September 30, 2023</div>
+                  <div class="photo-description">photographed during restoration work following the 2019 fire</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="09-30-23-Starry-Night-Over-the-Rhône,-Vincent-van-Gogh,-Musée-d’Orsay,-Paris.jpg" alt="Starry Night Over The RhôNe, Vincent Van Gogh, MuséE D’Orsay, Paris" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Starry Night Over The RhôNe, Vincent Van Gogh, MuséE D’Orsay, Paris</div>
+                  <div class="photo-date">September 30, 2023</div>
+                  <div class="photo-description">the starry night Van Gogh saw over Arles before he painted the more famous one from memory in an asylum a year later</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="09-29-23-Eiffel-Tower-at-Twilight,-Paris.jpg" alt="Eiffel Tower At Twilight, Paris" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Eiffel Tower At Twilight, Paris</div>
+                  <div class="photo-date">September 29, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="09-29-23-South-Parterre,-Versailles.jpg" alt="South Parterre, Versailles" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">South Parterre, Versailles</div>
+                  <div class="photo-date">September 29, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="09-28-23-Detail-of-Achaemenid-Glazed-Brickwork,-The Louvre,-Paris.jpg" alt="Detail Of Achaemenid Glazed Brickwork, The Louvre, Paris" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Detail Of Achaemenid Glazed Brickwork, The Louvre, Paris</div>
+                  <div class="photo-date">September 28, 2023</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="09-29-23-Winged-Victory-of-Samothrace,-The-Louvre,-Paris.jpg" alt="Winged Victory Of Samothrace, The Louvre, Paris" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Winged Victory Of Samothrace, The Louvre, Paris</div>
+                  <div class="photo-date">September 28, 2023</div>
+                  <div class="photo-description">discovered in pieces on a Greek island in 1863</div>
+              </div>
+          </div>
+          <div class="photo-entry">
+              <img src="09-28-23-Medici-Fountain,-Jardin-de-Luxembourg,-Paris.jpg" alt="Medici Fountain, Jardin De Luxembourg, Paris" loading="lazy">
+              <div class="photo-caption-container">
+                  <div class="photo-name">Medici Fountain, Jardin De Luxembourg, Paris</div>
+                  <div class="photo-date">September 28, 2023</div>
+              </div>
+          </div>
+      </div>
+
+      
+      <div class="year-stats">
+          15 photos from 2023
+      </div>
+    </main>
+  </div>
 </body>
 </html>
