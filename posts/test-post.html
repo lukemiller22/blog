@@ -177,9 +177,9 @@
         <h1>Introduction to Tufte CSS</h1>
         <div class="post-date">Mon May 6, 2019</div>
         
-        <p>This is an example of applying tufte-css to reST markup.<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"/><span class="sidenote">This is a sidenote explaining something.</span></p>
-<h2>The Beauty of Simplicity</h2>
-<p>Edward Tufte&#39;s approach to information design emphasizes clarity and simplicity.<label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle"/><span class="sidenote">Edward Tufte is a statistician and professor emeritus of political science, statistics, and computer science at Yale University.</span> His principles have influenced not just print design, but web design as well.</p>
+        <p>This is an example of applying tufte-css to reST markup.{^This is a sidenote explaining something.}</p>
+<h2 id="the-beauty-of-simplicity">The Beauty of Simplicity</h2>
+<p>Edward Tufte&#39;s approach to information design emphasizes clarity and simplicity.{^Edward Tufte is a statistician and professor emeritus of political science, statistics, and computer science at Yale University.} His principles have influenced not just print design, but web design as well.</p>
 <p>Some key principles include:</p>
 <ul>
 <li><strong>High data-to-ink ratio</strong>: Remove unnecessary visual elements</li>
@@ -187,41 +187,45 @@
 <li><strong>Layered information</strong>: Present information at multiple levels of detail</li>
 <li><strong>Small multiples</strong>: Show comparisons through repeated design elements</li>
 </ul>
-<h2>Why Tufte CSS?</h2>
-<p>Tufte CSS brings these design principles to the web.<label for="mn-1" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-1" class="margin-toggle"/><span class="marginnote">This is a margin note - it doesn&#39;t have a number like sidenotes do.</span> It provides:</p>
+<h2 id="why-tufte-css">Why Tufte CSS?</h2>
+<p>Tufte CSS brings these design principles to the web.{+This is a margin note - it doesn&#39;t have a number like sidenotes do.} It provides:</p>
 <ol>
 <li>Beautiful typography with the ET Book font family</li>
-<li>Sidenotes instead of footnotes<label for="sn-3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-3" class="margin-toggle"/><span class="sidenote">Sidenotes are much better than footnotes because they don&#39;t interrupt the reading flow.</span></li>
+<li>Sidenotes instead of footnotes{^Sidenotes are much better than footnotes because they don&#39;t interrupt the reading flow.}</li>
 <li>Clean, minimal layouts</li>
 <li>Responsive design that works on all devices</li>
 </ol>
 <p>The result is web content that is both beautiful and highly readable.</p>
-<h2>Implementation Notes</h2>
+<h2 id="implementation-notes">Implementation Notes</h2>
 <p>When implementing Tufte CSS in your own projects, remember:</p>
 <ul>
 <li>Use sidenotes sparingly and only when they add real value</li>
 <li>Keep your color palette minimal </li>
-<li>Let whitespace do the heavy lifting in your design<label for="mn-2" class="margin-toggle">&#8853;</label><input type="checkbox" id="mn-2" class="margin-toggle"/><span class="marginnote">Whitespace is not wasted space - it&#39;s a design element that improves readability.</span></li>
+<li>Let whitespace do the heavy lifting in your design{+Whitespace is not wasted space - it&#39;s a design element that improves readability.}</li>
 <li>Focus on content hierarchy through typography, not decoration</li>
 </ul>
 <blockquote>
 <p>&quot;The commonality between science and art is in trying to see profoundly - to develop strategies of seeing and showing.&quot;</p>
 <p>— Edward Tufte</p>
 </blockquote>
-<p>This philosophy guides both the original Tufte designs and this CSS implementation.<label for="sn-4" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-4" class="margin-toggle"/><span class="sidenote">Tufte&#39;s books like &quot;The Visual Display of Quantitative Information&quot; are masterclasses in information design.</span></p>
+<p>This philosophy guides both the original Tufte designs and this CSS implementation.{^Tufte&#39;s books like &quot;The Visual Display of Quantitative Information&quot; are masterclasses in information design.}</p>
 
       </article>
     </div>
 
     <div class="content-right">
       <div class="post-metadata">
+        {{#if CATEGORIES}}
         <div class="categories">
-        <span class="label">Categories:</span><br><a href="../categories/technology.html">Technology</a>
-      </div>
+          <span class="label">Categories:</span><br>{{CATEGORIES_LIST}}
+        </div>
+        {{/if}}
         
+        {{#if TAGS}}
         <div class="tags">
-        <span class="label">Tags:</span><br><a href="../tags/essay.html">Essay</a>
-      </div>
+          <span class="label">Tags:</span><br>{{TAGS_LIST}}
+        </div>
+        {{/if}}
       </div>
     </div>
   </div>
