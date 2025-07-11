@@ -28,9 +28,6 @@ jobs:
       - name: Build posts
         run: npm run build
         
-      - name: Generate photos pages
-        run: npm run photos
-        
       - name: Commit generated files
         run: |
           git config --local user.email "action@github.com"
