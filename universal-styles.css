@@ -380,4 +380,76 @@ body {
     margin: 5px 0 !important;
     transition: 0.3s !important;
   }
+
+  /* Remove bullet points from year list */
+.year-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0;
+}
+
+.year-item {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0;
+}
+
+/* Year link styling */
+.year-link {
+  display: block;
+  padding: 1rem 0;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
+}
+
+.year-link:hover {
+  background-color: #f9f9f9;
+}
+
+.year-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.year-count {
+  color: #888;
+  font-size: 1rem;
+}
+
+.total-count {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+  color: #888;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Mobile specific fixes */
+@media (max-width: 768px) {
+  .year-list {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  .year-item {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+  
+  .year-link {
+    padding: 1.5rem 0;
+  }
+  
+  .year-title {
+    font-size: 1.6rem;
+  }
+  
+  .year-count {
+    font-size: 1.1rem;
+  }
 }
