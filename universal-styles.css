@@ -167,19 +167,19 @@ body {
 .term {
   font-weight: bold;
   letter-spacing: 0.05em;
-  font-size: 1.2rem; 
+  font-size: 1.4rem; /* Match your index page paragraph font size */
 }
 
 .part-of-speech {
   font-style: italic;
   color: #666;
   margin-left: 0.3rem;
-  font-size: 1rem; 
+  font-size: 1.1rem; /* Smaller than definition */
 }
 
 .definition {
   margin-left: 0.3rem;
-  font-size: 1rem;    
+  font-size: 1.25rem; /* Slightly smaller than term, but readable */
 }
 
 /* Chrestomathy page quote styling - UPDATED */
