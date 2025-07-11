@@ -47,5 +47,35 @@
       <p>Want to get in touch? Not spam? Contact me <a href="https://x.com/lukeallenmiller">here</a>.</p>
     </main>
   </div>
+    <script>
+function toggleMenu() {
+  const hamburger = document.querySelector('.hamburger');
+  const navList = document.querySelector('.nav-list');
+  const overlay = document.querySelector('.nav-overlay');
+  
+  hamburger.classList.toggle('active');
+  navList.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+
+// Close menu when clicking on a link
+document.querySelectorAll('.nav-list a').forEach(link => {
+  link.addEventListener('click', () => {
+    toggleMenu();
+  });
+});
+
+// Close menu when pressing Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const navList = document.querySelector('.nav-list');
+    if (navList.classList.contains('active')) {
+      toggleMenu();
+    }
+  }
+});
+</script>
+</body>
+</html>
 </body>
 </html>
