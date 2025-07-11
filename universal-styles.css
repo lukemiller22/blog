@@ -182,7 +182,7 @@ body {
   font-size: 1rem;    
 }
 
-/* Chrestomathy page quote styling */
+/* Chrestomathy page quote styling - UPDATED */
 blockquote {
   font-size: 1.1rem;
   margin: 2rem 0;
@@ -207,6 +207,22 @@ blockquote footer {
 
 blockquote footer:before {
   content: "— ";
+}
+
+/* FIX: Override Tufte CSS width constraints for chrestomathy content */
+.content-main blockquote {
+  width: 100% !important; /* Override the 55% width from Tufte CSS */
+  max-width: none !important;
+}
+
+.content-main blockquote p {
+  width: 100% !important; /* Override the 55% width from Tufte CSS */
+  margin-right: 0 !important; /* Remove the 40px right margin from Tufte CSS */
+}
+
+.content-main blockquote footer {
+  width: 100% !important; /* Override the 55% width from Tufte CSS */
+  text-align: left !important; /* Override the right alignment from Tufte CSS */
 }
 
 /* Photos page styles */
