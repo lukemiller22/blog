@@ -306,6 +306,7 @@ blockquote footer:before {
   border-top: 1px solid #eee;
   color: #888;
   text-align: center;
+  font-size: 1rem;
 }
 
 /* Universal footer count styling for all pages */
