@@ -327,4 +327,24 @@ body {
     border-top: 1px solid #eee;
     padding-top: 1rem;
   }
+
+  @media (max-width: 768px) {
+  .hamburger {
+    display: block !important;
+    background: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    padding: 0.5rem !important;
+    z-index: 101 !important;
+    position: relative !important;
+  }
+  
+  .hamburger span {
+    display: block !important;
+    width: 25px !important;
+    height: 3px !important;
+    background-color: #666 !important;
+    margin: 5px 0 !important;
+    transition: 0.3s !important;
+  }
 }
