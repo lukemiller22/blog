@@ -5,6 +5,7 @@
   "main": "build.js",
   "scripts": {
     "build": "node build.js",
+    "build-force": "node build.js force",
     "new": "node build.js new",
     "dev": "node build.js serve",
     "serve": "node build.js serve 3000"
