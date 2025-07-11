@@ -468,4 +468,17 @@ blockquote footer:before {
     border-top: 1px solid #eee;
     padding-top: 1rem;
   }
+
+  @media (max-width: 768px) {
+  .nav-list {
+    flex-wrap: wrap;
+    gap: 0.8rem; /* Reduced gap */
+    justify-content: center;
+    width: 100%; /* Allow full width */
+  }
+  
+  .nav-list li {
+    flex: 0 0 auto; /* Prevent stretching */
+  }
+}
 }
