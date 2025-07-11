@@ -11,7 +11,7 @@ class CleanBlogBuilder {
   }
 
   // Build all posts
-  buildAll() {
+  buildAll(force = false) {
     console.log('🏗️  Building blog...');
     
     if (!fs.existsSync(this.postsDir)) {
@@ -30,7 +30,7 @@ class CleanBlogBuilder {
     const posts = [];
 
     files.forEach(file => {
-      const post = this.buildPost(file);
+      const post = this.buildPost(file, force);
       if (post) posts.push(post);
     });
 
@@ -40,9 +40,35 @@ class CleanBlogBuilder {
   }
 
   // Build individual post
-  buildPost(filename) {
+  buildPost(filename, force = false) {
     const markdownPath = path.join(this.postsDir, filename);
     const htmlPath = path.join(this.outputDir, filename.replace('.md', '.html'));
+    
+    // Check if we need to rebuild (skip if not forced and file is up to date)
+    if (!force && fs.existsSync(htmlPath)) {
+      const markdownTime = fs.statSync(markdownPath).mtime;
+      const htmlTime = fs.statSync(htmlPath).mtime;
+      const templateTime = fs.statSync(this.templatePath).mtime;
+      
+      if (markdownTime <= htmlTime && templateTime <= htmlTime) {
+        console.log(`Skipping ${filename} (up to date)`);
+        // Still need to return post data for writing.html update
+        try {
+          const content = fs.readFileSync(markdownPath, 'utf8');
+          const { frontmatter } = this.parseFrontmatter(content);
+          return {
+            filename: filename.replace('.md', '.html'),
+            title: frontmatter.title || 'Untitled',
+            date: frontmatter.date || '',
+            tags: frontmatter.tags || [],
+            categories: frontmatter.categories || []
+          };
+        } catch (error) {
+          console.error(`Error reading ${filename} for metadata:`, error);
+          return null;
+        }
+      }
+    }
     
     try {
       const content = fs.readFileSync(markdownPath, 'utf8');
@@ -286,7 +312,7 @@ if (require.main === module) {
   const builder = new CleanBlogBuilder();
   const command = process.argv[2];
   
-  switch (command) {
+      switch (command) {
     case 'new':
       const title = process.argv.slice(3).join(' ');
       builder.newPost(title);
@@ -294,6 +320,9 @@ if (require.main === module) {
     case 'serve':
       const port = process.argv[3] || 3000;
       builder.serve(port);
+      break;
+    case 'force':
+      builder.buildAll(true);
       break;
     default:
       builder.buildAll();
