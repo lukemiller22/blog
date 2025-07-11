@@ -108,32 +108,34 @@ body {
 }
 
 /* Reading page book table */
+/* Rating info symbol and tooltip */
 .rating-info {
-  position: relative;
+  color: #999;
   cursor: help;
-  color: #888;
+  position: relative;
+  font-size: 0.9em;
 }
 
 .rating-info:hover::after {
-  content: "★★★ = Excellent, ★★ = Good, ★ = Okay";
+  content: "3★ Canon | 2★ Favorite | 1★ Good";
   position: absolute;
-  bottom: 25px;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   background-color: #333;
   color: white;
-  padding: 8px 12px;
+  padding: 0.5rem;
   border-radius: 4px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   white-space: nowrap;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  margin-bottom: 5px;
 }
 
 .rating-info:hover::before {
   content: "";
   position: absolute;
-  bottom: 20px;
+  bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
   border: 5px solid transparent;
