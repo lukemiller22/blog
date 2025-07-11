@@ -83,6 +83,79 @@
       font-variant: small-caps;
       margin-bottom: 2rem;
     }
+
+    /* Enhanced mobile responsiveness for individual posts */
+@media (max-width: 768px) {
+  html {
+    font-size: 18px; /* Better readability on mobile */
+  }
+  
+  body {
+    width: 90%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1rem;
+    max-width: none;
+  }
+  
+  .container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem 1rem;
+    max-width: none;
+  }
+  
+  .content-left {
+    margin-left: 0; /* Remove the desktop offset */
+    width: 100%;
+  }
+  
+  .content-right {
+    width: 100%;
+    padding-left: 0;
+    order: -1; /* Move metadata above content on mobile */
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .content-left h1 {
+    font-size: 2.5rem; /* Smaller than desktop */
+    line-height: 1.2;
+  }
+  
+  .content-left .post-date {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Make text more readable on mobile */
+  p, li {
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+  
+  /* Make links more touch-friendly */
+  a {
+    padding: 0.2rem 0;
+    margin: 0.1rem 0;
+    display: inline-block;
+  }
+  
+  /* Handle sidenotes properly on mobile */
+  .sidenote,
+  .marginnote {
+    display: block !important;
+    float: none !important;
+    width: 100% !important;
+    margin: 1rem 0 !important;
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-left: 3px solid #ccc;
+    font-size: 1rem !important;
+    color: #666 !important;
+    position: static !important;
+  }
   </style>
 </head>
 
