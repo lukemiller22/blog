@@ -271,6 +271,7 @@ body {
     padding: 0 1rem !important;
   }
 
+  /* Hide nav list by default on mobile */
   .nav-list {
     display: none !important;
     position: fixed !important;
@@ -288,6 +289,7 @@ body {
     box-shadow: -2px 0 10px rgba(0,0,0,0.1) !important;
   }
 
+  /* Show nav list when active */
   .nav-list.active {
     display: flex !important;
     right: 0 !important;
@@ -342,6 +344,7 @@ body {
     border-top: 1px solid #eee !important;
     padding-top: 1rem !important;
   }
+}
 
   /* Mobile responsiveness for photos */
   .photo-entry {
