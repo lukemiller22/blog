@@ -77,71 +77,60 @@ class SimplePhotoGenerator {
             };
 
             this.photos.push(photo);
-            const descText = description ? ` - "${description}"` : '';
-            console.log(`  📸 ${filename} - ${photo.year} ${photo.monthName}${descText}`);
+            const descText = description ? ` (with description)` : '';
+            console.log(`  📸 ${photo.name} - ${photo.date.toDateString()}${descText}`);
             
         } catch (error) {
-            console.warn(`  ⚠️  Error processing ${filename}:`, error.message);
+            console.error(`Error processing ${filename}:`, error);
         }
     }
 
     extractCreationDate(tags, filename) {
-        // First, try to extract date from filename in MM-DD-YYYY format
-        const datePattern = /^(\d{2})-(\d{2})-(\d{4})/; // MM-DD-YYYY at start
-        const match = filename.match(datePattern);
-        
-        if (match) {
-            const month = parseInt(match[1]) - 1; // 0-indexed for JavaScript Date
-            const day = parseInt(match[2]);
-            const year = parseInt(match[3]);
-            
-            if (year >= 2000 && year <= new Date().getFullYear() && 
-                month >= 0 && month <= 11 && day >= 1 && day <= 31) {
-                const date = new Date(year, month, day);
-                console.log(`✅ Found date in filename: ${month+1}/${day}/${year}`);
-                return date;
-            }
-        }
+        // Try to get date from EXIF data
+        const dateFields = [
+            'DateTimeOriginal',
+            'DateTime', 
+            'CreateDate',
+            'DateTimeDigitized'
+        ];
 
-        // If filename parsing fails, try EXIF (but don't expect it to work with GitHub uploads)
-        const dateFields = ['Date taken', 'DateTimeOriginal', 'CreateDate', 'DateTime'];
-        
         for (const field of dateFields) {
             if (tags[field]) {
-                try {
-                    let dateStr = tags[field].description || tags[field].value;
-                    if (typeof dateStr === 'string') {
-                        console.log(`✅ Found date in EXIF ${field}: ${dateStr}`);
-                        
-                        // Handle XnViewMP format: "9/29/23 - 1:25:09 PM PDT"
-                        if (dateStr.includes('/') && dateStr.includes(' - ')) {
-                            const datePart = dateStr.split(' - ')[0];
-                            const date = new Date(datePart);
-                            if (!isNaN(date.getTime())) {
-                                return date;
-                            }
-                        }
-                        
-                        // Try direct parsing
-                        const date = new Date(dateStr);
-                        if (!isNaN(date.getTime()) && date.getFullYear() > 1990) {
-                            return date;
-                        }
+                const dateStr = tags[field].description || tags[field].value;
+                if (dateStr) {
+                    // Parse EXIF date format: "YYYY:MM:DD HH:mm:ss"
+                    const parsedDate = new Date(dateStr.replace(/:/g, '-').substring(0, 10));
+                    if (!isNaN(parsedDate.getTime())) {
+                        console.log(`✅ Found date in EXIF ${field}: ${parsedDate.toDateString()}`);
+                        return parsedDate;
                     }
-                } catch (e) {
-                    console.log(`❌ Error parsing ${field}: ${e.message}`);
                 }
             }
         }
 
-        // Last resort: use current date
-        console.warn(`⚠️ No date found for ${filename}, using current date`);
-        return new Date();
+        // Try to extract date from filename (MM-DD-YYYY format)
+        const dateMatch = filename.match(/(\d{1,2})-(\d{1,2})-(\d{2,4})/);
+        if (dateMatch) {
+            const [, month, day, year] = dateMatch;
+            // Handle 2-digit years (assume 20xx for years < 50, 19xx for years >= 50)
+            const fullYear = year.length === 2 ? 
+                (parseInt(year) < 50 ? 2000 + parseInt(year) : 1900 + parseInt(year)) : 
+                parseInt(year);
+            
+            const date = new Date(fullYear, parseInt(month) - 1, parseInt(day));
+            if (!isNaN(date.getTime())) {
+                console.log(`✅ Found date in filename: ${date.toDateString()}`);
+                return date;
+            }
+        }
+
+        // Fallback to file modification time
+        console.log(`❌ No date found in EXIF or filename, using current date`);
+        return new Date(); // Current date as fallback
     }
 
     extractNameFromFilename(filename) {
-        // Extract clean name from filename, removing MM-DD-YYYY prefix
-        let name = filename
+        let name = path.basename(filename)
             .replace(/\.[^/.]+$/, '')  // Remove extension
             .replace(/^\d{2}-\d{2}-\d{2,4}-?/, '')  // Remove MM-DD-YY or MM-DD-YYYY prefix
             .replace(/[_-]/g, ' ')  // Replace underscores/hyphens with spaces
@@ -240,6 +229,11 @@ class SimplePhotoGenerator {
   <!-- Top Navigation -->
   <nav class="nav-top">
     <div class="nav-container">
+      <button class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <ul class="nav-list">
         <li><a href="index.html">Home</a></li>
         <li><a href="writing.html">Writing</a></li>
@@ -251,6 +245,8 @@ class SimplePhotoGenerator {
       </ul>
     </div>
   </nav>
+
+  <div class="nav-overlay" onclick="toggleMenu()"></div>
 
   <!-- Main Content -->
   <div class="container">
@@ -275,6 +271,34 @@ ${years.map(year => `          <li class="year-item">
       </div>
     </main>
   </div>
+  <script>
+function toggleMenu() {
+  const hamburger = document.querySelector('.hamburger');
+  const navList = document.querySelector('.nav-list');
+  const overlay = document.querySelector('.nav-overlay');
+  
+  hamburger.classList.toggle('active');
+  navList.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+
+// Close menu when clicking on a link
+document.querySelectorAll('.nav-list a').forEach(link => {
+  link.addEventListener('click', () => {
+    toggleMenu();
+  });
+});
+
+// Close menu when pressing Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const navList = document.querySelector('.nav-list');
+    if (navList.classList.contains('active')) {
+      toggleMenu();
+    }
+  }
+});
+</script>
 </body>
 </html>`;
 
@@ -299,6 +323,11 @@ ${years.map(year => `          <li class="year-item">
   <!-- Top Navigation -->
   <nav class="nav-top">
     <div class="nav-container">
+      <button class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <ul class="nav-list">
         <li><a href="../index.html">Home</a></li>
         <li><a href="../writing.html">Writing</a></li>
@@ -310,6 +339,8 @@ ${years.map(year => `          <li class="year-item">
       </ul>
     </div>
   </nav>
+
+  <div class="nav-overlay" onclick="toggleMenu()"></div>
 
   <!-- Main Content -->
   <div class="container">
@@ -323,6 +354,34 @@ ${this.generateYearPhotosHTML(photosByMonth)}
       </div>
     </main>
   </div>
+  <script>
+function toggleMenu() {
+  const hamburger = document.querySelector('.hamburger');
+  const navList = document.querySelector('.nav-list');
+  const overlay = document.querySelector('.nav-overlay');
+  
+  hamburger.classList.toggle('active');
+  navList.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+
+// Close menu when clicking on a link
+document.querySelectorAll('.nav-list a').forEach(link => {
+  link.addEventListener('click', () => {
+    toggleMenu();
+  });
+});
+
+// Close menu when pressing Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const navList = document.querySelector('.nav-list');
+    if (navList.classList.contains('active')) {
+      toggleMenu();
+    }
+  }
+});
+</script>
 </body>
 </html>`;
 
