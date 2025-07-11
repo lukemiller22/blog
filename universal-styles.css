@@ -108,6 +108,39 @@ body {
 }
 
 /* Reading page book table */
+.rating-info {
+  position: relative;
+  cursor: help;
+  color: #888;
+}
+
+.rating-info:hover::after {
+  content: "★★★ = Excellent, ★★ = Good, ★ = Okay";
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.rating-info:hover::before {
+  content: "";
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #333;
+  z-index: 1000;
+}
+
 .book-table {
   width: 100%;
   border-collapse: collapse;
