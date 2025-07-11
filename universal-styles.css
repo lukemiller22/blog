@@ -167,19 +167,50 @@ body {
 .term {
   font-weight: bold;
   letter-spacing: 0.05em;
-  font-size: 1.4rem; /* Match your index page paragraph font size */
+  font-size: 1.4rem !important; /* Force override - match index page font */
+}
+
+.pronunciation {
+  font-style: italic;
+  color: #888;
+  margin-left: 0.2rem;
+  font-size: 1.0rem !important; /* Smallest font for pronunciation */
 }
 
 .part-of-speech {
   font-style: italic;
   color: #666;
   margin-left: 0.3rem;
-  font-size: 1.1rem; /* Smaller than definition */
+  font-size: 1.1rem !important; /* Small font for part of speech */
 }
 
 .definition {
   margin-left: 0.3rem;
-  font-size: 1.25rem; /* Slightly smaller than term, but readable */
+  font-size: 1.25rem !important; /* Readable definition size */
+}
+
+/* Clear any conflicting Tufte CSS font sizes */
+.content-main .term,
+.content-main .pronunciation,
+.content-main .part-of-speech,
+.content-main .definition {
+  font-size: inherit;
+}
+
+.content-main .term {
+  font-size: 1.4rem !important;
+}
+
+.content-main .pronunciation {
+  font-size: 1.0rem !important;
+}
+
+.content-main .part-of-speech {
+  font-size: 1.1rem !important;
+}
+
+.content-main .definition {
+  font-size: 1.25rem !important;
 }
 
 /* Chrestomathy page quote styling - UPDATED */
