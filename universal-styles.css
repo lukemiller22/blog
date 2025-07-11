@@ -108,6 +108,37 @@ body {
 }
 
 /* Reading page book table */
+.book-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+}
+
+.book-table th {
+  text-align: left;
+  padding: 0.5rem 1rem 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+  font-weight: normal;
+  font-variant: small-caps;
+  color: #666;
+}
+
+.book-table td {
+  padding: 0.5rem 1rem 0.5rem 0;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.book-table tr:hover {
+  background-color: #fafafa;
+}
+
+.book-table .title-col { width: 35%; }
+.book-table .author-col { width: 25%; }
+.book-table .date-col { width: 20%; }
+.book-table .rating-col { width: 20%; }
+
 /* Rating info symbol and tooltip */
 .rating-info {
   color: #999;
@@ -142,37 +173,6 @@ body {
   border-top-color: #333;
   z-index: 1000;
 }
-
-.book-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 2rem;
-  font-size: 1.2rem;
-}
-
-.book-table th {
-  text-align: left;
-  padding: 0.5rem 1rem 0.5rem 0;
-  border-bottom: 1px solid #ddd;
-  font-weight: normal;
-  font-variant: small-caps;
-  color: #666;
-}
-
-.book-table td {
-  padding: 0.5rem 1rem 0.5rem 0;
-  border-bottom: 1px solid #eee;
-  vertical-align: top;
-}
-
-.book-table tr:hover {
-  background-color: #fafafa;
-}
-
-.book-table .title-col { width: 35%; }
-.book-table .author-col { width: 25%; }
-.book-table .date-col { width: 20%; }
-.book-table .rating-col { width: 20%; }
 
 /* Glossary page styles */
 .letter-section {
