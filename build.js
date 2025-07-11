@@ -1,125 +1,125 @@
-// build.js - Clean, simple blog builder
+// simple-build.js - Streamlined blog builder
 const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
 
-class CleanBlogBuilder {
+class SimpleBlogBuilder {
   constructor() {
-    this.postsDir = './posts-markdown';
-    this.outputDir = './posts';
-    this.templatePath = './post-template.html';
+    this.config = {
+      source: './content',        // All markdown files in one place
+      output: './dist',           // All generated files in one place  
+      templates: './templates',   // Simple templates
+      static: './static'          // CSS, images, etc.
+    };
+    
+    this.posts = [];
   }
 
-  // Build all posts
-  buildAll(force = false) {
+  // Main build function - does everything in logical order
+  async build() {
     console.log('🏗️  Building blog...');
     
-    if (!fs.existsSync(this.postsDir)) {
-      console.log('No posts-markdown directory found');
+    // 1. Clean and setup
+    this.cleanOutput();
+    this.copyStatic();
+    
+    // 2. Process content
+    this.loadPosts();
+    this.generatePosts();
+    this.generateIndex();
+    this.generateArchive();
+    
+    console.log(`✅ Built ${this.posts.length} posts successfully!`);
+  }
+
+  // Clean output directory
+  cleanOutput() {
+    if (fs.existsSync(this.config.output)) {
+      fs.rmSync(this.config.output, { recursive: true });
+    }
+    fs.mkdirSync(this.config.output, { recursive: true });
+  }
+
+  // Copy static files (CSS, images, etc.)
+  copyStatic() {
+    if (fs.existsSync(this.config.static)) {
+      this.copyDir(this.config.static, this.config.output);
+    }
+  }
+
+  // Load and parse all markdown posts
+  loadPosts() {
+    if (!fs.existsSync(this.config.source)) {
+      console.log('No content directory found');
       return;
     }
 
-    if (!fs.existsSync(this.outputDir)) {
-      fs.mkdirSync(this.outputDir, { recursive: true });
-    }
-
-    const files = fs.readdirSync(this.postsDir)
+    const files = fs.readdirSync(this.config.source)
       .filter(file => file.endsWith('.md'))
       .sort();
 
-    const posts = [];
-
     files.forEach(file => {
-      const post = this.buildPost(file, force);
-      if (post) posts.push(post);
+      const post = this.parsePost(path.join(this.config.source, file));
+      if (post) {
+        this.posts.push(post);
+      }
     });
 
-    this.updateWritingPage(posts);
-    
-    console.log(`✅ Built ${posts.length} posts successfully!`);
+    // Sort by date (newest first)
+    this.posts.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
-  // Build individual post
-  buildPost(filename, force = false) {
-    const markdownPath = path.join(this.postsDir, filename);
-    const htmlPath = path.join(this.outputDir, filename.replace('.md', '.html'));
-    
-    // Check if we need to rebuild (skip if not forced and file is up to date)
-    if (!force && fs.existsSync(htmlPath)) {
-      const markdownTime = fs.statSync(markdownPath).mtime;
-      const htmlTime = fs.statSync(htmlPath).mtime;
-      const templateTime = fs.statSync(this.templatePath).mtime;
-      
-      if (markdownTime <= htmlTime && templateTime <= htmlTime) {
-        console.log(`Skipping ${filename} (up to date)`);
-        // Still need to return post data for writing.html update
-        try {
-          const content = fs.readFileSync(markdownPath, 'utf8');
-          const { frontmatter } = this.parseFrontmatter(content);
-          return {
-            filename: filename.replace('.md', '.html'),
-            title: frontmatter.title || 'Untitled',
-            date: frontmatter.date || '',
-            tags: frontmatter.tags || [],
-            categories: frontmatter.categories || []
-          };
-        } catch (error) {
-          console.error(`Error reading ${filename} for metadata:`, error);
-          return null;
-        }
-      }
-    }
-    
+  // Parse individual markdown post
+  parsePost(filePath) {
     try {
-      const content = fs.readFileSync(markdownPath, 'utf8');
+      const content = fs.readFileSync(filePath, 'utf8');
       const { frontmatter, body } = this.parseFrontmatter(content);
       
+      const slug = path.basename(filePath, '.md');
       const html = marked(body);
-      const template = fs.readFileSync(this.templatePath, 'utf8');
-      
-      const finalHtml = template
-        .replace(/\{\{TITLE\}\}/g, frontmatter.title || 'Untitled')
-        .replace(/\{\{DATE\}\}/g, frontmatter.date || '')
-        .replace(/\{\{CONTENT\}\}/g, html)
-        .replace(/\{\{TAGS_SECTION\}\}/g, this.createTagsSection(frontmatter.tags))
-        .replace(/\{\{CATEGORIES_SECTION\}\}/g, this.createCategoriesSection(frontmatter.categories));
-      
-      fs.writeFileSync(htmlPath, finalHtml);
-      console.log(`Built ${filename}`);
-      
+
       return {
-        filename: filename.replace('.md', '.html'),
+        slug,
         title: frontmatter.title || 'Untitled',
-        date: frontmatter.date || '',
+        date: frontmatter.date || new Date().toISOString().split('T')[0],
         tags: frontmatter.tags || [],
-        categories: frontmatter.categories || []
+        categories: frontmatter.categories || [],
+        description: frontmatter.description || '',
+        content: html,
+        url: `/${slug}.html`
       };
     } catch (error) {
-      console.error(`Error building ${filename}:`, error);
+      console.error(`Error parsing ${filePath}:`, error);
       return null;
     }
   }
 
-  // Parse frontmatter
+  // Parse frontmatter (YAML-like header)
   parseFrontmatter(content) {
     const lines = content.split('\n');
-    let frontmatter = {};
     let frontmatterEnd = -1;
+    let frontmatter = {};
 
+    // Check for frontmatter
     if (lines[0].trim() === '---') {
       for (let i = 1; i < lines.length; i++) {
         if (lines[i].trim() === '---') {
           frontmatterEnd = i;
           break;
         }
-        
+      }
+    }
+
+    if (frontmatterEnd > 0) {
+      // Parse simple frontmatter
+      for (let i = 1; i < frontmatterEnd; i++) {
         const line = lines[i];
         const colonIndex = line.indexOf(':');
         if (colonIndex > 0) {
           const key = line.substring(0, colonIndex).trim();
           let value = line.substring(colonIndex + 1).trim();
           
-          // Handle arrays
+          // Handle arrays (tags, categories)
           if (value.startsWith('[') && value.endsWith(']')) {
             value = value.slice(1, -1).split(',').map(v => v.trim().replace(/"/g, ''));
           } else {
@@ -129,204 +129,333 @@ class CleanBlogBuilder {
           frontmatter[key] = value;
         }
       }
+      
+      return {
+        frontmatter,
+        body: lines.slice(frontmatterEnd + 1).join('\n')
+      };
     }
 
-    const body = frontmatterEnd > 0 
-      ? lines.slice(frontmatterEnd + 1).join('\n')
-      : content;
-
-    return { frontmatter, body };
+    return { frontmatter: {}, body: content };
   }
 
-  // Create tags section for post footer
-  createTagsSection(tags) {
-    if (!tags || !Array.isArray(tags) || tags.length === 0) {
-      return '';
-    }
+  // Generate individual post pages
+  generatePosts() {
+    const template = this.loadTemplate('post.html');
     
-    const tagLinks = tags.map(tag => {
-      // You can manually link these to tag pages later if you want
-      return `<span class="tag">${tag}</span>`;
-    }).join(' ');
-    
-    return `<p><strong>Tags:</strong> ${tagLinks}</p>`;
+    this.posts.forEach(post => {
+      const html = this.renderTemplate(template, {
+        title: post.title,
+        date: this.formatDate(post.date),
+        content: post.content,
+        tags: post.tags.map(tag => `<a href="/archive.html#${tag}">${tag}</a>`).join(', '),
+        categories: post.categories.join(', ')
+      });
+      
+      fs.writeFileSync(
+        path.join(this.config.output, `${post.slug}.html`),
+        html
+      );
+    });
   }
 
-  // Create categories section for post footer  
-  createCategoriesSection(categories) {
-    if (!categories || !Array.isArray(categories) || categories.length === 0) {
-      return '';
-    }
+  // Generate home page
+  generateIndex() {
+    const template = this.loadTemplate('index.html');
+    const recentPosts = this.posts.slice(0, 5);
     
-    const categoryLinks = categories.map(category => {
-      // You can manually link these to category pages later if you want
-      return `<span class="category">${category}</span>`;
-    }).join(' ');
-    
-    return `<p><strong>Categories:</strong> ${categoryLinks}</p>`;
+    const postsHtml = recentPosts.map(post => `
+      <article class="post-preview">
+        <h2><a href="${post.url}">${post.title}</a></h2>
+        <time>${this.formatDate(post.date)}</time>
+        ${post.description ? `<p>${post.description}</p>` : ''}
+      </article>
+    `).join('');
+
+    const html = this.renderTemplate(template, {
+      title: 'Luke Miller',
+      posts: postsHtml,
+      totalPosts: this.posts.length
+    });
+
+    fs.writeFileSync(path.join(this.config.output, 'index.html'), html);
   }
 
-  // Update writing.html with post list
-  updateWritingPage(posts) {
-    // Sort by date (newest first)
-    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+  // Generate archive page with all posts
+  generateArchive() {
+    const template = this.loadTemplate('archive.html');
     
     // Group by year
     const postsByYear = {};
-    posts.forEach(post => {
-      const year = post.date ? new Date(post.date).getFullYear() : 2025;
+    this.posts.forEach(post => {
+      const year = new Date(post.date).getFullYear();
       if (!postsByYear[year]) postsByYear[year] = [];
       postsByYear[year].push(post);
     });
 
-    // Generate HTML
-    let postsHtml = '';
+    let archiveHtml = '';
     Object.keys(postsByYear)
       .sort((a, b) => b - a)
       .forEach(year => {
-        postsHtml += `      <h2>${year}</h2>\n`;
-        postsHtml += `      <ul class="post-list">\n`;
-        
+        archiveHtml += `<h2>${year}</h2>\n<ul class="post-list">\n`;
         postsByYear[year].forEach(post => {
           const date = new Date(post.date);
           const formattedDate = date.toLocaleDateString('en-US', { 
             month: 'short', 
             day: 'numeric' 
           });
-          
-          postsHtml += `        <li><span class="date">${formattedDate}</span> <a href="posts/${post.filename}">${post.title}</a></li>\n`;
+          archiveHtml += `  <li>
+            <span class="date">${formattedDate}</span>
+            <a href="${post.url}">${post.title}</a>
+          </li>\n`;
         });
-        
-        postsHtml += `      </ul>\n`;
+        archiveHtml += '</ul>\n';
       });
 
-    // Read current writing.html and update the post list section
-    let writingHtml = fs.readFileSync('./writing.html', 'utf8');
-    
-    // Replace content between post list markers
-    const startMarker = '<!-- POST_LIST_START -->';
-    const endMarker = '<!-- POST_LIST_END -->';
-    
-    const startIndex = writingHtml.indexOf(startMarker);
-    const endIndex = writingHtml.indexOf(endMarker);
-    
-    if (startIndex !== -1 && endIndex !== -1) {
-      writingHtml = writingHtml.substring(0, startIndex + startMarker.length) +
-        '\n' + postsHtml +
-        '      ' + writingHtml.substring(endIndex);
-      
-      // Update post count
-      const totalCount = posts.length;
-      const lastUpdated = new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      });
-      
-      writingHtml = writingHtml.replace(
-        /\d+ total posts? • Last updated: [^<]+/,
-        `${totalCount} total post${totalCount !== 1 ? 's' : ''} • Last updated: ${lastUpdated}`
-      );
-      
-      fs.writeFileSync('./writing.html', writingHtml);
-      console.log('Updated writing.html');
-    }
+    // Get all unique tags
+    const allTags = [...new Set(this.posts.flatMap(post => post.tags))].sort();
+    const tagsHtml = allTags.map(tag => `<span class="tag">${tag}</span>`).join(' ');
+
+    const html = this.renderTemplate(template, {
+      title: 'Archive',
+      posts: archiveHtml,
+      tags: tagsHtml,
+      totalPosts: this.posts.length
+    });
+
+    fs.writeFileSync(path.join(this.config.output, 'archive.html'), html);
   }
 
-  // Create new post
-  newPost(title) {
-    if (!title) {
-      console.log('Usage: node build.js new "Post Title"');
-      return;
+  // Load template file
+  loadTemplate(filename) {
+    const templatePath = path.join(this.config.templates, filename);
+    if (fs.existsSync(templatePath)) {
+      return fs.readFileSync(templatePath, 'utf8');
     }
-
-    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const today = new Date().toISOString().split('T')[0];
     
-    const content = `---
+    // Return basic template if file doesn't exist
+    return this.getDefaultTemplate(filename);
+  }
+
+  // Simple template rendering (replace {{variable}} placeholders)
+  renderTemplate(template, variables) {
+    let html = template;
+    Object.entries(variables).forEach(([key, value]) => {
+      const placeholder = new RegExp(`{{${key}}}`, 'g');
+      html = html.replace(placeholder, value || '');
+    });
+    return html;
+  }
+
+  // Format date for display
+  formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  // Copy directory recursively
+  copyDir(src, dest) {
+    if (!fs.existsSync(dest)) {
+      fs.mkdirSync(dest, { recursive: true });
+    }
+    
+    const items = fs.readdirSync(src);
+    items.forEach(item => {
+      const srcPath = path.join(src, item);
+      const destPath = path.join(dest, item);
+      
+      if (fs.statSync(srcPath).isDirectory()) {
+        this.copyDir(srcPath, destPath);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    });
+  }
+
+  // Default templates if none exist
+  getDefaultTemplate(filename) {
+    const templates = {
+      'post.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{title}} - Luke Miller</title>
+  <link rel="stylesheet" href="/tufte.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <article>
+    <nav><a href="/">← Home</a> | <a href="/archive.html">Archive</a></nav>
+    <h1>{{title}}</h1>
+    <time>{{date}}</time>
+    {{content}}
+    <footer>
+      ${this.posts && this.posts.length > 0 ? '<p>Tags: {{tags}}</p>' : ''}
+    </footer>
+  </article>
+</body>
+</html>`,
+
+      'index.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="/tufte.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <main>
+    <h1>{{title}}</h1>
+    <p>Christian, husband, father of three, and co-founder at <a href="https://buildonline.io">Buildonline</a>.</p>
+    
+    <nav>
+      <a href="/archive.html">All Posts ({{totalPosts}})</a>
+    </nav>
+
+    <section class="recent-posts">
+      <h2>Recent Writing</h2>
+      {{posts}}
+    </section>
+  </main>
+</body>
+</html>`,
+
+      'archive.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{title}} - Luke Miller</title>
+  <link rel="stylesheet" href="/tufte.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <main>
+    <nav><a href="/">← Home</a></nav>
+    <h1>{{title}} ({{totalPosts}} posts)</h1>
+    
+    <section class="tags">
+      {{tags}}
+    </section>
+    
+    <section class="posts">
+      {{posts}}
+    </section>
+  </main>
+</body>
+</html>`
+    };
+    
+    return templates[filename] || '<html><body><h1>Template not found</h1></body></html>';
+  }
+}
+
+// CLI interface
+if (require.main === module) {
+  const builder = new SimpleBlogBuilder();
+  
+  const command = process.argv[2];
+  
+  switch (command) {
+    case 'init':
+      // Create directory structure
+      ['content', 'templates', 'static', 'dist'].forEach(dir => {
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+          console.log(`Created ${dir}/`);
+        }
+      });
+      
+      // Create sample post
+      const samplePost = `---
+title: "Welcome to Your New Blog"
+date: "2025-01-15"
+tags: ["blogging", "simple"]
+description: "Getting started with the simplified blog builder"
+---
+
+# Welcome!
+
+This is your first post. Write in **Markdown** and build with \`node simple-build.js\`.
+
+The system is designed to be simple and maintainable:
+- All content goes in \`content/\`
+- Templates in \`templates/\`
+- CSS and images in \`static/\`
+- Generated site in \`dist/\`
+`;
+      
+      fs.writeFileSync('content/welcome.md', samplePost);
+      console.log('Created sample post: content/welcome.md');
+      console.log('\nTo build: node simple-build.js');
+      break;
+      
+    case 'new':
+      const title = process.argv.slice(3).join(' ') || 'New Post';
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const today = new Date().toISOString().split('T')[0];
+      
+      const newPost = `---
 title: "${title}"
 date: "${today}"
 tags: []
-categories: []
+description: ""
 ---
 
 # ${title}
 
 Write your post here...
 `;
-
-    if (!fs.existsSync(this.postsDir)) {
-      fs.mkdirSync(this.postsDir, { recursive: true });
-    }
-
-    const filename = `${slug}.md`;
-    fs.writeFileSync(path.join(this.postsDir, filename), content);
-    console.log(`Created new post: ${this.postsDir}/${filename}`);
-  }
-
-  // Development server
-  serve(port = 3000) {
-    const http = require('http');
-    const url = require('url');
-    
-    const server = http.createServer((req, res) => {
-      const pathname = url.parse(req.url).pathname;
-      let filePath = path.join(__dirname, pathname === '/' ? 'index.html' : pathname.slice(1));
       
-      // Handle common file types
-      const ext = path.extname(filePath);
-      const mimeTypes = {
-        '.html': 'text/html',
-        '.css': 'text/css',
-        '.js': 'text/javascript',
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.png': 'image/png',
-        '.gif': 'image/gif',
-        '.woff': 'font/woff',
-        '.woff2': 'font/woff2'
-      };
-      
-      fs.readFile(filePath, (err, data) => {
-        if (err) {
-          res.writeHead(404);
-          res.end('Not found');
-          return;
-        }
-        
-        const contentType = mimeTypes[ext] || 'text/plain';
-        res.writeHead(200, { 'Content-Type': contentType });
-        res.end(data);
-      });
-    });
-    
-    server.listen(port, () => {
-      console.log(`Dev server running at http://localhost:${port}`);
-      console.log('Press Ctrl+C to stop');
-    });
-  }
-}
-
-// CLI
-if (require.main === module) {
-  const builder = new CleanBlogBuilder();
-  const command = process.argv[2];
-  
-      switch (command) {
-    case 'new':
-      const title = process.argv.slice(3).join(' ');
-      builder.newPost(title);
+      fs.writeFileSync(`content/${slug}.md`, newPost);
+      console.log(`Created new post: content/${slug}.md`);
       break;
+      
     case 'serve':
+      // Simple dev server
+      const http = require('http');
+      const url = require('url');
       const port = process.argv[3] || 3000;
-      builder.serve(port);
+      
+      const server = http.createServer((req, res) => {
+        const pathname = url.parse(req.url).pathname;
+        let filePath = path.join(__dirname, 'dist', pathname);
+        
+        if (pathname === '/') filePath = path.join(__dirname, 'dist/index.html');
+        
+        fs.readFile(filePath, (err, data) => {
+          if (err) {
+            res.writeHead(404);
+            res.end('Not found');
+            return;
+          }
+          
+          const ext = path.extname(filePath);
+          const contentType = {
+            '.html': 'text/html',
+            '.css': 'text/css',
+            '.js': 'text/javascript',
+            '.jpg': 'image/jpeg',
+            '.png': 'image/png'
+          }[ext] || 'text/plain';
+          
+          res.writeHead(200, { 'Content-Type': contentType });
+          res.end(data);
+        });
+      });
+      
+      server.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+      });
       break;
-    case 'force':
-      builder.buildAll(true);
-      break;
+      
     default:
-      builder.buildAll();
+      builder.build();
   }
 }
 
-module.exports = CleanBlogBuilder;
+module.exports = SimpleBlogBuilder;
