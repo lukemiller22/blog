@@ -88,6 +88,22 @@ body {
   transform: rotate(45deg) translate(-5px, -6px);
 }
 
+/* Overlay when menu is open */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+
+.nav-overlay.active {
+  display: block;
+}
+
 /* Main container */
 .container {
   max-width: 1100px;
@@ -140,37 +156,6 @@ body {
 }
 
 /* Reading page book table */
-.book-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 2rem;
-  font-size: 1.2rem;
-}
-
-.book-table th {
-  text-align: left;
-  padding: 0.5rem 1rem 0.5rem 0;
-  border-bottom: 1px solid #ddd;
-  font-weight: normal;
-  font-variant: small-caps;
-  color: #666;
-}
-
-.book-table td {
-  padding: 0.5rem 1rem 0.5rem 0;
-  border-bottom: 1px solid #eee;
-  vertical-align: top;
-}
-
-.book-table tr:hover {
-  background-color: #fafafa;
-}
-
-.book-table .title-col { width: 35%; }
-.book-table .author-col { width: 25%; }
-.book-table .date-col { width: 20%; }
-.book-table .rating-col { width: 20%; }
-
 /* Rating info symbol and tooltip */
 .rating-info {
   color: #999;
@@ -182,195 +167,7 @@ body {
 .rating-info:hover::after {
   content: "3★ Canon | 2★ Favorite | 1★ Good";
   position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #333;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  z-index: 1000;
-  margin-bottom: 5px;
-}
-
-.rating-info:hover::before {
-  content: "";
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: #333;
-  z-index: 1000;
-}
-
-/* Glossary page styles */
-.letter-section {
-  margin-top: 2.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.letter-section:first-of-type {
-  margin-top: 2rem;
-}
-
-.letter-header {
-  font-size: 2.2rem;
-  font-style: normal;
-  font-weight: 400;
-  margin: 0 0 1rem 0;
-  color: #111;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 0.3rem;
-}
-
-.glossary-entry {
-  margin-bottom: 1.8rem;
-  line-height: 1.6;
-}
-
-.term {
-  font-weight: bold;
-  letter-spacing: 0.05em;
-  font-size: 1.4rem !important; /* Force override - match index page font */
-}
-
-.pronunciation {
-  font-style: italic;
-  color: #888;
-  margin-left: 0.2rem;
-  font-size: 1.0rem !important; /* Smallest font for pronunciation */
-}
-
-.part-of-speech {
-  font-style: italic;
-  color: #666;
-  margin-left: 0.3rem;
-  font-size: 1.1rem !important; /* Small font for part of speech */
-}
-
-.definition {
-  margin-left: 0.3rem;
-  font-size: 1.25rem !important; /* Readable definition size */
-}
-
-/* Clear any conflicting Tufte CSS font sizes */
-.content-main .term,
-.content-main .pronunciation,
-.content-main .part-of-speech,
-.content-main .definition {
-  font-size: inherit;
-}
-
-.content-main .term {
-  font-size: 1.4rem !important;
-}
-
-.content-main .pronunciation {
-  font-size: 1.0rem !important;
-}
-
-.content-main .part-of-speech {
-  font-size: 1.1rem !important;
-}
-
-.content-main .definition {
-  font-size: 1.25rem !important;
-}
-
-/* Chrestomathy page quote styling - UPDATED */
-blockquote {
-  font-size: 1.1rem;
-  margin: 2rem 0;
-  padding: 0;
-  border: none;
-}
-
-blockquote p {
-  font-style: normal;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.6;
-}
-
-blockquote footer {
-  font-style: normal;
-  font-size: 1rem;
-  color: #666;
-  margin-top: 0.5rem;
-  font-variant: small-caps;
-  letter-spacing: 0.05em;
-}
-
-blockquote footer:before {
-  content: "— ";
-}
-
-/* FIX: Override Tufte CSS width constraints for chrestomathy content */
-.content-main blockquote {
-  width: 100% !important; /* Override the 55% width from Tufte CSS */
-  max-width: none !important;
-}
-
-.content-main blockquote p {
-  width: 100% !important; /* Override the 55% width from Tufte CSS */
-  margin-right: 0 !important; /* Remove the 40px right margin from Tufte CSS */
-}
-
-.content-main blockquote footer {
-  width: 100% !important; /* Override the 55% width from Tufte CSS */
-  text-align: left !important; /* Override the right alignment from Tufte CSS */
-}
-
-/* Photos page styles */
-.year-list {
-  list-style: none;
-  padding: 0;
-  margin: 2rem 0;
-}
-
-.year-item {
-  margin-bottom: 1.5rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid #eee;
-}
-
-.year-item:last-child {
-  border-bottom: none;
-}
-
-.year-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s ease;
-}
-
-.year-link:hover {
-  text-decoration: none;
-}
-
-.year-link:hover .year-title {
-  text-decoration: underline;
-}
-
-.year-title {
-  font-size: 2rem;
-  font-weight: 400;
-  margin: 0 0 0.5rem 0;
-  color: #111;
-}
-
-.year-count {
-  color: #666;
-  font-size: 1.1rem;
-}
-
-.total-count {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid #eee;
+  top: 1px solid #eee;
   color: #888;
   text-align: center;
   font-size: 1rem;
@@ -450,14 +247,44 @@ blockquote footer:before {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
   .nav-container {
+    justify-content: flex-end;
     padding: 0 1rem;
   }
-  
+
   .nav-list {
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background-color: #fffff8;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 6rem 2rem 2rem;
+    gap: 2rem;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  }
+
+  .nav-list.active {
+    right: 0;
+  }
+
+  .nav-list li {
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-list a {
+    font-size: 1.2rem !important;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
   }
   
   .container {
@@ -486,45 +313,6 @@ blockquote footer:before {
     display: inline-block;
   }
 
-  .hamburger {
-  display: block;
-}
-
-.nav-container {
-  justify-content: flex-end;
-}
-
-.nav-list {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 80%;
-  max-width: 300px;
-  height: 100vh;
-  background-color: #fffff8;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 6rem 2rem 2rem;
-  gap: 2rem;
-  transition: right 0.3s ease;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-}
-
-.nav-list.active {
-  right: 0;
-}
-
-.nav-list li {
-  width: 100%;
-  text-align: left;
-}
-
-.nav-list a {
-  font-size: 1.2rem;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #eee;
-}
-
   /* Mobile responsiveness for photos */
   .photo-entry {
     flex-direction: column;
@@ -539,17 +327,4 @@ blockquote footer:before {
     border-top: 1px solid #eee;
     padding-top: 1rem;
   }
-
-  @media (max-width: 768px) {
-  .nav-list {
-    flex-wrap: wrap;
-    gap: 0.8rem; /* Reduced gap */
-    justify-content: center;
-    width: 100%; /* Allow full width */
-  }
-  
-  .nav-list li {
-    flex: 0 0 auto; /* Prevent stretching */
-  }
-}
 }
