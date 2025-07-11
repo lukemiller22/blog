@@ -308,6 +308,16 @@ blockquote footer:before {
   text-align: center;
 }
 
+/* Universal footer count styling for all pages */
+.page-footer-count {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+  color: #888;
+  text-align: center;
+  font-size: 1rem;
+}
+
 /* Photo year page specific styles */
 .month-section {
   margin-bottom: 3rem;
