@@ -1,23 +1,18 @@
 {
-  "name": "luke-miller-blog",
-  "version": "1.0.0",
-  "description": "Personal blog with Tufte CSS styling",
+  "name": "luke-miller-blog-clean",
+  "version": "2.0.0",
+  "description": "Clean, simple blog with Tufte CSS styling",
   "main": "build.js",
   "scripts": {
-    "build": "node build.js --all --force",
-    "build-post": "node build.js",
-    "build-force": "node build.js --all --force",
-    "clean": "rm -rf posts/*.html",
-    "dev": "python3 -m http.server 8000",
-    "new-post": "node new-post.js",
-    "photos": "node generate-photos.js"
+    "build": "node build.js",
+    "new": "node build.js new",
+    "dev": "node build.js serve",
+    "serve": "node build.js serve 3000"
   },
   "dependencies": {
-    "marked": "^4.3.0",
-    "exifreader": "^4.0.0"
+    "marked": "^4.3.0"
   },
-  "devDependencies": {},
-  "keywords": ["blog", "tufte", "markdown"],
+  "keywords": ["blog", "tufte", "clean", "simple"],
   "author": "Luke Miller",
   "license": "MIT"
 }
