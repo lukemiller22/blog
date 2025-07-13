@@ -139,7 +139,7 @@ p {
 }
 
 .subtitle {
-    font-style: italic;
+    font-style: normal !important;
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-size: 1.8rem;
