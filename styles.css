@@ -1,42 +1,14 @@
 /* ==========================================================================
    UNIFIED BLOG CSS
    Based on Tufte CSS principles with custom adaptations
+   Simplified with Google Fonts and clean layout
    ========================================================================== */
 
 /* ==========================================================================
    FONT IMPORTS
    ========================================================================== */
 
-/* ET Book font family - you'll need to include the font files */
-@font-face {
-    font-family: "et-book";
-    src: url("fonts/et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot"),
-         url("fonts/et-book/et-book-roman-line-figures/et-book-roman-line-figures.woff") format("woff"),
-         url("fonts/et-book/et-book-roman-line-figures/et-book-roman-line-figures.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "et-book";
-    src: url("fonts/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot"),
-         url("fonts/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff") format("woff"),
-         url("fonts/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.ttf") format("truetype");
-    font-weight: normal;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "et-book";
-    src: url("fonts/et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot"),
-         url("fonts/et-book/et-book-bold-line-figures/et-book-bold-line-figures.woff") format("woff"),
-         url("fonts/et-book/et-book-bold-line-figures/et-book-bold-line-figures.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
 
 /* ==========================================================================
    CSS VARIABLES
@@ -49,7 +21,7 @@
     --color-border: #cccccc;
     
     /* Typography */
-    --font-main: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    --font-main: 'Spectral', Georgia, serif;
     --font-sans: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
     --font-mono: Consolas, "Liberation Mono", Menlo, Courier, monospace;
     
@@ -99,6 +71,17 @@ body {
     max-width: 1400px;
     counter-reset: sidenote-counter;
     line-height: 1.4;
+}
+
+/* ==========================================================================
+   HOME PAGE LAYOUT
+   ========================================================================== */
+
+body.home {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 8%;
+    padding-right: 8%;
 }
 
 /* ==========================================================================
@@ -186,8 +169,8 @@ section > ul {
 .site-header {
     position: fixed;
     top: 0;
-    right: 0;
-    padding: var(--spacing-lg) 12.5% var(--spacing-lg) var(--spacing-lg);
+    right: 8%;
+    padding: var(--spacing-lg);
     z-index: 100;
 }
 
@@ -429,12 +412,94 @@ hr {
 }
 
 /* ==========================================================================
+   HOME PAGE SPECIFIC
+   ========================================================================== */
+
+.home-intro {
+    max-width: 600px;
+    margin: 6rem 0 4rem 0;
+    margin-left: 0;
+}
+
+.home-intro h1 {
+    margin-bottom: 2rem;
+}
+
+.home-intro p {
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+}
+
+/* ==========================================================================
+   CONTENT PAGES (Essays, Notes, Patterns)
+   ========================================================================== */
+
+.content-header {
+    margin-bottom: 3rem;
+}
+
+.content-meta {
+    font-size: 1.1rem;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+}
+
+.content-title {
+    margin-bottom: 1rem;
+}
+
+/* Tags and categories */
+.tags {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.tag {
+    display: inline-block;
+    background: #f0f0f0;
+    color: var(--color-text);
+    padding: 0.2rem 0.5rem;
+    margin: 0.2rem 0.3rem 0.2rem 0;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.tag:hover {
+    background: #e0e0e0;
+}
+
+/* ==========================================================================
+   ABOUT PAGE
+   ========================================================================== */
+
+.about-content {
+    max-width: 650px;
+}
+
+.about-content h1 {
+    margin-bottom: 2rem;
+}
+
+.about-content p {
+    font-size: 1.4rem;
+    line-height: 2.1rem;
+    margin-bottom: 1.8rem;
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN
    ========================================================================== */
 
 @media (max-width: 760px) {
     body {
         width: 84%;
+        padding-left: 8%;
+        padding-right: 8%;
+    }
+    
+    body.home {
         padding-left: 8%;
         padding-right: 8%;
     }
@@ -511,85 +576,4 @@ hr {
     img {
         width: 100%;
     }
-}
-
-/* ==========================================================================
-   HOME PAGE SPECIFIC
-   ========================================================================== */
-
-body.home {
-    margin-left: 0;
-}
-
-.home-intro {
-    max-width: 600px;
-    margin: 6rem 0 4rem 0;
-    margin-left: 0;
-}
-
-.home-intro h1 {
-    margin-bottom: 2rem;
-}
-
-.home-intro p {
-    font-size: 1.5rem;
-    line-height: 2.2rem;
-}
-
-/* ==========================================================================
-   CONTENT PAGES (Essays, Notes, Patterns)
-   ========================================================================== */
-
-.content-header {
-    margin-bottom: 3rem;
-}
-
-.content-meta {
-    font-size: 1.1rem;
-    color: var(--color-text);
-    margin-bottom: 1rem;
-}
-
-.content-title {
-    margin-bottom: 1rem;
-}
-
-/* Tags and categories */
-.tags {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--color-border);
-}
-
-.tag {
-    display: inline-block;
-    background: #f0f0f0;
-    color: var(--color-text);
-    padding: 0.2rem 0.5rem;
-    margin: 0.2rem 0.3rem 0.2rem 0;
-    border-radius: 3px;
-    font-size: 0.9rem;
-    text-decoration: none;
-}
-
-.tag:hover {
-    background: #e0e0e0;
-}
-
-/* ==========================================================================
-   ABOUT PAGE
-   ========================================================================== */
-
-.about-content {
-    max-width: 650px;
-}
-
-.about-content h1 {
-    margin-bottom: 2rem;
-}
-
-.about-content p {
-    font-size: 1.4rem;
-    line-height: 2.1rem;
-    margin-bottom: 1.8rem;
 }
