@@ -139,7 +139,7 @@ p {
 }
 
 .subtitle {
-    font-style: normal !important;
+    font-style: italic;
     margin-top: 1rem;
     margin-bottom: 1rem;
     font-size: 1.8rem;
@@ -186,7 +186,7 @@ section > ul {
 .site-header {
     position: fixed;
     top: 0;
-    right: 0;
+    right: 12.5%; /* Aligns with the right edge of the main content area */
     padding: var(--spacing-lg);
     z-index: 100;
 }
