@@ -186,7 +186,7 @@ section > ul {
 .site-header {
     position: fixed;
     top: 0;
-    right: 12.5%; /* Aligns with the right edge of the main content area */
+    right: 0;
     padding: var(--spacing-lg);
     z-index: 100;
 }
