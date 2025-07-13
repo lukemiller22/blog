@@ -520,6 +520,7 @@ hr {
 .home-intro {
     max-width: 600px;
     margin: 6rem 0 4rem 0;
+    margin-left: 0;
 }
 
 .home-intro h1 {
