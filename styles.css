@@ -678,6 +678,21 @@ section.essays-list > p {
     width: var(--content-width);
 }
 
+/* Stream content width */
+.stream-content p {
+    width: var(--content-width);
+}
+
+/* Lab pattern preview width */
+.pattern-preview p {
+    width: var(--content-width);
+}
+
+/* Essay preview width */
+.essay-preview p {
+    width: var(--content-width);
+}
+
 .lexicon-entries h2 {
     font-size: 2.5rem;
     margin-top: 2rem;
