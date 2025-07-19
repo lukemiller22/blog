@@ -1,28 +1,40 @@
-// simplified-build.js - Debugging version
+// roam-blog-builder.js - Enhanced build system for Roam integration
 const fs = require('fs');
 const path = require('path');
-const { marked } = require('marked');
 
-class SimpleBlogBuilder {
+class RoamBlogBuilder {
   constructor() {
     this.config = {
-      output: './dist'
+      output: './dist',
+      roamExportPath: './roam-export.json'
+    };
+    this.roamData = null;
+    this.processedContent = {
+      stream: [],
+      lab: [],
+      garden: [],
+      essays: []
     };
   }
 
-  // Main build function
   async build() {
-    console.log('🏗️  Building blog...');
+    console.log('🏗️  Building blog from Roam data...');
     
     try {
-      // 1. Clean and setup
+      // 1. Load and parse Roam export
+      await this.loadRoamData();
+      
+      // 2. Process content by type
+      this.processRoamContent();
+      
+      // 3. Clean and setup output
       this.cleanOutput();
       
-      // 2. Copy static files
+      // 4. Copy static files
       this.copyStaticFiles();
       
-      // 3. Generate main pages
-      this.generateMainPages();
+      // 5. Generate pages
+      this.generateAllPages();
       
       console.log('✅ Build completed successfully!');
     } catch (error) {
@@ -31,7 +43,282 @@ class SimpleBlogBuilder {
     }
   }
 
-  // Clean output directory
+  async loadRoamData() {
+    console.log('Loading Roam export...');
+    
+    if (!fs.existsSync(this.config.roamExportPath)) {
+      throw new Error('Roam export file not found. Please export your Roam graph as JSON.');
+    }
+    
+    const rawData = fs.readFileSync(this.config.roamExportPath, 'utf8');
+    this.roamData = JSON.parse(rawData);
+    
+    console.log(`Loaded ${this.roamData.length} pages from Roam export`);
+  }
+
+  processRoamContent() {
+    console.log('Processing Roam content by type...');
+    
+    for (const page of this.roamData) {
+      const pageType = this.identifyPageType(page);
+      
+      switch (pageType) {
+        case 'stream':
+          this.processedContent.stream.push(this.processStreamPost(page));
+          break;
+        case 'lab':
+          this.processedContent.lab.push(this.processLabPattern(page));
+          break;
+        case 'garden':
+          this.processedContent.garden.push(this.processGardenStructure(page));
+          break;
+      }
+    }
+    
+    // Sort by date (most recent first)
+    this.processedContent.stream.sort((a, b) => new Date(b.date) - new Date(a.date));
+    this.processedContent.lab.sort((a, b) => new Date(b.date) - new Date(a.date));
+    this.processedContent.garden.sort((a, b) => new Date(b.modified) - new Date(a.modified));
+    
+    console.log(`Processed: ${this.processedContent.stream.length} stream posts, ${this.processedContent.lab.length} lab patterns, ${this.processedContent.garden.length} garden structures`);
+  }
+
+  identifyPageType(page) {
+    const content = this.getPageContent(page);
+    
+    // Check for blog tags
+    if (content.includes('#blog/stream')) return 'stream';
+    if (content.includes('#blog/lab')) return 'lab';
+    if (content.includes('#blog/garden')) return 'garden';
+    
+    // Check if it's a daily note (stream content)
+    if (this.isDailyNotePage(page.title)) return 'stream';
+    
+    return null;
+  }
+
+  isDailyNotePage(title) {
+    // Check if title matches date formats: "January 1st, 2025", "2025-01-01", etc.
+    const datePatterns = [
+      /^(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(st|nd|rd|th),?\s+\d{4}$/,
+      /^\d{4}-\d{2}-\d{2}$/,
+      /^\d{2}-\d{2}-\d{4}$/
+    ];
+    
+    return datePatterns.some(pattern => pattern.test(title));
+  }
+
+  processStreamPost(page) {
+    const content = this.getPageContent(page);
+    const blogContent = this.extractBlogContent(content);
+    
+    return {
+      title: this.generateStreamTitle(blogContent) || page.title,
+      slug: this.generateSlug(page.title),
+      date: this.formatDate(page['create-time'] || page['edit-time']),
+      created: this.formatDate(page['create-time']),
+      modified: this.formatDate(page['edit-time']),
+      content: this.convertRoamToHTML(blogContent),
+      categories: this.extractCategories(content),
+      tags: this.extractTags(content),
+      connections: this.extractConnections(content)
+    };
+  }
+
+  processLabPattern(page) {
+    const content = this.getPageContent(page);
+    
+    return {
+      title: page.title,
+      slug: this.generateSlug(page.title),
+      date: this.formatDate(page['create-time'] || page['edit-time']),
+      created: this.formatDate(page['create-time']),
+      modified: this.formatDate(page['edit-time']),
+      content: this.convertRoamToHTML(content),
+      definition: this.extractDefinition(content),
+      etymology: this.extractEtymology(content),
+      examples: this.extractExamples(content),
+      categories: this.extractCategories(content),
+      tags: this.extractTags(content),
+      connections: this.extractConnections(content)
+    };
+  }
+
+  processGardenStructure(page) {
+    const content = this.getPageContent(page);
+    
+    return {
+      title: page.title,
+      slug: this.generateSlug(page.title),
+      created: this.formatDate(page['create-time']),
+      modified: this.formatDate(page['edit-time']),
+      content: this.convertRoamToHTML(content),
+      summary: this.extractSummary(content),
+      categories: this.extractCategories(content),
+      tags: this.extractTags(content),
+      connections: this.extractConnections(content)
+    };
+  }
+
+  getPageContent(page) {
+    // Recursively extract all text content from page children
+    if (!page.children) return '';
+    
+    return page.children.map(child => this.extractBlockText(child)).join('\n');
+  }
+
+  extractBlockText(block) {
+    let text = block.string || '';
+    
+    if (block.children) {
+      const childText = block.children.map(child => this.extractBlockText(child)).join('\n');
+      text += '\n' + childText;
+    }
+    
+    return text;
+  }
+
+  extractBlogContent(content) {
+    // Extract content marked for blog from daily notes
+    const lines = content.split('\n');
+    const blogLines = [];
+    let inBlogSection = false;
+    
+    for (const line of lines) {
+      if (line.includes('#blog/stream')) {
+        inBlogSection = true;
+        continue;
+      }
+      if (inBlogSection && line.trim()) {
+        blogLines.push(line);
+      }
+      if (inBlogSection && !line.trim() && blogLines.length > 0) {
+        // End of blog section on empty line
+        break;
+      }
+    }
+    
+    return blogLines.join('\n');
+  }
+
+  generateStreamTitle(content) {
+    // Extract title from first line or generate from content
+    const firstLine = content.split('\n')[0];
+    if (firstLine && firstLine.length < 100) {
+      return firstLine.replace(/[#*_]/g, '').trim();
+    }
+    
+    // Generate title from content
+    const words = content.replace(/[#*_]/g, '').split(' ').slice(0, 8);
+    return words.join(' ') + (content.split(' ').length > 8 ? '...' : '');
+  }
+
+  convertRoamToHTML(content) {
+    return content
+      // Convert internal links [[Page Name]] to proper HTML links
+      .replace(/\[\[([^\]]+)\]\]/g, (match, pageName) => {
+        const slug = this.generateSlug(pageName);
+        const section = this.findPageSection(pageName);
+        return `<a href="/${section}/${slug}.html">${pageName}</a>`;
+      })
+      // Convert block references ((block-id)) to anchor links
+      .replace(/\(\(([^)]+)\)\)/g, '<a href="#$1" class="block-ref">Reference</a>')
+      // Convert tags #tag to styled spans
+      .replace(/#([a-zA-Z0-9_-]+)/g, '<span class="tag">$1</span>')
+      // Convert bold **text** to <strong>
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      // Convert italic __text__ to <em>
+      .replace(/__([^_]+)__/g, '<em>$1</em>')
+      // Convert line breaks to paragraphs
+      .split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).join('');
+  }
+
+  findPageSection(pageName) {
+    // Determine which section a page belongs to
+    const page = this.roamData.find(p => p.title === pageName);
+    if (!page) return 'lab'; // Default to lab for unknown pages
+    
+    const pageType = this.identifyPageType(page);
+    return pageType || 'lab';
+  }
+
+  extractCategories(content) {
+    const matches = content.match(/#blog\/categories\s+\[\[([^\]]+)\]\]/g);
+    if (!matches) return [];
+    
+    return matches.map(match => {
+      const categoryMatch = match.match(/\[\[([^\]]+)\]\]/);
+      return categoryMatch ? categoryMatch[1] : '';
+    }).filter(Boolean);
+  }
+
+  extractTags(content) {
+    const matches = content.match(/#blog\/tags\s+((?:#\w+\s*)+)/g);
+    if (!matches) return [];
+    
+    return matches.flatMap(match => {
+      const tagMatches = match.match(/#(\w+)/g);
+      return tagMatches ? tagMatches.map(tag => tag.substring(1)) : [];
+    });
+  }
+
+  extractConnections(content) {
+    // Extract all internal links as connections
+    const matches = content.match(/\[\[([^\]]+)\]\]/g);
+    if (!matches) return [];
+    
+    return [...new Set(matches.map(match => {
+      const linkMatch = match.match(/\[\[([^\]]+)\]\]/);
+      return linkMatch ? linkMatch[1] : '';
+    }).filter(Boolean))];
+  }
+
+  extractDefinition(content) {
+    const definitionMatch = content.match(/Definition:?\s*([^\n]+)/i);
+    return definitionMatch ? definitionMatch[1] : '';
+  }
+
+  extractEtymology(content) {
+    const etymologyMatch = content.match(/Etymology:?\s*([^\n]+)/i);
+    return etymologyMatch ? etymologyMatch[1] : '';
+  }
+
+  extractExamples(content) {
+    const examplesMatch = content.match(/Examples?:?\s*((?:.|\n)*?)(?=\n\n|\n[A-Z]|$)/i);
+    if (!examplesMatch) return [];
+    
+    return examplesMatch[1].split('\n').filter(line => line.trim()).map(line => line.trim());
+  }
+
+  extractSummary(content) {
+    // Use first paragraph as summary
+    const firstPara = content.split('\n\n')[0];
+    return firstPara ? firstPara.replace(/[#*_]/g, '').trim() : '';
+  }
+
+  generateSlug(title) {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
+  formatDate(timestamp) {
+    if (!timestamp) return '';
+    
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  // Rest of the build system methods (cleanOutput, copyStaticFiles, etc.)
+  // would be similar to your existing build system but use the processed content
+
   cleanOutput() {
     console.log('Cleaning output directory...');
     if (fs.existsSync(this.config.output)) {
@@ -39,590 +326,85 @@ class SimpleBlogBuilder {
     }
     fs.mkdirSync(this.config.output, { recursive: true });
     
-    // Create subdirectories
     ['stream', 'lab', 'garden', 'essays'].forEach(dir => {
       fs.mkdirSync(path.join(this.config.output, dir), { recursive: true });
     });
   }
 
-  // Copy static files
   copyStaticFiles() {
     console.log('Copying static files...');
     
-    // Copy CSS
     if (fs.existsSync('styles.css')) {
       fs.copyFileSync('styles.css', path.join(this.config.output, 'styles.css'));
     }
-    
-    // Copy other static files if they exist
-    const staticFiles = ['garden.html', 'about.html'];
-    staticFiles.forEach(file => {
-      if (fs.existsSync(file)) {
-        fs.copyFileSync(file, path.join(this.config.output, file));
-      }
-    });
   }
 
-  // Generate main pages
-  generateMainPages() {
-    console.log('Generating main pages...');
+  generateAllPages() {
+    console.log('Generating all pages...');
     
     this.generateIndex();
-    this.generateStream();
-    this.generateLab();
-    this.generateGarden();
-    this.generateEssays();
-    this.generateSamplePages();
+    this.generateStreamPages();
+    this.generateLabPages();
+    this.generateGardenPages();
+    this.generateEssaysPage();
   }
 
-  generateIndex() {
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luke Miller</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article>
-            <div class="home-intro">
-                <h1>Luke Miller</h1>
-                <p class="subtitle">Tending my corner of the digital commons</p>
-            </div>
-        </article>
-    </main>
-</body>
-</html>`;
-
-    fs.writeFileSync(path.join(this.config.output, 'index.html'), html);
-  }
-
-  generateStream() {
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stream - Luke Miller</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article>
-            <div class="content-header">
-                <h1>Stream</h1>
-                <p class="subtitle">Brief notes and observations in real time</p>
-            </div>
-            <section class="stream-feed">
-                <article class="stream-post">
-                    <h2><a href="/stream/reading-cs-lewis-chronological-snobbery.html">Reading C.S. Lewis on Chronological Snobbery</a></h2>
-                    
-                    <div class="stream-meta">
-                        <time class="post-date">January 20, 2025</time>
-                        <div class="post-categories">Reading Notes</div>
-                        <div class="post-tags">
-                            <span class="tag">C.S. Lewis</span>
-                            <span class="tag">Critical Thinking</span>
-                            <span class="tag">Intellectual Humility</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stream-content">
-                        <p>Just finished Lewis's essay "De Descriptione Temporum" where he coins the term "chronological snobbery" - the uncritical acceptance that newer is automatically better.</p>
-                        
-                        <p>He defines it as "the assumption that whatever has gone out of date is on that account discredited." The temptation to dismiss older ideas simply because they're old, without examining their actual merit.</p>
-                        
-                        <p>What strikes me is how this applies beyond just intellectual history. We see it in technology adoption, cultural criticism, even personal relationships. The newest framework, the latest methodology, the most recent theory - all presumed superior by virtue of recency.</p>
-                        
-                        <p>Lewis suggests the antidote is asking not "when was this believed?" but "why did intelligent people believe this, and what evidence convinced them?" A much harder but more honest question.</p>
-                        
-                        <p>Worth noting: this doesn't mean older is better either. Just that age alone - whether great or small - tells us nothing about truth value.</p>
-                    </div>
-                </article>
-            </section>
-        </article>
-    </main>
-</body>
-</html>`;
-
-    fs.writeFileSync(path.join(this.config.output, 'stream.html'), html);
-  }
-
-  generateLab() {
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab - Luke Miller</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article>
-            <div class="content-header">
-                <h1>Lab</h1>
-                <p class="subtitle">Patterns, frameworks, and cognitive tools for thinking</p>
-            </div>
-            <section class="lab-patterns">
-                <div class="pattern-entry">
-                    <h2><a href="/lab/chronological-snobbery.html">Chronological Snobbery</a></h2>
-                    
-                    <div class="pattern-meta">
-                        <time class="pattern-date">January 21, 2025</time>
-                        <div class="pattern-categories">Cognitive Patterns</div>
-                        <div class="pattern-tags">
-                            <span class="tag">Logic</span>
-                            <span class="tag">Bias</span>
-                            <span class="tag">Critical Thinking</span>
-                        </div>
-                    </div>
-                    
-                    <div class="pattern-preview">
-                        <p>The logical fallacy of assuming that whatever is newer in time is necessarily superior in quality, truth, or value; conversely, the automatic dismissal of older ideas, practices, or beliefs solely on the basis of their age.</p>
-                        
-                        <div class="pattern-connections">
-                            <span class="connection-label">Connected to:</span>
-                            <a href="/stream/reading-cs-lewis-chronological-snobbery.html" class="connection-link">Stream</a>
-                            <a href="/garden/lexicon.html#chronological-snobbery" class="connection-link">Lexicon</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
-</body>
-</html>`;
-
-    fs.writeFileSync(path.join(this.config.output, 'lab.html'), html);
-  }
-
-  generateGarden() {
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garden - Luke Miller</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article>
-            <div class="content-header">
-                <h1>Garden</h1>
-                <p class="subtitle">Living documents and evolving structures of knowledge</p>
-            </div>
-            <section class="garden-structures">
-                <p>This garden contains structures that grow and evolve over time—documents that are meant to be revisited, updated, and refined rather than published once and forgotten.</p>
-                
-                <div class="structure-list">
-                    <div class="structure-item">
-                        <h2><a href="/garden/lexicon.html">Lexicon</a></h2>
-                        <p class="structure-summary">A personal dictionary of terms, concepts, and ideas worth preserving</p>
-                        <div class="structure-dates">
-                            <span class="date-created">Created: January 15, 2025</span>
-                            <span class="date-updated">Updated: January 22, 2025</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
-</body>
-</html>`;
-
-    fs.writeFileSync(path.join(this.config.output, 'garden.html'), html);
-  }
-
-  generateEssays() {
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essays - Luke Miller</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article>
-            <div class="content-header">
-                <h1>Essays</h1>
-                <p class="subtitle">Longer explorations of ideas and arguments</p>
-            </div>
-            <section class="essays-list">
-                <div class="essay-entry">
-                    <h2><a href="/essays/chronological-snobbery-tyranny-of-calendar.html">Chronological Snobbery: The Tyranny of the Calendar</a></h2>
-                    
-                    <div class="essay-meta">
-                        <div class="essay-dates">
-                            <span class="date-created">Created: January 22, 2025</span>
-                            <span class="date-updated">Updated: January 22, 2025</span>
-                        </div>
-                        <div class="essay-categories">Critical Thinking</div>
-                        <div class="essay-tags">
-                            <span class="tag">Philosophy</span>
-                            <span class="tag">Logic</span>
-                            <span class="tag">Intellectual Humility</span>
-                        </div>
-                    </div>
-                    
-                    <div class="essay-preview">
-                        <p>We live under a strange dictatorship—the tyranny of the calendar. This despot whispers that whatever bears a recent date stamp must be superior to whatever came before, that time itself serves as a reliable judge of truth and value.</p>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
-</body>
-</html>`;
-
-    fs.writeFileSync(path.join(this.config.output, 'essays.html'), html);
-  }
-
-  // Generate sample individual pages
-  generateSamplePages() {
-    console.log('Generating sample individual pages...');
+  generateStreamPages() {
+    // Generate stream index
+    const streamIndexHTML = this.generateStreamIndex();
+    fs.writeFileSync(path.join(this.config.output, 'stream.html'), streamIndexHTML);
     
-    // Generate stream post
-    const streamPost = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reading C.S. Lewis on Chronological Snobbery - Luke Miller</title>
-    <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article class="stream-post-single">
-            <div class="post-header">
-                <div class="breadcrumb">
-                    <a href="/stream">← Stream</a>
-                </div>
-                <h1>Reading C.S. Lewis on Chronological Snobbery</h1>
-            </div>
-
-            <div class="post-meta">
-                <time class="post-date">January 20, 2025</time>
-                <div class="post-categories">Reading Notes</div>
-                <div class="post-tags">
-                    <span class="tag">C.S. Lewis</span>
-                    <span class="tag">Critical Thinking</span>
-                    <span class="tag">Intellectual Humility</span>
-                </div>
-            </div>
-
-            <div class="post-content">
-                <p>Just finished Lewis's essay "De Descriptione Temporum" where he coins the term "chronological snobbery" - the uncritical acceptance that newer is automatically better.</p>
-                
-                <p>He defines it as "the assumption that whatever has gone out of date is on that account discredited." The temptation to dismiss older ideas simply because they're old, without examining their actual merit.</p>
-                
-                <p>What strikes me is how this applies beyond just intellectual history. We see it in technology adoption, cultural criticism, even personal relationships. The newest framework, the latest methodology, the most recent theory - all presumed superior by virtue of recency.</p>
-                
-                <p>Lewis suggests the antidote is asking not "when was this believed?" but "why did intelligent people believe this, and what evidence convinced them?" A much harder but more honest question.</p>
-                
-                <p>Worth noting: this doesn't mean older is better either. Just that age alone - whether great or small - tells us nothing about truth value.</p>
-            </div>
-
-            <div class="post-connections">
-                <h3>Connected</h3>
-                <ul>
-                    <li><a href="/lab/chronological-snobbery.html">Pattern: Chronological Snobbery</a></li>
-                    <li><a href="/garden/lexicon.html#chronological-snobbery">Lexicon: Chronological Snobbery</a></li>
-                </ul>
-            </div>
-        </article>
-    </main>
-</body>
-</html>`;
-    
-    fs.writeFileSync(path.join(this.config.output, 'stream', 'reading-cs-lewis-chronological-snobbery.html'), streamPost);
-
-    // Generate lab pattern
-    const labPattern = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chronological Snobbery - Luke Miller</title>
-    <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article class="lab-pattern-single">
-            <div class="pattern-header">
-                <div class="breadcrumb">
-                    <a href="/lab">← Lab</a>
-                </div>
-                <h1>Chronological Snobbery</h1>
-                <div class="pattern-pronunciation">/ˌkrɒnəˈlɒdʒɪkəl ˈsnɒbəri/</div>
-            </div>
-
-            <div class="pattern-meta">
-                <time class="pattern-date">January 21, 2025</time>
-                <div class="pattern-categories">Cognitive Patterns</div>
-                <div class="pattern-tags">
-                    <span class="tag">Logic</span>
-                    <span class="tag">Bias</span>
-                    <span class="tag">Critical Thinking</span>
-                </div>
-            </div>
-
-            <div class="pattern-definition">
-                <h2>Definition</h2>
-                <p>The logical fallacy of assuming that whatever is newer in time is necessarily superior in quality, truth, or value; conversely, the automatic dismissal of older ideas, practices, or beliefs solely on the basis of their age.</p>
-            </div>
-
-            <div class="pattern-etymology">
-                <h2>Etymology</h2>
-                <p>Coined by C.S. Lewis in his 1955 Cambridge inaugural lecture "De Descriptione Temporum." Lewis attributes the concept to discussions with Owen Barfield, who helped him recognize this pattern in his own thinking.</p>
-            </div>
-
-            <div class="pattern-examples">
-                <h2>Examples</h2>
-                <p><strong>In Technology:</strong> "Why would anyone use vim when VS Code exists?"</p>
-                <p><strong>In Philosophy:</strong> "Medieval scholastics were obviously wrong because they lived before the Enlightenment."</p>
-                <p><strong>In Design:</strong> "That website looks terrible - it's from 2010."</p>
-                <p><strong>In Business:</strong> "We need to modernize our approach; this strategy is five years old."</p>
-            </div>
-
-            <div class="pattern-connections">
-                <h2>Connected</h2>
-                <ul>
-                    <li><a href="/stream/reading-cs-lewis-chronological-snobbery.html">Stream: Reading C.S. Lewis on Chronological Snobbery</a></li>
-                    <li><a href="/garden/lexicon.html#chronological-snobbery">Lexicon: Chronological Snobbery</a></li>
-                    <li><a href="/essays/chronological-snobbery-tyranny-of-calendar.html">Essay: Chronological Snobbery: The Tyranny of the Calendar</a></li>
-                </ul>
-            </div>
-        </article>
-    </main>
-</body>
-</html>`;
-    
-    fs.writeFileSync(path.join(this.config.output, 'lab', 'chronological-snobbery.html'), labPattern);
-
-    // Generate essay
-    const essay = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chronological Snobbery: The Tyranny of the Calendar - Luke Miller</title>
-    <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article class="essay-single">
-            <div class="essay-header">
-                <div class="breadcrumb">
-                    <a href="/essays">← Essays</a>
-                </div>
-                <h1>Chronological Snobbery: The Tyranny of the Calendar</h1>
-            </div>
-
-            <div class="essay-meta">
-                <div class="essay-dates">
-                    <span class="date-created">Created: January 22, 2025</span>
-                    <span class="date-updated">Updated: January 22, 2025</span>
-                </div>
-                <div class="essay-categories">Critical Thinking</div>
-                <div class="essay-tags">
-                    <span class="tag">Philosophy</span>
-                    <span class="tag">Logic</span>
-                    <span class="tag">Intellectual Humility</span>
-                </div>
-            </div>
-
-            <div class="essay-content">
-                <p>We live under a strange dictatorship—the tyranny of the calendar. This despot whispers that whatever bears a recent date stamp must be superior to whatever came before, that time itself serves as a reliable judge of truth and value. C.S. Lewis named this peculiar form of intellectual arrogance <a href="/lab/chronological-snobbery.html">"chronological snobbery,"</a> and once you see it, you cannot unsee its influence everywhere.</p>
-
-                <p>The technology sector offers the most obvious examples. How often do we hear that a programming language, framework, or methodology is outdated simply because it's five years old? Never mind that COBOL still powers global banking systems, or that Unix principles from the 1970s remain foundational to modern computing. The mere fact of age becomes sufficient grounds for dismissal.</p>
-
-                <p>But chronological snobbery extends far beyond technology. In education, we assume newer pedagogical theories must be improvements over older ones, despite mixed evidence. In design, we dismiss Victorian aesthetics as "cluttered" without considering the cultural and functional contexts that made such richness meaningful. In philosophy, students learn to view medieval scholastics as quaint curiosities rather than sophisticated thinkers grappling with enduring questions.</p>
-
-                <p>This temporal prejudice operates through a curious inversion of the burden of proof. Normally, new ideas must prove themselves against established ones. But chronological snobbery flips this relationship: old ideas must justify their continued existence against the simple fact of their age. It's intellectual guilty-until-proven-innocent.</p>
-
-                <p>The antidote to chronological snobbery requires what Lewis called "chronological humility"—the recognition that every era produces both wisdom and folly, insights and errors. Before dismissing something as outdated, we must ask harder questions: What problems was this designed to solve? What evidence convinced intelligent people this was valuable? What has actually changed to make this obsolete?</p>
-
-                <p>The calendar makes a poor philosopher. Time may be the medium in which ideas develop, but it is not their judge. That responsibility belongs to reason, evidence, and careful thought—tools that work as well today as they did centuries ago, and will work as well centuries hence.</p>
-            </div>
-
-            <div class="essay-connections">
-                <h2>Connected</h2>
-                <ul>
-                    <li><a href="/lab/chronological-snobbery.html">Pattern: Chronological Snobbery</a></li>
-                    <li><a href="/stream/reading-cs-lewis-chronological-snobbery.html">Stream: Reading C.S. Lewis on Chronological Snobbery</a></li>
-                    <li><a href="/garden/lexicon.html#chronological-snobbery">Lexicon: Chronological Snobbery</a></li>
-                </ul>
-            </div>
-        </article>
-    </main>
-</body>
-</html>`;
-    
-    fs.writeFileSync(path.join(this.config.output, 'essays', 'chronological-snobbery-tyranny-of-calendar.html'), essay);
-
-    // Generate lexicon (garden structure)
-    const lexicon = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lexicon - Luke Miller</title>
-    <link rel="stylesheet" href="../styles.css">
-</head>
-<body>
-    <header class="site-header">
-        <nav class="site-nav">
-            <a href="/">Home</a>
-            <a href="/stream">Stream</a>
-            <a href="/lab">Lab</a>
-            <a href="/garden">Garden</a>
-            <a href="/essays">Essays</a>
-            <a href="/about">About</a>
-        </nav>
-    </header>
-    <main>
-        <article>
-            <div class="structure-header">
-                <h1>Lexicon</h1>
-                <p class="subtitle">A personal dictionary of terms, concepts, and ideas worth preserving</p>
-                <div class="structure-meta">
-                    <span class="meta-item">Created: January 15, 2025</span>
-                    <span class="meta-item">Updated: January 22, 2025</span>
-                </div>
-            </div>
-
-            <section class="lexicon-intro">
-                <p>This lexicon serves as a living repository of concepts, terms, and ideas that shape how I understand the world. Influenced by C.S. Lewis's <em>Studies in Words</em> and Ambrose Bierce's <em>Devil's Dictionary</em>, each entry attempts to capture not just definitions but the texture and nuance of meaning.</p>
-            </section>
-
-            <section class="lexicon-entries">
-                <h2 id="c">C</h2>
-                
-                <div class="lexicon-entry" id="chronological-snobbery">
-                    <h3>Chronological Snobbery</h3>
-                    <span class="pronunciation">/ˌkrɒnəˈlɒdʒɪkəl ˈsnɒbəri/</span>
-                    
-                    <div class="definition">
-                        <p><strong>Definition:</strong> The logical fallacy of assuming that whatever is newer in time is necessarily superior in quality, truth, or value; conversely, the automatic dismissal of older ideas, practices, or beliefs solely on the basis of their age.</p>
-                    </div>
-                    
-                    <div class="etymology">
-                        <p><strong>Etymology:</strong> Coined by C.S. Lewis in his 1955 Cambridge inaugural lecture "De Descriptione Temporum." Lewis attributes the concept to discussions with Owen Barfield, who helped him recognize this pattern in his own thinking.</p>
-                    </div>
-                    
-                    <div class="examples">
-                        <p><strong>Examples:</strong></p>
-                        <ul>
-                            <li><em>In Technology:</em> "Why would anyone use vim when VS Code exists?"</li>
-                            <li><em>In Philosophy:</em> "Medieval scholastics were obviously wrong because they lived before the Enlightenment."</li>
-                            <li><em>In Design:</em> "That website looks terrible - it's from 2010."</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="entry-meta">
-                        <p><em>Related pattern:</em> <a href="/lab/chronological-snobbery.html">Chronological Snobbery</a></p>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
-</body>
-</html>`;
-    
-    fs.writeFileSync(path.join(this.config.output, 'garden', 'lexicon.html'), lexicon);
+    // Generate individual stream posts
+    for (const post of this.processedContent.stream) {
+      const postHTML = this.generateStreamPost(post);
+      fs.writeFileSync(path.join(this.config.output, 'stream', `${post.slug}.html`), postHTML);
+    }
   }
+
+  generateLabPages() {
+    // Generate lab index
+    const labIndexHTML = this.generateLabIndex();
+    fs.writeFileSync(path.join(this.config.output, 'lab.html'), labIndexHTML);
+    
+    // Generate individual lab patterns
+    for (const pattern of this.processedContent.lab) {
+      const patternHTML = this.generateLabPattern(pattern);
+      fs.writeFileSync(path.join(this.config.output, 'lab', `${pattern.slug}.html`), patternHTML);
+    }
+  }
+
+  generateGardenPages() {
+    // Generate garden index
+    const gardenIndexHTML = this.generateGardenIndex();
+    fs.writeFileSync(path.join(this.config.output, 'garden.html'), gardenIndexHTML);
+    
+    // Generate individual garden structures
+    for (const structure of this.processedContent.garden) {
+      const structureHTML = this.generateGardenStructure(structure);
+      fs.writeFileSync(path.join(this.config.output, 'garden', `${structure.slug}.html`), structureHTML);
+    }
+  }
+
+  // Template generation methods would follow similar patterns to your existing code
+  // but use the processed Roam content...
 }
 
 // CLI interface
 if (require.main === module) {
-  const builder = new SimpleBlogBuilder();
-  builder.build();
+  const builder = new RoamBlogBuilder();
+  
+  const command = process.argv[2];
+  
+  if (command === 'serve') {
+    // Development server logic
+    console.log('Starting development server...');
+    builder.build().then(() => {
+      // Serve the dist directory
+    });
+  } else {
+    // Build command
+    builder.build();
+  }
 }
 
-module.exports = SimpleBlogBuilder;
+module.exports = RoamBlogBuilder;
