@@ -1,14 +1,17 @@
-// roam-blog-builder.js - Enhanced build system for Roam integration
+// Enhanced build system for Luke Miller's blog
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+const url = require('url');
+const { marked } = require('marked');
 
-class RoamBlogBuilder {
+class BlogBuilder {
   constructor() {
     this.config = {
       output: './dist',
-      roamExportPath: './roam-export.json'
+      contentDir: './content',
+      templatesDir: './templates'
     };
-    this.roamData = null;
     this.processedContent = {
       stream: [],
       lab: [],
@@ -18,22 +21,19 @@ class RoamBlogBuilder {
   }
 
   async build() {
-    console.log('🏗️  Building blog from Roam data...');
+    console.log('🏗️  Building blog...');
     
     try {
-      // 1. Load and parse Roam export
-      await this.loadRoamData();
+      // 1. Process content files
+      this.processMarkdownContent();
       
-      // 2. Process content by type
-      this.processRoamContent();
-      
-      // 3. Clean and setup output
+      // 2. Clean and setup output
       this.cleanOutput();
       
-      // 4. Copy static files
+      // 3. Copy static files
       this.copyStaticFiles();
       
-      // 5. Generate pages
+      // 4. Generate pages
       this.generateAllPages();
       
       console.log('✅ Build completed successfully!');
@@ -43,257 +43,82 @@ class RoamBlogBuilder {
     }
   }
 
-  async loadRoamData() {
-    console.log('Loading Roam export...');
+  processMarkdownContent() {
+    console.log('Processing content files...');
     
-    if (!fs.existsSync(this.config.roamExportPath)) {
-      throw new Error('Roam export file not found. Please export your Roam graph as JSON.');
-    }
+    const contentTypes = ['stream', 'lab', 'essays'];
     
-    const rawData = fs.readFileSync(this.config.roamExportPath, 'utf8');
-    this.roamData = JSON.parse(rawData);
-    
-    console.log(`Loaded ${this.roamData.length} pages from Roam export`);
-  }
-
-  processRoamContent() {
-    console.log('Processing Roam content by type...');
-    
-    for (const page of this.roamData) {
-      const pageType = this.identifyPageType(page);
-      
-      switch (pageType) {
-        case 'stream':
-          this.processedContent.stream.push(this.processStreamPost(page));
-          break;
-        case 'lab':
-          this.processedContent.lab.push(this.processLabPattern(page));
-          break;
-        case 'garden':
-          this.processedContent.garden.push(this.processGardenStructure(page));
-          break;
+    for (const type of contentTypes) {
+      const contentPath = path.join(this.config.contentDir, type);
+      if (fs.existsSync(contentPath)) {
+        const files = fs.readdirSync(contentPath).filter(file => file.endsWith('.md'));
+        
+        for (const file of files) {
+          const filePath = path.join(contentPath, file);
+          const content = this.processMarkdownFile(filePath, type);
+          if (content) {
+            this.processedContent[type].push(content);
+          }
+        }
       }
     }
     
     // Sort by date (most recent first)
-    this.processedContent.stream.sort((a, b) => new Date(b.date) - new Date(a.date));
-    this.processedContent.lab.sort((a, b) => new Date(b.date) - new Date(a.date));
-    this.processedContent.garden.sort((a, b) => new Date(b.modified) - new Date(a.modified));
+    Object.keys(this.processedContent).forEach(type => {
+      this.processedContent[type].sort((a, b) => new Date(b.date) - new Date(a.date));
+    });
     
-    console.log(`Processed: ${this.processedContent.stream.length} stream posts, ${this.processedContent.lab.length} lab patterns, ${this.processedContent.garden.length} garden structures`);
+    console.log(`Processed: ${this.processedContent.stream.length} stream posts, ${this.processedContent.lab.length} lab patterns, ${this.processedContent.essays.length} essays`);
   }
 
-  identifyPageType(page) {
-    const content = this.getPageContent(page);
+  processMarkdownFile(filePath, type) {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const { frontmatter, body } = this.parseFrontmatter(content);
     
-    // Check for blog tags
-    if (content.includes('#blog/stream')) return 'stream';
-    if (content.includes('#blog/lab')) return 'lab';
-    if (content.includes('#blog/garden')) return 'garden';
-    
-    // Check if it's a daily note (stream content)
-    if (this.isDailyNotePage(page.title)) return 'stream';
-    
-    return null;
-  }
-
-  isDailyNotePage(title) {
-    // Check if title matches date formats: "January 1st, 2025", "2025-01-01", etc.
-    const datePatterns = [
-      /^(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(st|nd|rd|th),?\s+\d{4}$/,
-      /^\d{4}-\d{2}-\d{2}$/,
-      /^\d{2}-\d{2}-\d{4}$/
-    ];
-    
-    return datePatterns.some(pattern => pattern.test(title));
-  }
-
-  processStreamPost(page) {
-    const content = this.getPageContent(page);
-    const blogContent = this.extractBlogContent(content);
+    if (!frontmatter.title) return null;
     
     return {
-      title: this.generateStreamTitle(blogContent) || page.title,
-      slug: this.generateSlug(page.title),
-      date: this.formatDate(page['create-time'] || page['edit-time']),
-      created: this.formatDate(page['create-time']),
-      modified: this.formatDate(page['edit-time']),
-      content: this.convertRoamToHTML(blogContent),
-      categories: this.extractCategories(content),
-      tags: this.extractTags(content),
-      connections: this.extractConnections(content)
+      ...frontmatter,
+      slug: this.generateSlug(frontmatter.title),
+      content: marked(body),
+      type: type,
+      filename: path.basename(filePath, '.md')
     };
   }
 
-  processLabPattern(page) {
-    const content = this.getPageContent(page);
+  parseFrontmatter(content) {
+    const frontmatterRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+    const match = content.match(frontmatterRegex);
     
-    return {
-      title: page.title,
-      slug: this.generateSlug(page.title),
-      date: this.formatDate(page['create-time'] || page['edit-time']),
-      created: this.formatDate(page['create-time']),
-      modified: this.formatDate(page['edit-time']),
-      content: this.convertRoamToHTML(content),
-      definition: this.extractDefinition(content),
-      etymology: this.extractEtymology(content),
-      examples: this.extractExamples(content),
-      categories: this.extractCategories(content),
-      tags: this.extractTags(content),
-      connections: this.extractConnections(content)
-    };
-  }
-
-  processGardenStructure(page) {
-    const content = this.getPageContent(page);
-    
-    return {
-      title: page.title,
-      slug: this.generateSlug(page.title),
-      created: this.formatDate(page['create-time']),
-      modified: this.formatDate(page['edit-time']),
-      content: this.convertRoamToHTML(content),
-      summary: this.extractSummary(content),
-      categories: this.extractCategories(content),
-      tags: this.extractTags(content),
-      connections: this.extractConnections(content)
-    };
-  }
-
-  getPageContent(page) {
-    // Recursively extract all text content from page children
-    if (!page.children) return '';
-    
-    return page.children.map(child => this.extractBlockText(child)).join('\n');
-  }
-
-  extractBlockText(block) {
-    let text = block.string || '';
-    
-    if (block.children) {
-      const childText = block.children.map(child => this.extractBlockText(child)).join('\n');
-      text += '\n' + childText;
+    if (!match) {
+      return { frontmatter: {}, body: content };
     }
     
-    return text;
-  }
-
-  extractBlogContent(content) {
-    // Extract content marked for blog from daily notes
-    const lines = content.split('\n');
-    const blogLines = [];
-    let inBlogSection = false;
+    const frontmatterText = match[1];
+    const body = match[2];
+    
+    const frontmatter = {};
+    const lines = frontmatterText.split('\n');
     
     for (const line of lines) {
-      if (line.includes('#blog/stream')) {
-        inBlogSection = true;
-        continue;
-      }
-      if (inBlogSection && line.trim()) {
-        blogLines.push(line);
-      }
-      if (inBlogSection && !line.trim() && blogLines.length > 0) {
-        // End of blog section on empty line
-        break;
+      const [key, ...valueParts] = line.split(':');
+      if (key && valueParts.length) {
+        let value = valueParts.join(':').trim();
+        
+        // Parse arrays
+        if (value.startsWith('[') && value.endsWith(']')) {
+          value = value.slice(1, -1).split(',').map(v => v.trim().replace(/"/g, ''));
+        }
+        // Remove quotes
+        else if (value.startsWith('"') && value.endsWith('"')) {
+          value = value.slice(1, -1);
+        }
+        
+        frontmatter[key.trim()] = value;
       }
     }
     
-    return blogLines.join('\n');
-  }
-
-  generateStreamTitle(content) {
-    // Extract title from first line or generate from content
-    const firstLine = content.split('\n')[0];
-    if (firstLine && firstLine.length < 100) {
-      return firstLine.replace(/[#*_]/g, '').trim();
-    }
-    
-    // Generate title from content
-    const words = content.replace(/[#*_]/g, '').split(' ').slice(0, 8);
-    return words.join(' ') + (content.split(' ').length > 8 ? '...' : '');
-  }
-
-  convertRoamToHTML(content) {
-    return content
-      // Convert internal links [[Page Name]] to proper HTML links
-      .replace(/\[\[([^\]]+)\]\]/g, (match, pageName) => {
-        const slug = this.generateSlug(pageName);
-        const section = this.findPageSection(pageName);
-        return `<a href="/${section}/${slug}.html">${pageName}</a>`;
-      })
-      // Convert block references ((block-id)) to anchor links
-      .replace(/\(\(([^)]+)\)\)/g, '<a href="#$1" class="block-ref">Reference</a>')
-      // Convert tags #tag to styled spans
-      .replace(/#([a-zA-Z0-9_-]+)/g, '<span class="tag">$1</span>')
-      // Convert bold **text** to <strong>
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      // Convert italic __text__ to <em>
-      .replace(/__([^_]+)__/g, '<em>$1</em>')
-      // Convert line breaks to paragraphs
-      .split('\n\n').map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`).join('');
-  }
-
-  findPageSection(pageName) {
-    // Determine which section a page belongs to
-    const page = this.roamData.find(p => p.title === pageName);
-    if (!page) return 'lab'; // Default to lab for unknown pages
-    
-    const pageType = this.identifyPageType(page);
-    return pageType || 'lab';
-  }
-
-  extractCategories(content) {
-    const matches = content.match(/#blog\/categories\s+\[\[([^\]]+)\]\]/g);
-    if (!matches) return [];
-    
-    return matches.map(match => {
-      const categoryMatch = match.match(/\[\[([^\]]+)\]\]/);
-      return categoryMatch ? categoryMatch[1] : '';
-    }).filter(Boolean);
-  }
-
-  extractTags(content) {
-    const matches = content.match(/#blog\/tags\s+((?:#\w+\s*)+)/g);
-    if (!matches) return [];
-    
-    return matches.flatMap(match => {
-      const tagMatches = match.match(/#(\w+)/g);
-      return tagMatches ? tagMatches.map(tag => tag.substring(1)) : [];
-    });
-  }
-
-  extractConnections(content) {
-    // Extract all internal links as connections
-    const matches = content.match(/\[\[([^\]]+)\]\]/g);
-    if (!matches) return [];
-    
-    return [...new Set(matches.map(match => {
-      const linkMatch = match.match(/\[\[([^\]]+)\]\]/);
-      return linkMatch ? linkMatch[1] : '';
-    }).filter(Boolean))];
-  }
-
-  extractDefinition(content) {
-    const definitionMatch = content.match(/Definition:?\s*([^\n]+)/i);
-    return definitionMatch ? definitionMatch[1] : '';
-  }
-
-  extractEtymology(content) {
-    const etymologyMatch = content.match(/Etymology:?\s*([^\n]+)/i);
-    return etymologyMatch ? etymologyMatch[1] : '';
-  }
-
-  extractExamples(content) {
-    const examplesMatch = content.match(/Examples?:?\s*((?:.|\n)*?)(?=\n\n|\n[A-Z]|$)/i);
-    if (!examplesMatch) return [];
-    
-    return examplesMatch[1].split('\n').filter(line => line.trim()).map(line => line.trim());
-  }
-
-  extractSummary(content) {
-    // Use first paragraph as summary
-    const firstPara = content.split('\n\n')[0];
-    return firstPara ? firstPara.replace(/[#*_]/g, '').trim() : '';
+    return { frontmatter, body };
   }
 
   generateSlug(title) {
@@ -304,20 +129,6 @@ class RoamBlogBuilder {
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
   }
-
-  formatDate(timestamp) {
-    if (!timestamp) return '';
-    
-    const date = new Date(timestamp);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }
-
-  // Rest of the build system methods (cleanOutput, copyStaticFiles, etc.)
-  // would be similar to your existing build system but use the processed content
 
   cleanOutput() {
     console.log('Cleaning output directory...');
@@ -334,8 +145,32 @@ class RoamBlogBuilder {
   copyStaticFiles() {
     console.log('Copying static files...');
     
+    // Copy styles.css
     if (fs.existsSync('styles.css')) {
       fs.copyFileSync('styles.css', path.join(this.config.output, 'styles.css'));
+    }
+    
+    // Copy any other static files (images, etc.)
+    if (fs.existsSync('static')) {
+      this.copyDirectory('static', this.config.output);
+    }
+  }
+
+  copyDirectory(src, dest) {
+    if (!fs.existsSync(src)) return;
+    
+    const entries = fs.readdirSync(src, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+      
+      if (entry.isDirectory()) {
+        fs.mkdirSync(destPath, { recursive: true });
+        this.copyDirectory(srcPath, destPath);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
     }
   }
 
@@ -346,12 +181,99 @@ class RoamBlogBuilder {
     this.generateStreamPages();
     this.generateLabPages();
     this.generateGardenPages();
-    this.generateEssaysPage();
+    this.generateEssaysPages();
+  }
+
+  generateIndex() {
+    const template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luke Miller</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/">Home</a>
+            <a href="/stream">Stream</a>
+            <a href="/lab">Lab</a>
+            <a href="/garden">Garden</a>
+            <a href="/essays">Essays</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <div class="home-intro">
+                <h1>Luke Miller</h1>
+                <p class="subtitle">Tending my corner of the digital commons</p>
+            </div>
+        </article>
+    </main>
+</body>
+</html>`;
+    
+    fs.writeFileSync(path.join(this.config.output, 'index.html'), template);
   }
 
   generateStreamPages() {
     // Generate stream index
-    const streamIndexHTML = this.generateStreamIndex();
+    const streamPosts = this.processedContent.stream.map(post => `
+      <article class="stream-post">
+          <h2><a href="/stream/${post.slug}.html">${post.title}</a></h2>
+          
+          <div class="stream-meta">
+              <time class="post-date">${post.date}</time>
+              <div class="post-categories">${(post.categories || []).join(', ')}</div>
+              <div class="post-tags">
+                  ${(post.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+              </div>
+          </div>
+          
+          <div class="stream-content">
+              ${post.content.substring(0, 500)}...
+          </div>
+      </article>
+    `).join('');
+
+    const streamIndexHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream - Luke Miller</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/">Home</a>
+            <a href="/stream">Stream</a>
+            <a href="/lab">Lab</a>
+            <a href="/garden">Garden</a>
+            <a href="/essays">Essays</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <div class="content-header">
+                <h1>Stream</h1>
+                <p class="subtitle">Brief notes and observations in real time</p>
+            </div>
+
+            <section class="stream-feed">
+                ${streamPosts}
+            </section>
+        </article>
+    </main>
+</body>
+</html>`;
+    
     fs.writeFileSync(path.join(this.config.output, 'stream.html'), streamIndexHTML);
     
     // Generate individual stream posts
@@ -361,9 +283,117 @@ class RoamBlogBuilder {
     }
   }
 
+  generateStreamPost(post) {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${post.title} - Luke Miller</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/">Home</a>
+            <a href="/stream">Stream</a>
+            <a href="/lab">Lab</a>
+            <a href="/garden">Garden</a>
+            <a href="/essays">Essays</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="stream-post-single">
+            <div class="post-header">
+                <div class="breadcrumb">
+                    <a href="/stream">← Stream</a>
+                </div>
+                <h1>${post.title}</h1>
+            </div>
+
+            <div class="post-meta">
+                <time class="post-date">${post.date}</time>
+                <div class="post-categories">${(post.categories || []).join(', ')}</div>
+                <div class="post-tags">
+                    ${(post.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+            </div>
+
+            <div class="post-content">
+                ${post.content}
+            </div>
+
+            ${post.connections ? `
+            <div class="post-connections">
+                <h3>Connected</h3>
+                <ul>
+                    ${post.connections.map(conn => `<li><a href="${conn}">${conn}</a></li>`).join('')}
+                </ul>
+            </div>
+            ` : ''}
+        </article>
+    </main>
+</body>
+</html>`;
+  }
+
   generateLabPages() {
     // Generate lab index
-    const labIndexHTML = this.generateLabIndex();
+    const labPatterns = this.processedContent.lab.map(pattern => `
+      <div class="pattern-entry">
+          <h2><a href="/lab/${pattern.slug}.html">${pattern.title}</a></h2>
+          
+          <div class="pattern-meta">
+              <time class="pattern-date">${pattern.date}</time>
+              <div class="pattern-categories">${(pattern.categories || []).join(', ')}</div>
+              <div class="pattern-tags">
+                  ${(pattern.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+              </div>
+          </div>
+          
+          <div class="pattern-preview">
+              ${pattern.content.substring(0, 300)}...
+          </div>
+      </div>
+    `).join('');
+
+    const labIndexHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab - Luke Miller</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/">Home</a>
+            <a href="/stream">Stream</a>
+            <a href="/lab">Lab</a>
+            <a href="/garden">Garden</a>
+            <a href="/essays">Essays</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <div class="content-header">
+                <h1>Lab</h1>
+                <p class="subtitle">Patterns, frameworks, and cognitive tools for thinking</p>
+            </div>
+
+            <section class="lab-patterns">
+                ${labPatterns}
+            </section>
+        </article>
+    </main>
+</body>
+</html>`;
+    
     fs.writeFileSync(path.join(this.config.output, 'lab.html'), labIndexHTML);
     
     // Generate individual lab patterns
@@ -373,38 +403,379 @@ class RoamBlogBuilder {
     }
   }
 
+  generateLabPattern(pattern) {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${pattern.title} - Luke Miller</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/">Home</a>
+            <a href="/stream">Stream</a>
+            <a href="/lab">Lab</a>
+            <a href="/garden">Garden</a>
+            <a href="/essays">Essays</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="lab-pattern-single">
+            <div class="pattern-header">
+                <div class="breadcrumb">
+                    <a href="/lab">← Lab</a>
+                </div>
+                <h1>${pattern.title}</h1>
+                ${pattern.pronunciation ? `<div class="pattern-pronunciation">${pattern.pronunciation}</div>` : ''}
+            </div>
+
+            <div class="pattern-meta">
+                <time class="pattern-date">${pattern.date}</time>
+                <div class="pattern-categories">${(pattern.categories || []).join(', ')}</div>
+                <div class="pattern-tags">
+                    ${(pattern.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+            </div>
+
+            <div class="pattern-content">
+                ${pattern.content}
+            </div>
+
+            ${pattern.connections ? `
+            <div class="pattern-connections">
+                <h2>Connected</h2>
+                <ul>
+                    ${pattern.connections.map(conn => `<li><a href="${conn}">${conn}</a></li>`).join('')}
+                </ul>
+            </div>
+            ` : ''}
+        </article>
+    </main>
+</body>
+</html>`;
+  }
+
   generateGardenPages() {
-    // Generate garden index
-    const gardenIndexHTML = this.generateGardenIndex();
+    // For now, just copy the existing garden structure
+    const gardenIndexHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden - Luke Miller</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/">Home</a>
+            <a href="/stream">Stream</a>
+            <a href="/lab">Lab</a>
+            <a href="/garden">Garden</a>
+            <a href="/essays">Essays</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <div class="content-header">
+                <h1>Garden</h1>
+                <p class="subtitle">Living documents and evolving structures of knowledge</p>
+            </div>
+
+            <section class="garden-structures">
+                <p>This garden contains structures that grow and evolve over time—documents that are meant to be revisited, updated, and refined rather than published once and forgotten.</p>
+                
+                <div class="structure-list">
+                    <div class="structure-item">
+                        <h2><a href="/garden/lexicon.html">Lexicon</a></h2>
+                        <p class="structure-summary">A personal dictionary of terms, concepts, and ideas worth preserving</p>
+                        <div class="structure-dates">
+                            <span class="date-created">Created: January 15, 2025</span>
+                            <span class="date-updated">Updated: January 22, 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </main>
+</body>
+</html>`;
+    
     fs.writeFileSync(path.join(this.config.output, 'garden.html'), gardenIndexHTML);
     
-    // Generate individual garden structures
-    for (const structure of this.processedContent.garden) {
-      const structureHTML = this.generateGardenStructure(structure);
-      fs.writeFileSync(path.join(this.config.output, 'garden', `${structure.slug}.html`), structureHTML);
+    // Copy existing garden files if they exist
+    if (fs.existsSync('garden')) {
+      this.copyDirectory('garden', path.join(this.config.output, 'garden'));
     }
   }
 
-  // Template generation methods would follow similar patterns to your existing code
-  // but use the processed Roam content...
+  generateEssaysPages() {
+    // Generate essays index
+    const essayEntries = this.processedContent.essays.map(essay => `
+      <div class="essay-entry">
+          <h2><a href="/essays/${essay.slug}.html">${essay.title}</a></h2>
+          
+          <div class="essay-meta">
+              <div class="essay-dates">
+                  <span class="date-created">Created: ${essay.date_created || essay.date}</span>
+                  ${essay.date_updated ? `<span class="date-updated">Updated: ${essay.date_updated}</span>` : ''}
+              </div>
+              <div class="essay-categories">${(essay.categories || []).join(', ')}</div>
+              <div class="essay-tags">
+                  ${(essay.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+              </div>
+          </div>
+          
+          <div class="essay-preview">
+              ${essay.content.substring(0, 300)}...
+          </div>
+      </div>
+    `).join('');
+
+    const essaysIndexHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Essays - Luke Miller</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/">Home</a>
+            <a href="/stream">Stream</a>
+            <a href="/lab">Lab</a>
+            <a href="/garden">Garden</a>
+            <a href="/essays">Essays</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <div class="content-header">
+                <h1>Essays</h1>
+                <p class="subtitle">Longer explorations of ideas and arguments</p>
+            </div>
+
+            <section class="essays-list">
+                ${essayEntries}
+            </section>
+        </article>
+    </main>
+</body>
+</html>`;
+    
+    fs.writeFileSync(path.join(this.config.output, 'essays.html'), essaysIndexHTML);
+    
+    // Generate individual essay pages
+    for (const essay of this.processedContent.essays) {
+      const essayHTML = this.generateEssayPage(essay);
+      fs.writeFileSync(path.join(this.config.output, 'essays', `${essay.slug}.html`), essayHTML);
+    }
+  }
+
+  generateEssayPage(essay) {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${essay.title} - Luke Miller</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="site-nav">
+            <a href="/">Home</a>
+            <a href="/stream">Stream</a>
+            <a href="/lab">Lab</a>
+            <a href="/garden">Garden</a>
+            <a href="/essays">Essays</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+        <article class="essay-single">
+            <div class="essay-header">
+                <div class="breadcrumb">
+                    <a href="/essays">← Essays</a>
+                </div>
+                <h1>${essay.title}</h1>
+            </div>
+
+            <div class="essay-meta">
+                <div class="essay-dates">
+                    <span class="date-created">Created: ${essay.date_created || essay.date}</span>
+                    ${essay.date_updated ? `<span class="date-updated">Updated: ${essay.date_updated}</span>` : ''}
+                </div>
+                <div class="essay-categories">${(essay.categories || []).join(', ')}</div>
+                <div class="essay-tags">
+                    ${(essay.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+            </div>
+
+            <div class="essay-content">
+                ${essay.content}
+            </div>
+
+            ${essay.connections ? `
+            <div class="essay-connections">
+                <h2>Connected</h2>
+                <ul>
+                    ${essay.connections.map(conn => `<li><a href="${conn}">${conn}</a></li>`).join('')}
+                </ul>
+            </div>
+            ` : ''}
+        </article>
+    </main>
+</body>
+</html>`;
+  }
+
+  // Development server
+  serve(port = 3000) {
+    const server = http.createServer((req, res) => {
+      const parsedUrl = url.parse(req.url, true);
+      let pathname = parsedUrl.pathname;
+      
+      // Handle root
+      if (pathname === '/') {
+        pathname = '/index.html';
+      }
+      
+      // Add .html extension if missing
+      if (!path.extname(pathname) && pathname !== '/') {
+        pathname += '.html';
+      }
+      
+      const filePath = path.join(this.config.output, pathname);
+      
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          res.writeHead(404);
+          res.end('Not found');
+          return;
+        }
+        
+        const ext = path.extname(filePath);
+        const contentType = {
+          '.html': 'text/html',
+          '.css': 'text/css',
+          '.js': 'text/javascript',
+          '.json': 'application/json'
+        }[ext] || 'text/plain';
+        
+        res.writeHead(200, { 'Content-Type': contentType });
+        res.end(data);
+      });
+    });
+    
+    server.listen(port, () => {
+      console.log(`🚀 Development server running at http://localhost:${port}`);
+    });
+  }
+
+  // Helper method to create new content
+  createNewContent(type, title) {
+    const slug = this.generateSlug(title);
+    const date = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    
+    const templates = {
+      stream: `---
+title: "${title}"
+date: "${date}"
+categories: ["Notes"]
+tags: []
+---
+
+Your content here...
+`,
+      lab: `---
+title: "${title}"
+date: "${date}"
+categories: ["Cognitive Patterns"]
+tags: []
+---
+
+# ${title}
+
+**Definition:** 
+
+## Examples
+
+## Related Patterns
+
+## Notes
+
+Your pattern content here...
+`,
+      essays: `---
+title: "${title}"
+date: "${date}"
+date_created: "${date}"
+date_updated: "${date}"
+categories: ["Essays"]
+tags: []
+---
+
+# ${title}
+
+Your essay content here...
+`
+    };
+    
+    const template = templates[type];
+    if (!template) {
+      console.error(`Unknown content type: ${type}`);
+      return;
+    }
+    
+    const contentDir = path.join(this.config.contentDir, type);
+    if (!fs.existsSync(contentDir)) {
+      fs.mkdirSync(contentDir, { recursive: true });
+    }
+    
+    const filePath = path.join(contentDir, `${slug}.md`);
+    fs.writeFileSync(filePath, template);
+    
+    console.log(`✅ Created new ${type}: ${filePath}`);
+  }
 }
 
 // CLI interface
 if (require.main === module) {
-  const builder = new RoamBlogBuilder();
+  const builder = new BlogBuilder();
   
-  const command = process.argv[2];
+  const [,, command, type, ...args] = process.argv;
   
   if (command === 'serve') {
-    // Development server logic
-    console.log('Starting development server...');
     builder.build().then(() => {
-      // Serve the dist directory
+      builder.serve();
     });
+  } else if (command === 'new' && type) {
+    const title = args.join(' ');
+    if (!title) {
+      console.error('Please provide a title for the new content');
+      process.exit(1);
+    }
+    builder.createNewContent(type, title);
   } else {
-    // Build command
     builder.build();
   }
 }
 
-module.exports = RoamBlogBuilder;
+module.exports = BlogBuilder;
