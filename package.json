@@ -6,14 +6,21 @@
   "scripts": {
     "build": "node build.js",
     "serve": "node build.js serve",
+    "dev": "node build.js serve",
     "new-stream": "node build.js new stream",
     "new-lab": "node build.js new lab", 
-    "new-essay": "node build.js new essays"
+    "new-essay": "node build.js new essays",
+    "install-deps": "npm install marked",
+    "setup": "npm run install-deps && mkdir -p content/stream content/lab content/essays content/garden"
   },
   "dependencies": {
-    "marked": "^4.3.0"
+    "marked": "^9.1.6"
   },
-  "keywords": ["blog", "tufte", "css", "static-site"],
+  "devDependencies": {},
+  "keywords": ["blog", "tufte", "css", "static-site", "markdown"],
   "author": "Luke Miller",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
 }
