@@ -506,6 +506,10 @@ ul {
     margin-top: 2rem;
 }
 
+.garden-structures > p {
+    width: var(--content-width);
+}
+
 .structure-list {
     margin-top: 2rem;
 }
@@ -662,6 +666,14 @@ ul {
 }
 
 .lexicon-intro p {
+    width: var(--content-width);
+}
+
+/* Override section paragraph width for main content descriptions */
+section.garden-structures > p,
+section.stream-feed > p,
+section.lab-patterns > p,
+section.essays-list > p {
     width: var(--content-width);
 }
 
