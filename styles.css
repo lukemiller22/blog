@@ -387,6 +387,7 @@ ul {
 .content-header .subtitle {
     margin-top: 0;
     margin-bottom: 2rem;
+    width: var(--content-width);
 }
 
 /* Stream styles */
