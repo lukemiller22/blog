@@ -424,6 +424,10 @@ ul {
     width: var(--content-width);
 }
 
+.stream-content p {
+    width: 100%;
+}
+
 .post-date {
     display: block;
     margin-bottom: 0.5rem;
@@ -485,6 +489,10 @@ ul {
 
 .pattern-preview {
     width: var(--content-width);
+}
+
+.pattern-preview p {
+    width: 100%;
 }
 
 .pattern-connections {
@@ -586,6 +594,10 @@ ul {
     font-style: italic;
 }
 
+.essay-preview p {
+    width: 100%;
+}
+
 /* Individual post styles */
 .breadcrumb {
     font-size: 0.9rem;
@@ -671,26 +683,21 @@ ul {
 }
 
 /* Override section paragraph width for main content descriptions */
-section.garden-structures > p,
-section.stream-feed > p,
-section.lab-patterns > p,
-section.essays-list > p {
+section.garden-structures > p {
     width: var(--content-width);
 }
 
-/* Stream content width */
+/* Individual content containers - set width on the container, not paragraphs inside */
 .stream-content p {
-    width: var(--content-width);
+    width: 100%;
 }
 
-/* Lab pattern preview width */
 .pattern-preview p {
-    width: var(--content-width);
+    width: 100%;
 }
 
-/* Essay preview width */
 .essay-preview p {
-    width: var(--content-width);
+    width: 100%;
 }
 
 .lexicon-entries h2 {
