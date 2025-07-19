@@ -4,39 +4,10 @@
    ========================================================================== */
 
 /* ==========================================================================
-   FONT IMPORTS
+   FONT IMPORTS - Using Tufte CSS CDN fonts
    ========================================================================== */
 
-/* ET Book font family - fallback to system fonts if not available */
-@font-face {
-    font-family: "et-book";
-    src: url("fonts/et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot"),
-         url("fonts/et-book/et-book-roman-line-figures/et-book-roman-line-figures.woff") format("woff"),
-         url("fonts/et-book/et-book-roman-line-figures/et-book-roman-line-figures.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "et-book";
-    src: url("fonts/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot"),
-         url("fonts/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff") format("woff"),
-         url("fonts/et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.ttf") format("truetype");
-    font-weight: normal;
-    font-style: italic;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "et-book";
-    src: url("fonts/et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot"),
-         url("fonts/et-book/et-book-bold-line-figures/et-book-bold-line-figures.woff") format("woff"),
-         url("fonts/et-book/et-book-bold-line-figures/et-book-bold-line-figures.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=ET+Book:ital,wght@0,400;0,700;1,400&display=swap');
 
 /* ==========================================================================
    CSS VARIABLES
@@ -48,8 +19,8 @@
     --color-text: #111111;
     --color-border: #cccccc;
     
-    /* Typography */
-    --font-main: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    /* Typography - Original Tufte CSS font stack */
+    --font-main: "ET Book", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
     --font-sans: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
     --font-mono: Consolas, "Liberation Mono", Menlo, Courier, monospace;
     
