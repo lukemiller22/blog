@@ -4,7 +4,7 @@
    ========================================================================== */
 
 /* ==========================================================================
-   FONT IMPORTS - Using Tufte CSS CDN fonts
+   FONT IMPORTS - Using system fonts with fallbacks
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=ET+Book:ital,wght@0,400;0,700;1,400&display=swap');
@@ -18,11 +18,13 @@
     --color-background: #fffff8;
     --color-text: #111111;
     --color-border: #cccccc;
+    --color-muted: #666666;
+    --color-accent: #111111;
     
-    /* Typography - Original Tufte CSS font stack */
+    /* Typography - Tufte CSS font stack with better fallbacks */
     --font-main: "ET Book", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-    --font-sans: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
-    --font-mono: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    --font-sans: "Gill Sans", "Gill Sans MT", Calibri, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: Consolas, "Liberation Mono", Menlo, Monaco, "Courier New", Courier, monospace;
     
     /* Layout - Tufte-style proportions */
     --content-width: 55%;
@@ -43,6 +45,7 @@
         --color-background: #151515;
         --color-text: #dddddd;
         --color-border: #444444;
+        --color-muted: #999999;
     }
 }
 
@@ -56,6 +59,7 @@
 
 html {
     font-size: 15px;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -69,6 +73,8 @@ body {
     max-width: 1400px;
     counter-reset: sidenote-counter;
     line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ==========================================================================
@@ -87,6 +93,7 @@ body {
     margin: 0;
     padding: 0;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .site-nav a {
@@ -96,6 +103,7 @@ body {
     text-decoration: underline;
     text-underline-offset: 0.1em;
     text-decoration-thickness: 0.05em;
+    transition: text-decoration-thickness 0.2s ease;
 }
 
 .site-nav a:hover {
@@ -133,6 +141,15 @@ h3 {
     line-height: 1;
 }
 
+h4 {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
 p {
     font-size: 1.4rem;
     line-height: 2rem;
@@ -151,6 +168,7 @@ p {
     display: block;
     line-height: 1;
     width: var(--content-width);
+    color: var(--color-muted);
 }
 
 /* Smaller body text for content pages (not home page) */
@@ -165,7 +183,8 @@ p {
 .definition p,
 .etymology p,
 .examples p,
-.entry-meta p {
+.entry-meta p,
+.pattern-content p {
     font-size: 1.2rem;
     line-height: 1.8rem;
 }
@@ -211,10 +230,16 @@ a:visited {
     text-decoration: underline;
     text-underline-offset: 0.1em;
     text-decoration-thickness: 0.05em;
+    transition: text-decoration-thickness 0.2s ease;
 }
 
 a:hover {
     text-decoration-thickness: 0.1em;
+}
+
+a:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
 }
 
 /* ==========================================================================
@@ -281,6 +306,7 @@ label.margin-toggle:not(.sidenote-number) {
 img {
     max-width: 100%;
     height: auto;
+    display: block;
 }
 
 figure {
@@ -313,17 +339,21 @@ figcaption {
 
 blockquote {
     font-size: 1.4rem;
+    margin-left: 1.5rem;
+    border-left: 2px solid var(--color-border);
+    padding-left: 1rem;
 }
 
 blockquote p {
-    width: var(--content-width);
-    margin-right: 40px;
+    width: calc(var(--content-width) - 2.5rem);
+    font-style: italic;
 }
 
 blockquote footer {
-    width: var(--content-width);
+    width: calc(var(--content-width) - 2.5rem);
     font-size: 1.1rem;
     text-align: right;
+    margin-top: 1rem;
 }
 
 /* ==========================================================================
@@ -337,6 +367,7 @@ table {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
+    max-width: var(--content-width);
 }
 
 th,
@@ -364,6 +395,58 @@ ol,
 ul {
     font-size: 1.4rem;
     line-height: 2rem;
+}
+
+/* Override for content lists */
+.stream-content ol,
+.stream-content ul,
+.pattern-content ol,
+.pattern-content ul,
+.essay-content ol,
+.essay-content ul {
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+}
+
+/* ==========================================================================
+   CODE
+   ========================================================================== */
+
+code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background-color: #f5f5f5;
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+}
+
+pre {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    width: var(--content-width);
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* Dark mode code blocks */
+@media (prefers-color-scheme: dark) {
+    code {
+        background-color: #2d2d2d;
+        color: #f0f0f0;
+    }
+    
+    pre {
+        background-color: #2d2d2d;
+        color: #f0f0f0;
+    }
 }
 
 /* ==========================================================================
@@ -425,11 +508,16 @@ ul {
 .stream-post h2 {
     margin-top: 0;
     font-size: 1.8rem;
+    width: var(--content-width);
 }
 
 .stream-post h2 a {
     text-decoration: none;
     color: inherit;
+}
+
+.stream-post h2 a:hover {
+    text-decoration: underline;
 }
 
 .stream-meta {
@@ -457,7 +545,7 @@ ul {
     display: block;
     margin-bottom: 0.5rem;
     font-style: italic;
-    color: #666;
+    color: var(--color-muted);
 }
 
 .post-tags {
@@ -473,6 +561,15 @@ ul {
     border-radius: 3px;
     font-size: 0.8rem;
     text-decoration: none;
+    border: 1px solid var(--color-border);
+}
+
+@media (prefers-color-scheme: dark) {
+    .tag {
+        background: #2d2d2d;
+        color: var(--color-text);
+        border-color: #555;
+    }
 }
 
 /* Lab styles */
@@ -493,6 +590,16 @@ ul {
 .pattern-entry h2 {
     margin-top: 0;
     font-size: 1.8rem;
+    width: var(--content-width);
+}
+
+.pattern-entry h2 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.pattern-entry h2 a:hover {
+    text-decoration: underline;
 }
 
 .pattern-meta {
@@ -505,8 +612,22 @@ ul {
     line-height: 1.3;
 }
 
-.pattern-dates {
+.pattern-date {
+    display: block;
     margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+.pattern-categories {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+    color: var(--color-muted);
+}
+
+.pattern-tags {
+    display: block;
 }
 
 .pattern-preview {
@@ -520,7 +641,7 @@ ul {
 
 .connection-label {
     font-style: italic;
-    color: #666;
+    color: var(--color-muted);
 }
 
 .connection-link {
@@ -555,18 +676,28 @@ ul {
     margin-top: 0;
     margin-bottom: 0.5rem;
     font-size: 1.8rem;
+    width: var(--content-width);
+}
+
+.structure-item h2 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.structure-item h2 a:hover {
+    text-decoration: underline;
 }
 
 .structure-summary {
     margin: 0.5rem 0;
     font-style: italic;
-    color: #666;
+    color: var(--color-muted);
     width: var(--content-width);
 }
 
 .structure-dates {
     font-size: 0.9rem;
-    color: #888;
+    color: var(--color-muted);
 }
 
 .date-created, .date-updated {
@@ -591,6 +722,16 @@ ul {
 .essay-entry h2 {
     margin-top: 0;
     font-size: 1.8rem;
+    width: var(--content-width);
+}
+
+.essay-entry h2 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.essay-entry h2 a:hover {
+    text-decoration: underline;
 }
 
 .essay-meta {
@@ -607,9 +748,21 @@ ul {
     margin-bottom: 0.5rem;
 }
 
+.essay-categories {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+    color: var(--color-muted);
+}
+
+.essay-tags {
+    display: block;
+}
+
 .essay-preview {
     width: var(--content-width);
     font-style: italic;
+    color: var(--color-muted);
 }
 
 /* Individual post styles */
@@ -619,73 +772,100 @@ ul {
 }
 
 .breadcrumb a {
-    color: #666;
+    color: var(--color-muted);
 }
 
-.post-connections, .pattern-connections, .essay-connections {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-border);
+.post-header,
+.pattern-header,
+.essay-header {
+    margin-bottom: 2rem;
 }
 
-.post-connections h3, .pattern-connections h2, .essay-connections h2 {
-    margin-top: 0;
-    font-size: 1.4rem;
-}
-
-.post-connections ul, .pattern-connections ul, .essay-connections ul {
-    list-style: none;
-    padding: 0;
-    width: var(--content-width);
-}
-
-.post-connections li, .pattern-connections li, .essay-connections li {
+.post-header h1,
+.pattern-header h1,
+.essay-header h1 {
+    margin-top: 1rem;
     margin-bottom: 0.5rem;
 }
 
-/* Consistent backlinks styling for all individual posts */
-.backlinks {
+.post-meta,
+.essay-meta.single-meta {
+    float: right;
+    clear: right;
+    margin-right: -60%;
+    width: var(--margin-width);
+    margin-top: 0.3rem;
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.post-content,
+.essay-content {
+    width: var(--content-width);
+}
+
+.post-connections, 
+.pattern-connections, 
+.essay-connections {
     margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid var(--color-border);
 }
 
-.backlinks h2 {
+.post-connections h3, 
+.pattern-connections h2, 
+.essay-connections h2 {
     margin-top: 0;
     font-size: 1.4rem;
 }
 
-.backlinks ul {
+.post-connections ul, 
+.pattern-connections ul, 
+.essay-connections ul {
     list-style: none;
     padding: 0;
     width: var(--content-width);
 }
 
-.backlinks li {
+.post-connections li, 
+.pattern-connections li, 
+.essay-connections li {
     margin-bottom: 0.5rem;
 }
 
 /* Lab pattern-specific styles */
 .pattern-pronunciation {
     font-style: italic;
-    color: #666;
+    color: var(--color-muted);
     margin-top: 0.5rem;
     margin-bottom: 2rem;
+    font-size: 0.9rem;
 }
 
-.pattern-definition, .pattern-etymology, .pattern-examples, 
-.pattern-antidote, .pattern-related, .pattern-essay {
+.pattern-definition, 
+.pattern-etymology, 
+.pattern-examples,
+.pattern-antidote, 
+.pattern-related, 
+.pattern-essay {
     margin-bottom: 2rem;
 }
 
-.pattern-definition h2, .pattern-etymology h2, .pattern-examples h2,
-.pattern-antidote h2, .pattern-related h2, .pattern-essay h2 {
+.pattern-definition h2, 
+.pattern-etymology h2, 
+.pattern-examples h2,
+.pattern-antidote h2, 
+.pattern-related h2, 
+.pattern-essay h2 {
     font-size: 1.4rem;
     margin-bottom: 1rem;
 }
 
-.pattern-definition p, .pattern-etymology p, .pattern-examples p,
-.pattern-antidote p, .pattern-essay p {
+.pattern-definition p, 
+.pattern-etymology p, 
+.pattern-examples p,
+.pattern-antidote p, 
+.pattern-essay p {
     width: var(--content-width);
 }
 
@@ -701,7 +881,7 @@ ul {
 .structure-meta {
     margin-top: 1rem;
     font-size: 0.9rem;
-    color: #888;
+    color: var(--color-muted);
 }
 
 .meta-item {
@@ -718,34 +898,11 @@ ul {
     width: var(--content-width);
 }
 
-/* Override section paragraph width for main content descriptions */
-section.garden-structures > p,
-section.stream-feed > p,
-section.lab-patterns > p,
-section.essays-list > p {
-    width: var(--content-width);
-}
-
-/* Stream content width */
-.stream-content p {
-    width: var(--content-width);
-}
-
-/* Lab pattern preview width */
-.pattern-preview p {
-    width: var(--content-width);
-}
-
-/* Essay preview width */
-.essay-preview p {
-    width: var(--content-width);
-}
-
 .lexicon-entries h2 {
     font-size: 2.5rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
-    color: #666;
+    color: var(--color-muted);
 }
 
 .lexicon-entry {
@@ -762,17 +919,23 @@ section.essays-list > p {
 
 .pronunciation {
     font-style: italic;
-    color: #666;
+    color: var(--color-muted);
     font-size: 0.9rem;
     margin-bottom: 1rem;
     display: block;
 }
 
-.definition, .etymology, .examples, .entry-meta {
+.definition, 
+.etymology, 
+.examples, 
+.entry-meta {
     margin-bottom: 1.5rem;
 }
 
-.definition p, .etymology p, .examples p, .entry-meta p {
+.definition p, 
+.etymology p, 
+.examples p, 
+.entry-meta p {
     width: var(--content-width);
 }
 
@@ -789,7 +952,7 @@ section.essays-list > p {
 }
 
 .text-muted {
-    color: #666666;
+    color: var(--color-muted);
     font-size: 0.9em;
 }
 
@@ -831,7 +994,26 @@ hr {
     p,
     .subtitle,
     .home-intro h1,
-    .home-intro p {
+    .home-intro p,
+    .stream-content,
+    .pattern-preview,
+    .essay-preview,
+    .structure-summary,
+    .post-content,
+    .essay-content,
+    .pattern-content,
+    .lexicon-intro p,
+    .definition p,
+    .etymology p,
+    .examples p,
+    .entry-meta p {
+        width: 100%;
+    }
+    
+    .stream-post h2,
+    .pattern-entry h2,
+    .essay-entry h2,
+    .structure-item h2 {
         width: 100%;
     }
     
@@ -841,7 +1023,9 @@ hr {
         width: 90%;
     }
     
-    figure {
+    figure,
+    table,
+    pre {
         max-width: 90%;
     }
     
@@ -884,16 +1068,11 @@ hr {
         position: relative;
     }
     
-    table {
-        width: 85%;
-    }
-    
-    img {
-        width: 100%;
-    }
-    
     /* Mobile overrides for content types */
-    .stream-meta, .pattern-meta, .essay-meta {
+    .stream-meta, 
+    .pattern-meta, 
+    .essay-meta,
+    .post-meta {
         float: none;
         margin-right: 0;
         width: 100%;
@@ -903,8 +1082,60 @@ hr {
         padding-top: 1rem;
     }
     
-    .stream-content, .pattern-preview, .essay-preview,
-    .structure-summary {
+    .post-connections ul, 
+    .pattern-connections ul, 
+    .essay-connections ul {
         width: 100%;
+    }
+    
+    /* Smaller headings on mobile */
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    h3 {
+        font-size: 1.4rem;
+    }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+    body {
+        width: 100%;
+        padding-left: 0;
+        color: black;
+        background: white;
+    }
+    
+    .site-header,
+    .breadcrumb,
+    .post-connections,
+    .pattern-connections,
+    .essay-connections {
+        display: none;
+    }
+    
+    p,
+    .subtitle,
+    .stream-content,
+    .pattern-content,
+    .essay-content {
+        width: 100%;
+    }
+    
+    .sidenote,
+    .marginnote {
+        float: none;
+        margin: 1rem 0;
+        width: 100%;
+        border-left: 2px solid #ccc;
+        padding-left: 1rem;
     }
 }
