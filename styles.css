@@ -105,8 +105,8 @@ body {
    ========================================================================== */
 
 .site-header {
-    padding: var(--spacing-md) 0 var(--spacing-sm) 0;
-    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) 0 0 0;
+    margin-bottom: var(--spacing-sm);
 }
 
 .site-nav {
@@ -388,7 +388,7 @@ ul {
 }
 
 .home-intro h1 {
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-bottom: 2rem;
     width: var(--content-width);
 }
