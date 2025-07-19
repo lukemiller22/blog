@@ -135,7 +135,31 @@ class SimpleBlogBuilder {
                 <p class="subtitle">Brief notes and observations in real time</p>
             </div>
             <section class="stream-feed">
-                <p>Stream content will appear here when you add markdown files to content/stream/</p>
+                <article class="stream-post">
+                    <h2><a href="/stream/reading-cs-lewis-chronological-snobbery.html">Reading C.S. Lewis on Chronological Snobbery</a></h2>
+                    
+                    <div class="stream-meta">
+                        <time class="post-date">January 20, 2025</time>
+                        <div class="post-categories">Reading Notes</div>
+                        <div class="post-tags">
+                            <span class="tag">C.S. Lewis</span>
+                            <span class="tag">Critical Thinking</span>
+                            <span class="tag">Intellectual Humility</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stream-content">
+                        <p>Just finished Lewis's essay "De Descriptione Temporum" where he coins the term "chronological snobbery" - the uncritical acceptance that newer is automatically better.</p>
+                        
+                        <p>He defines it as "the assumption that whatever has gone out of date is on that account discredited." The temptation to dismiss older ideas simply because they're old, without examining their actual merit.</p>
+                        
+                        <p>What strikes me is how this applies beyond just intellectual history. We see it in technology adoption, cultural criticism, even personal relationships. The newest framework, the latest methodology, the most recent theory - all presumed superior by virtue of recency.</p>
+                        
+                        <p>Lewis suggests the antidote is asking not "when was this believed?" but "why did intelligent people believe this, and what evidence convinced them?" A much harder but more honest question.</p>
+                        
+                        <p>Worth noting: this doesn't mean older is better either. Just that age alone - whether great or small - tells us nothing about truth value.</p>
+                    </div>
+                </article>
             </section>
         </article>
     </main>
@@ -172,7 +196,29 @@ class SimpleBlogBuilder {
                 <p class="subtitle">Patterns, frameworks, and cognitive tools for thinking</p>
             </div>
             <section class="lab-patterns">
-                <p>Lab patterns will appear here when you add markdown files to content/lab/</p>
+                <div class="pattern-entry">
+                    <h2><a href="/lab/chronological-snobbery.html">Chronological Snobbery</a></h2>
+                    
+                    <div class="pattern-meta">
+                        <time class="pattern-date">January 21, 2025</time>
+                        <div class="pattern-categories">Cognitive Patterns</div>
+                        <div class="pattern-tags">
+                            <span class="tag">Logic</span>
+                            <span class="tag">Bias</span>
+                            <span class="tag">Critical Thinking</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pattern-preview">
+                        <p>The logical fallacy of assuming that whatever is newer in time is necessarily superior in quality, truth, or value; conversely, the automatic dismissal of older ideas, practices, or beliefs solely on the basis of their age.</p>
+                        
+                        <div class="pattern-connections">
+                            <span class="connection-label">Connected to:</span>
+                            <a href="/stream/reading-cs-lewis-chronological-snobbery.html" class="connection-link">Stream</a>
+                            <a href="/garden/lexicon.html#chronological-snobbery" class="connection-link">Lexicon</a>
+                        </div>
+                    </div>
+                </div>
             </section>
         </article>
     </main>
@@ -210,8 +256,16 @@ class SimpleBlogBuilder {
             </div>
             <section class="garden-structures">
                 <p>This garden contains structures that grow and evolve over time—documents that are meant to be revisited, updated, and refined rather than published once and forgotten.</p>
+                
                 <div class="structure-list">
-                    <p>Garden structures will appear here.</p>
+                    <div class="structure-item">
+                        <h2><a href="/garden/lexicon.html">Lexicon</a></h2>
+                        <p class="structure-summary">A personal dictionary of terms, concepts, and ideas worth preserving</p>
+                        <div class="structure-dates">
+                            <span class="date-created">Created: January 15, 2025</span>
+                            <span class="date-updated">Updated: January 22, 2025</span>
+                        </div>
+                    </div>
                 </div>
             </section>
         </article>
@@ -249,7 +303,26 @@ class SimpleBlogBuilder {
                 <p class="subtitle">Longer explorations of ideas and arguments</p>
             </div>
             <section class="essays-list">
-                <p>Essays will appear here when you add markdown files to content/essays/</p>
+                <div class="essay-entry">
+                    <h2><a href="/essays/chronological-snobbery-tyranny-of-calendar.html">Chronological Snobbery: The Tyranny of the Calendar</a></h2>
+                    
+                    <div class="essay-meta">
+                        <div class="essay-dates">
+                            <span class="date-created">Created: January 22, 2025</span>
+                            <span class="date-updated">Updated: January 22, 2025</span>
+                        </div>
+                        <div class="essay-categories">Critical Thinking</div>
+                        <div class="essay-tags">
+                            <span class="tag">Philosophy</span>
+                            <span class="tag">Logic</span>
+                            <span class="tag">Intellectual Humility</span>
+                        </div>
+                    </div>
+                    
+                    <div class="essay-preview">
+                        <p>We live under a strange dictatorship—the tyranny of the calendar. This despot whispers that whatever bears a recent date stamp must be superior to whatever came before, that time itself serves as a reliable judge of truth and value.</p>
+                    </div>
+                </div>
             </section>
         </article>
     </main>
