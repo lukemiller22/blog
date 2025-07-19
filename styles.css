@@ -105,7 +105,7 @@ body {
    ========================================================================== */
 
 .site-header {
-    padding: var(--spacing-sm) 0 0 0;
+    padding: var(--spacing-lg) 0 0 0;
     margin-bottom: 0;
 }
 
