@@ -15,9 +15,5 @@
   },
   "keywords": ["blog", "tufte", "css", "static-site"],
   "author": "Luke Miller",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "your-github-repo-url"
-  }
+  "license": "MIT"
 }
