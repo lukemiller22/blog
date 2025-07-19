@@ -371,6 +371,340 @@ ul {
 }
 
 /* ==========================================================================
+   CONTENT TYPE SPECIFIC STYLES
+   ========================================================================== */
+
+/* Content headers */
+.content-header {
+    margin-bottom: 3rem;
+}
+
+.content-header h1 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.content-header .subtitle {
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+
+/* Stream styles */
+.stream-feed {
+    margin-top: 2rem;
+}
+
+.stream-post {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.stream-post:last-child {
+    border-bottom: none;
+}
+
+.stream-post h2 {
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+.stream-meta {
+    float: right;
+    clear: right;
+    margin-right: -60%;
+    width: var(--margin-width);
+    margin-top: 0.3rem;
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.stream-content {
+    width: var(--content-width);
+}
+
+.post-date {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+.post-categories {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+    color: #666;
+}
+
+.post-tags {
+    display: block;
+}
+
+.tag {
+    display: inline-block;
+    background: #f0f0f0;
+    color: var(--color-text);
+    padding: 0.15rem 0.4rem;
+    margin: 0.1rem 0.2rem 0.1rem 0;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+/* Lab styles */
+.lab-patterns {
+    margin-top: 2rem;
+}
+
+.pattern-entry {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.pattern-entry:last-child {
+    border-bottom: none;
+}
+
+.pattern-entry h2 {
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+.pattern-meta {
+    float: right;
+    clear: right;
+    margin-right: -60%;
+    width: var(--margin-width);
+    margin-top: 0.3rem;
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.pattern-preview {
+    width: var(--content-width);
+}
+
+.pattern-connections {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.connection-label {
+    font-style: italic;
+    color: #666;
+}
+
+.connection-link {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+/* Garden styles */
+.garden-structures {
+    margin-top: 2rem;
+}
+
+.structure-list {
+    margin-top: 2rem;
+}
+
+.structure-item {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.structure-item:last-child {
+    border-bottom: none;
+}
+
+.structure-item h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.structure-summary {
+    margin: 0.5rem 0;
+    font-style: italic;
+    color: #666;
+    width: var(--content-width);
+}
+
+.structure-dates {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.date-created, .date-updated {
+    margin-right: 1rem;
+}
+
+/* Essays styles */
+.essays-list {
+    margin-top: 2rem;
+}
+
+.essay-entry {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.essay-entry:last-child {
+    border-bottom: none;
+}
+
+.essay-entry h2 {
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+.essay-meta {
+    float: right;
+    clear: right;
+    margin-right: -60%;
+    width: var(--margin-width);
+    margin-top: 0.3rem;
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.essay-dates {
+    margin-bottom: 0.5rem;
+}
+
+.essay-preview {
+    width: var(--content-width);
+    font-style: italic;
+}
+
+/* Individual post styles */
+.breadcrumb {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb a {
+    color: #666;
+}
+
+.post-connections, .pattern-connections, .essay-connections {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.post-connections h3, .pattern-connections h2, .essay-connections h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+}
+
+.post-connections ul, .pattern-connections ul, .essay-connections ul {
+    list-style: none;
+    padding: 0;
+    width: var(--content-width);
+}
+
+.post-connections li, .pattern-connections li, .essay-connections li {
+    margin-bottom: 0.5rem;
+}
+
+/* Lab pattern-specific styles */
+.pattern-pronunciation {
+    font-style: italic;
+    color: #666;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.pattern-definition, .pattern-etymology, .pattern-examples, 
+.pattern-antidote, .pattern-related, .pattern-essay {
+    margin-bottom: 2rem;
+}
+
+.pattern-definition h2, .pattern-etymology h2, .pattern-examples h2,
+.pattern-antidote h2, .pattern-related h2, .pattern-essay h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.pattern-definition p, .pattern-etymology p, .pattern-examples p,
+.pattern-antidote p, .pattern-essay p {
+    width: var(--content-width);
+}
+
+.pattern-related ul {
+    width: var(--content-width);
+}
+
+/* Lexicon-specific styles */
+.structure-header {
+    margin-bottom: 3rem;
+}
+
+.structure-meta {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.meta-item {
+    margin-right: 1rem;
+}
+
+.lexicon-intro {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.lexicon-intro p {
+    width: var(--content-width);
+}
+
+.lexicon-entries h2 {
+    font-size: 2.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.lexicon-entry {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+}
+
+.lexicon-entry h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+.pronunciation {
+    font-style: italic;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.definition, .etymology, .examples, .entry-meta {
+    margin-bottom: 1.5rem;
+}
+
+.definition p, .etymology p, .examples p, .entry-meta p {
+    width: var(--content-width);
+}
+
+.examples ul {
+    width: var(--content-width);
+}
+
+/* ==========================================================================
    UTILITIES
    ========================================================================== */
 
@@ -479,6 +813,22 @@ hr {
     }
     
     img {
+        width: 100%;
+    }
+    
+    /* Mobile overrides for content types */
+    .stream-meta, .pattern-meta, .essay-meta {
+        float: none;
+        margin-right: 0;
+        width: 100%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-top: 1px solid var(--color-border);
+        padding-top: 1rem;
+    }
+    
+    .stream-content, .pattern-preview, .essay-preview,
+    .structure-summary {
         width: 100%;
     }
 }
