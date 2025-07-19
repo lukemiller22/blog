@@ -140,7 +140,33 @@ p {
     margin-bottom: 1.4rem;
     padding-right: 0;
     vertical-align: baseline;
+}
+
+/* Only constrain width for specific content types */
+article.essay-single p,
+article.lab-pattern-single p,
+article.stream-post-single p,
+.lexicon-intro p,
+.definition p,
+.etymology p,
+.examples p,
+.entry-meta p,
+.pattern-definition p,
+.pattern-etymology p,
+.pattern-examples p,
+.pattern-antidote p,
+.pattern-essay p,
+.post-content p,
+.essay-content p,
+section.garden-structures > p {
     width: var(--content-width);
+}
+
+/* Main page content should be full width */
+.stream-content p,
+.pattern-preview p,
+.essay-preview p {
+    width: 100%;
 }
 
 .subtitle {
