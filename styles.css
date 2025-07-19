@@ -106,7 +106,7 @@ body {
 
 .site-header {
     padding: var(--spacing-sm) 0 0 0;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: 0;
 }
 
 .site-nav {
@@ -388,7 +388,7 @@ ul {
 }
 
 .home-intro h1 {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     margin-bottom: 2rem;
     width: var(--content-width);
 }
