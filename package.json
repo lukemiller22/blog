@@ -1,0 +1,8 @@
+{
+  "name": "luke-miller-blog",
+  "version": "1.0.0",
+  "description": "Personal blog with digital garden structure",
+  "scripts": {
+    "build": "node build.js"
+  }
+}
