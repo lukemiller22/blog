@@ -332,6 +332,16 @@ class RoamBlogGenerator {
   }
 
   async buildSite() {
+    console.log('🚀 Starting blog generation...');
+    console.log(`📚 Total pages in Roam: ${this.pages.size}`);
+    console.log(`📅 Daily notes found: ${this.dailyNotes.size}`);
+    
+    // Debug: List some key pages
+    console.log('🔍 Key pages found:');
+    ['Lab', 'Garden', 'Essays', 'Personal Lexicon', 'Chronological Snobbery'].forEach(key => {
+      console.log(`  - ${key}: ${this.pages.has(key) ? '✅' : '❌'}`);
+    });
+    
     // Ensure directories exist
     await fs.ensureDir('dist');
     await fs.ensureDir('dist/lab');
@@ -345,16 +355,27 @@ class RoamBlogGenerator {
     }
     
     // Generate content
+    console.log('📝 Generating content...');
     const streamPosts = this.generateStream();
+    console.log(`📰 Stream posts: ${streamPosts.length}`);
+    
     const labPosts = this.generateLab();
+    console.log(`🧪 Lab posts: ${labPosts.length}`);
+    
     const gardenArtifacts = this.generateGarden();
+    console.log(`🌱 Garden artifacts: ${gardenArtifacts.length}`);
+    
     const essays = this.generateEssays();
+    console.log(`📖 Essays: ${essays.length}`);
     
     // Load templates
+    console.log('📋 Loading templates...');
     const labTemplate = await fs.readFile('templates/lab-post-template.html', 'utf8');
     const essayTemplate = await fs.readFile('templates/essay-template.html', 'utf8');
+    console.log('✅ Templates loaded successfully');
     
     // Generate stream.html
+    console.log('🌊 Generating stream.html...');
     let streamHTML = await fs.readFile('stream.html', 'utf8');
     const streamPostsHTML = streamPosts.map(post => 
       `<div class="post-entry">
@@ -367,6 +388,7 @@ class RoamBlogGenerator {
     // Replace placeholder in stream.html (you'll need to add this)
     streamHTML = streamHTML.replace('{{stream-posts}}', streamPostsHTML);
     await fs.writeFile('dist/stream.html', streamHTML);
+    console.log('✅ Stream.html generated');
     
     // Generate lab posts
     for (const post of labPosts) {
