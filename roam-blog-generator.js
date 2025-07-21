@@ -399,17 +399,35 @@ class RoamBlogGenerator {
     console.log('✅ Stream.html generated');
     
     // Generate lab posts
+    console.log('🧪 Generating lab posts...');
     for (const post of labPosts) {
       const metadata = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}${post.category ? ` | ${post.category}` : ''}`;
+      
+      // Generate backlinks HTML
+      let backlinksHTML = '';
+      if (post.backlinks && post.backlinks.length > 0) {
+        backlinksHTML = `
+      <div class="backlinks">
+        <h3>Referenced by</h3>
+        <ul>
+          ${post.backlinks.map(backlinkTitle => {
+            const slug = this.titleToSlug(backlinkTitle);
+            return `<li><a href="../${slug}.html">${backlinkTitle}</a></li>`;
+          }).join('\n          ')}
+        </ul>
+      </div>`;
+      }
       
       const html = this.generateHTML(labTemplate, {
         title: post.title,
         metadata,
-        content: post.content
+        content: post.content,
+        backlinks: backlinksHTML
       });
       
       await fs.writeFile(`dist/lab/${post.slug}.html`, html);
     }
+    console.log('✅ Lab posts generated');
     
     // Generate garden artifacts
     console.log('🌱 Generating garden artifacts...');
@@ -449,17 +467,35 @@ class RoamBlogGenerator {
     console.log('✅ Garden artifacts generated');
     
     // Generate essays
+    console.log('📖 Generating essays...');
     for (const essay of essays) {
       const metadata = `${essay.dateCreated ? `Created: ${essay.dateCreated}` : ''}${essay.dateUpdated ? ` | Updated: ${essay.dateUpdated}` : ''}${essay.category ? ` | ${essay.category}` : ''}`;
+      
+      // Generate backlinks HTML  
+      let backlinksHTML = '';
+      if (essay.backlinks && essay.backlinks.length > 0) {
+        backlinksHTML = `
+      <div class="backlinks">
+        <h3>Referenced by</h3>
+        <ul>
+          ${essay.backlinks.map(backlinkTitle => {
+            const slug = this.titleToSlug(backlinkTitle);
+            return `<li><a href="../${slug}.html">${backlinkTitle}</a></li>`;
+          }).join('\n          ')}
+        </ul>
+      </div>`;
+      }
       
       const html = this.generateHTML(essayTemplate, {
         title: essay.title,
         metadata,
-        content: essay.content
+        content: essay.content,
+        backlinks: backlinksHTML
       });
       
       await fs.writeFile(`dist/essays/${essay.slug}.html`, html);
     }
+    console.log('✅ Essays generated');
     
     // Update index pages with generated content
     await this.updateIndexPages(streamPosts, labPosts, gardenArtifacts, essays);
