@@ -98,6 +98,11 @@ class RoamBlogGenerator {
     let currentParagraph = '';
     
     children.forEach(child => {
+      // Skip "Metadata" sections - don't render them as content
+      if (child.heading === 1 && child.string === 'Metadata') {
+        return; // Skip this entire section
+      }
+      
       if (child.heading) {
         // Close any open paragraph
         if (currentParagraph.trim()) {
@@ -111,8 +116,8 @@ class RoamBlogGenerator {
         currentParagraph += (currentParagraph ? ' ' : '') + child.string;
       }
       
-      // Process nested children
-      if (child.children) {
+      // Process nested children, but skip if parent was "Metadata"
+      if (child.children && !(child.heading === 1 && child.string === 'Metadata')) {
         if (currentParagraph.trim()) {
           html += `<p>${this.formatInlineContent(currentParagraph.trim())}</p>\n`;
           currentParagraph = '';
@@ -162,16 +167,18 @@ class RoamBlogGenerator {
       const findMetadata = (children) => {
         children.forEach(child => {
           if (child.string) {
-            // Extract Category, Tags, Date Created, Date Updated
+            // Extract Category, Tags, Date Created, Date Updated, Subtitle
             const categoryMatch = child.string.match(/Category::\s*(.+)/);
             const tagsMatch = child.string.match(/Tags::\s*(.+)/);
             const dateCreatedMatch = child.string.match(/Date Created::\s*\[\[([^\]]+)\]\]/);
             const dateUpdatedMatch = child.string.match(/Date Updated::\s*\[\[([^\]]+)\]\]/);
+            const subtitleMatch = child.string.match(/Subtitle::\s*(.+)/);
             
             if (categoryMatch) metadata.category = categoryMatch[1];
             if (tagsMatch) metadata.tags = tagsMatch[1].split(',').map(t => t.trim());
             if (dateCreatedMatch) metadata.dateCreated = this.formatDate(dateCreatedMatch[1]);
             if (dateUpdatedMatch) metadata.dateUpdated = this.formatDate(dateUpdatedMatch[1]);
+            if (subtitleMatch) metadata.subtitle = subtitleMatch[1];
           }
           
           if (child.children) findMetadata(child.children);
@@ -269,12 +276,13 @@ class RoamBlogGenerator {
             }
             
             if (artifactPage) {
+              const metadata = this.extractMetadata(artifactPage);
               const content = this.parseContent(artifactPage.children);
               
               gardenArtifacts.push({
                 title: artifactTitle,
                 slug: this.titleToSlug(artifactTitle),
-                subtitle,
+                subtitle: subtitle || metadata.subtitle || '', // Use subtitle from Garden page or metadata
                 content,
                 backlinks: this.backlinks.get(artifactTitle) || []
               });
@@ -404,6 +412,7 @@ class RoamBlogGenerator {
     }
     
     // Generate garden artifacts
+    console.log('🌱 Generating garden artifacts...');
     for (const artifact of gardenArtifacts) {
       // Use a simplified template for garden artifacts
       const html = `<!DOCTYPE html>
@@ -427,6 +436,7 @@ class RoamBlogGenerator {
     </nav>
     <article>
       <h1>${artifact.title}</h1>
+      ${artifact.subtitle ? `<p class="subtitle">${artifact.subtitle}</p>` : ''}
       <section>
         ${artifact.content}
       </section>
@@ -436,6 +446,7 @@ class RoamBlogGenerator {
       
       await fs.writeFile(`dist/garden/${artifact.slug}.html`, html);
     }
+    console.log('✅ Garden artifacts generated');
     
     // Generate essays
     for (const essay of essays) {
