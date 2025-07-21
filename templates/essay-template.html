@@ -29,16 +29,7 @@
         {{content}}
       </section>
 
-      {{#if backlinks}}
-      <div class="backlinks">
-        <h3>Referenced by</h3>
-        <ul>
-          {{#each backlinks}}
-          <li><a href="{{url}}">{{title}}</a></li>
-          {{/each}}
-        </ul>
-      </div>
-      {{/if}}
+      {{backlinks}}
     </article>
   </body>
 </html>
