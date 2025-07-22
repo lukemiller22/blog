@@ -35,16 +35,25 @@ class RoamBlogGenerator {
   }
 
   extractBacklinks(page) {
+    // Skip creating backlinks for main index pages
+    const indexPages = ['Lab', 'Garden', 'Essays', 'Stream'];
+    if (indexPages.includes(page.title)) {
+      return;
+    }
+    
     const findLinks = (obj) => {
       if (typeof obj === 'string') {
         const linkMatches = obj.match(/\[\[([^\]]+)\]\]/g);
         if (linkMatches) {
           linkMatches.forEach(match => {
             const linkTitle = match.slice(2, -2);
-            if (!this.backlinks.has(linkTitle)) {
-              this.backlinks.set(linkTitle, []);
+            // Don't create backlinks to index pages
+            if (!indexPages.includes(linkTitle)) {
+              if (!this.backlinks.has(linkTitle)) {
+                this.backlinks.set(linkTitle, []);
+              }
+              this.backlinks.get(linkTitle).push(page.title);
             }
-            this.backlinks.get(linkTitle).push(page.title);
           });
         }
       } else if (Array.isArray(obj)) {
