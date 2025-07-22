@@ -159,9 +159,6 @@ class RoamBlogGenerator {
     if (currentSection && currentSection !== 'root') {
       return `../${section}/${slug}.html`;
     } else {
-      if (section === 'stream') {
-        return `#`;
-      }
       return `${section}/${slug}.html`;
     }
   }
@@ -258,8 +255,10 @@ class RoamBlogGenerator {
                 const metadata = this.extractMetadata(linkedPage);
                 streamPosts.push({
                   title: linkedPageTitle,
+                  slug: this.titleToSlug(linkedPageTitle),
                   date: this.formatDate(date),
-                  content: this.parseContent(linkedPage.children, 0, 'root'),
+                  content: this.parseContent(linkedPage.children, 0, 'stream'),
+                  backlinks: this.backlinks.get(linkedPageTitle) || [],
                   ...metadata
                 });
               }
@@ -399,6 +398,7 @@ class RoamBlogGenerator {
     await fs.ensureDir('dist/lab');
     await fs.ensureDir('dist/garden');
     await fs.ensureDir('dist/essays');
+    await fs.ensureDir('dist/stream');
     
     await fs.copy('tufte-blog.css', 'dist/tufte-blog.css');
     if (await fs.pathExists('et-book')) {
@@ -421,6 +421,7 @@ class RoamBlogGenerator {
     console.log('📋 Loading templates...');
     const labTemplate = await fs.readFile('templates/lab-post-template.html', 'utf8');
     const essayTemplate = await fs.readFile('templates/essay-template.html', 'utf8');
+    const streamTemplate = await fs.readFile('templates/stream-post-template.html', 'utf8');
     console.log('✅ Templates loaded successfully');
     
     console.log('🌊 Generating stream.html...');
@@ -428,7 +429,9 @@ class RoamBlogGenerator {
     const streamPostsHTML = streamPosts.map(post => {
       const tagsText = post.tags ? ` | Tags: ${post.tags.join(', ')}` : '';
       return `<div class="post-entry">
-         <h3 class="post-title">${post.title}</h3>
+         <h3 class="post-title">
+           <a href="stream/${post.slug}.html">${post.title}</a>
+         </h3>
          <div class="post-meta">${post.date}${post.category ? ` | ${post.category}` : ''}${tagsText}</div>
          <div class="post-content">${post.content}</div>
        </div>`;
@@ -437,6 +440,37 @@ class RoamBlogGenerator {
     streamHTML = streamHTML.replace('{{stream-posts}}', streamPostsHTML);
     await fs.writeFile('dist/stream.html', streamHTML);
     console.log('✅ Stream.html generated');
+    
+    // Generate individual stream post pages
+    console.log('🌊 Generating individual stream posts...');
+    for (const post of streamPosts) {
+      const tagsText = post.tags ? ` | Tags: ${post.tags.join(', ')}` : '';
+      const metadata = `${post.date}${post.category ? ` | ${post.category}` : ''}${tagsText}`;
+      
+      let backlinksHTML = '';
+      if (post.backlinks && post.backlinks.length > 0) {
+        backlinksHTML = `
+      <div class="backlinks">
+        <h3>Referenced by</h3>
+        <ul>
+          ${post.backlinks.map(backlinkTitle => {
+            const url = this.getPageUrl(backlinkTitle, 'stream');
+            return `<li><a href="${url}">${backlinkTitle}</a></li>`;
+          }).join('\n          ')}
+        </ul>
+      </div>`;
+      }
+      
+      const html = this.generateHTML(streamTemplate, {
+        title: post.title,
+        metadata,
+        content: post.content,
+        backlinks: backlinksHTML
+      });
+      
+      await fs.writeFile(`dist/stream/${post.slug}.html`, html);
+    }
+    console.log('✅ Individual stream posts generated');
     
     console.log('🧪 Generating lab posts...');
     for (const post of labPosts) {
