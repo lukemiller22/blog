@@ -95,7 +95,6 @@ class RoamBlogGenerator {
     if (!children) return '';
     
     let html = '';
-    let currentParagraph = '';
     
     children.forEach(child => {
       // Skip "Metadata" sections - don't render them as content
@@ -104,32 +103,18 @@ class RoamBlogGenerator {
       }
       
       if (child.heading) {
-        // Close any open paragraph
-        if (currentParagraph.trim()) {
-          html += `<p>${this.formatInlineContent(currentParagraph.trim())}</p>\n`;
-          currentParagraph = '';
-        }
         // Add heading
         html += `<h${child.heading}>${this.formatInlineContent(child.string || '')}</h${child.heading}>\n`;
-      } else if (child.string) {
-        // Add to current paragraph
-        currentParagraph += (currentParagraph ? ' ' : '') + child.string;
+      } else if (child.string && child.string.trim()) {
+        // Each block with string content becomes its own paragraph
+        html += `<p>${this.formatInlineContent(child.string.trim())}</p>\n`;
       }
       
       // Process nested children, but skip if parent was "Metadata"
       if (child.children && !(child.heading === 1 && child.string === 'Metadata')) {
-        if (currentParagraph.trim()) {
-          html += `<p>${this.formatInlineContent(currentParagraph.trim())}</p>\n`;
-          currentParagraph = '';
-        }
         html += this.parseContent(child.children, level + 1);
       }
     });
-    
-    // Close final paragraph
-    if (currentParagraph.trim()) {
-      html += `<p>${this.formatInlineContent(currentParagraph.trim())}</p>\n`;
-    }
     
     return html;
   }
