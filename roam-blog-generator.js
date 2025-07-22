@@ -306,7 +306,7 @@ class RoamBlogGenerator {
             
             if (linkedPage) {
               const metadata = this.extractMetadata(linkedPage);
-              const content = this.parseContent(linkedPage.children, 0, 'stream');
+              const content = this.parseContent(linkedPage.children, 0, 'lab');
               
               labPosts.push({
                 title: linkedPageTitle,
