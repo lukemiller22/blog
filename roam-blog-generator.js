@@ -35,9 +35,9 @@ class RoamBlogGenerator {
   }
 
   extractBacklinks(page) {
-    // Skip creating backlinks for main index pages
+    // Skip creating backlinks for main index pages and daily notes pages
     const indexPages = ['Lab', 'Garden', 'Essays', 'Stream'];
-    if (indexPages.includes(page.title)) {
+    if (indexPages.includes(page.title) || this.isDatePage(page.title)) {
       return;
     }
     
@@ -47,8 +47,8 @@ class RoamBlogGenerator {
         if (linkMatches) {
           linkMatches.forEach(match => {
             const linkTitle = match.slice(2, -2);
-            // Don't create backlinks to index pages
-            if (!indexPages.includes(linkTitle)) {
+            // Don't create backlinks to index pages or daily notes pages
+            if (!indexPages.includes(linkTitle) && !this.isDatePage(linkTitle)) {
               if (!this.backlinks.has(linkTitle)) {
                 this.backlinks.set(linkTitle, []);
               }
