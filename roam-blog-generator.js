@@ -1,82 +1,4 @@
-getPageUrl(title, currentSection = '') {
-    const slug = this.titleToSlug(title);
-    const section = this.pageToSection.get(title);
-    
-    if (!section) {
-      // If we don't know the section, assume it's in the same section as current page
-      return currentSection ? `${slug}.html` : `${slug}.html`;
-    }
-    
-    // Generate the correct path based on current location
-    if (currentSection && currentSection !== 'root') {
-      // We're in a subfolder, need to go up one level
-      return `../${section}/${slug}.html`;
-    } else {
-      // We're at root level
-      if (section === 'stream') {
-        return `#`; // Stream posts don't have individual pages
-      }
-      return `${section}/${slug}.html`;
-    }
-  }  buildPageSectionMap() {
-    // Map pages to their sections based on where they're referenced
-    const labPage = this.pages.get('Lab');
-    const gardenPage = this.pages.get('Garden');
-    const essaysPage = this.pages.get('Essays');
-    
-    // Map lab posts
-    if (labPage && labPage.children) {
-      labPage.children.forEach(child => {
-        if (child.string && child.string.includes('[[')) {
-          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-          if (linkMatch) {
-            this.pageToSection.set(linkMatch[1], 'lab');
-          }
-        }
-      });
-    }
-    
-    // Map garden artifacts
-    if (gardenPage && gardenPage.children) {
-      gardenPage.children.forEach(child => {
-        if (child.string && child.string.includes('[[')) {
-          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-          if (linkMatch) {
-            this.pageToSection.set(linkMatch[1], 'garden');
-          }
-        }
-      });
-    }
-    
-    // Map essays
-    if (essaysPage && essaysPage.children) {
-      essaysPage.children.forEach(child => {
-        if (child.string && child.string.includes('[[')) {
-          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-          if (linkMatch) {
-            this.pageToSection.set(linkMatch[1], 'essays');
-          }
-        }
-      });
-    }
-    
-    // Map stream posts (from daily notes)
-    this.dailyNotes.forEach((dailyNote) => {
-      if (dailyNote.children) {
-        dailyNote.children.forEach(child => {
-          if (child.string && child.string.includes('[[')) {
-            const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-            if (linkMatch) {
-              // Only set as stream if not already categorized elsewhere
-              if (!this.pageToSection.has(linkMatch[1])) {
-                this.pageToSection.set(linkMatch[1], 'stream');
-              }
-            }
-          }
-        });
-      }
-    });
-  }const fs = require('fs-extra');
+const fs = require('fs-extra');
 const path = require('path');
 
 class RoamBlogGenerator {
@@ -85,32 +7,26 @@ class RoamBlogGenerator {
     this.pages = new Map();
     this.dailyNotes = new Map();
     this.backlinks = new Map();
-    this.pageToSection = new Map(); // Track which section each page belongs to
+    this.pageToSection = new Map();
     
-    // Initialize data structures
     this.processRoamData();
   }
 
   processRoamData() {
-    // Process all pages and build lookup maps
     this.roamData.forEach(page => {
       this.pages.set(page.title, page);
       
-      // Track daily notes (date format pages)
       if (this.isDatePage(page.title)) {
         this.dailyNotes.set(page.title, page);
       }
       
-      // Build backlinks
       this.extractBacklinks(page);
     });
     
-    // Build the page-to-section mapping
     this.buildPageSectionMap();
   }
 
   isDatePage(title) {
-    // Match formats like "March 7th, 2024", "07-19-2025", etc.
     const datePatterns = [
       /^\d{2}-\d{2}-\d{4}$/,
       /^[A-Za-z]+ \d{1,2}(?:st|nd|rd|th), \d{4}$/
@@ -119,7 +35,6 @@ class RoamBlogGenerator {
   }
 
   extractBacklinks(page) {
-    // Recursively find all [[links]] in content
     const findLinks = (obj) => {
       if (typeof obj === 'string') {
         const linkMatches = obj.match(/\[\[([^\]]+)\]\]/g);
@@ -142,6 +57,58 @@ class RoamBlogGenerator {
     findLinks(page);
   }
 
+  buildPageSectionMap() {
+    const labPage = this.pages.get('Lab');
+    const gardenPage = this.pages.get('Garden');
+    const essaysPage = this.pages.get('Essays');
+    
+    if (labPage && labPage.children) {
+      labPage.children.forEach(child => {
+        if (child.string && child.string.includes('[[')) {
+          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+          if (linkMatch) {
+            this.pageToSection.set(linkMatch[1], 'lab');
+          }
+        }
+      });
+    }
+    
+    if (gardenPage && gardenPage.children) {
+      gardenPage.children.forEach(child => {
+        if (child.string && child.string.includes('[[')) {
+          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+          if (linkMatch) {
+            this.pageToSection.set(linkMatch[1], 'garden');
+          }
+        }
+      });
+    }
+    
+    if (essaysPage && essaysPage.children) {
+      essaysPage.children.forEach(child => {
+        if (child.string && child.string.includes('[[')) {
+          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+          if (linkMatch) {
+            this.pageToSection.set(linkMatch[1], 'essays');
+          }
+        }
+      });
+    }
+    
+    this.dailyNotes.forEach((dailyNote) => {
+      if (dailyNote.children) {
+        dailyNote.children.forEach(child => {
+          if (child.string && child.string.includes('[[')) {
+            const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+            if (linkMatch && !this.pageToSection.has(linkMatch[1])) {
+              this.pageToSection.set(linkMatch[1], 'stream');
+            }
+          }
+        });
+      }
+    });
+  }
+
   titleToSlug(title) {
     return title
       .toLowerCase()
@@ -152,7 +119,6 @@ class RoamBlogGenerator {
   }
 
   formatDate(dateString) {
-    // Handle various date formats from Roam
     if (dateString.match(/^\d{2}-\d{2}-\d{4}$/)) {
       const [month, day, year] = dateString.split('-');
       return new Date(year, month - 1, day).toLocaleDateString('en-US', {
@@ -173,58 +139,68 @@ class RoamBlogGenerator {
     return dateString;
   }
 
+  getPageUrl(title, currentSection = '') {
+    const slug = this.titleToSlug(title);
+    const section = this.pageToSection.get(title);
+    
+    if (!section) {
+      return currentSection ? `${slug}.html` : `${slug}.html`;
+    }
+    
+    if (currentSection && currentSection !== 'root') {
+      return `../${section}/${slug}.html`;
+    } else {
+      if (section === 'stream') {
+        return `#`;
+      }
+      return `${section}/${slug}.html`;
+    }
+  }
+
+  formatInlineContent(text, currentSection = '') {
+    text = text.replace(/\[\[([^\]]+)\]\]/g, (match, title) => {
+      const url = this.getPageUrl(title, currentSection);
+      return `<a href="${url}">${title}</a>`;
+    });
+    
+    text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
+      const id = `sn-${Date.now()}-${num}`;
+      return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
+    });
+    
+    text = text.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
+      const id = `mn-${Date.now()}`;
+      return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
+    });
+    
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    
+    return text;
+  }
+
   parseContent(children, level = 0, currentSection = '') {
     if (!children) return '';
     
     let html = '';
     
     children.forEach(child => {
-      // Skip "Metadata" sections - don't render them as content
       if (child.heading === 1 && child.string === 'Metadata') {
-        return; // Skip this entire section
+        return;
       }
       
       if (child.heading) {
-        // Add heading
         html += `<h${child.heading}>${this.formatInlineContent(child.string || '', currentSection)}</h${child.heading}>\n`;
       } else if (child.string && child.string.trim()) {
-        // Each block with string content becomes its own paragraph
         html += `<p>${this.formatInlineContent(child.string.trim(), currentSection)}</p>\n`;
       }
       
-      // Process nested children, but skip if parent was "Metadata"
       if (child.children && !(child.heading === 1 && child.string === 'Metadata')) {
         html += this.parseContent(child.children, level + 1, currentSection);
       }
     });
     
     return html;
-  }
-
-  formatInlineContent(text, currentSection = '') {
-    // Handle Roam links [[Page Title]]
-    text = text.replace(/\[\[([^\]]+)\]\]/g, (match, title) => {
-      const url = this.getPageUrl(title, currentSection);
-      return `<a href="${url}">${title}</a>`;
-    });
-    
-    // Handle Tufte CSS sidenotes (+1 content)
-    text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
-      const id = `sn-${Date.now()}-${num}`;
-      return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
-    });
-    
-    // Handle Tufte CSS margin notes (+ content)
-    text = text.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
-      const id = `mn-${Date.now()}`;
-      return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
-    });
-    
-    // Handle basic formatting
-    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-    
-    return text;
   }
 
   extractMetadata(page) {
@@ -234,7 +210,6 @@ class RoamBlogGenerator {
       const findMetadata = (children) => {
         children.forEach(child => {
           if (child.string) {
-            // Extract Category, Tags, Date Created, Date Updated, Subtitle
             const categoryMatch = child.string.match(/Category::\s*(.+)/);
             const tagsMatch = child.string.match(/Tags::\s*(.+)/);
             const dateCreatedMatch = child.string.match(/Date Created::\s*\[\[([^\]]+)\]\]/);
@@ -261,7 +236,6 @@ class RoamBlogGenerator {
   generateStream() {
     const streamPosts = [];
     
-    // Iterate through daily notes to find linked posts
     this.dailyNotes.forEach((dailyNote, date) => {
       if (dailyNote.children) {
         dailyNote.children.forEach(child => {
@@ -276,7 +250,7 @@ class RoamBlogGenerator {
                 streamPosts.push({
                   title: linkedPageTitle,
                   date: this.formatDate(date),
-                  content: this.parseContent(linkedPage.children),
+                  content: this.parseContent(linkedPage.children, 0, 'root'),
                   ...metadata
                 });
               }
@@ -286,9 +260,7 @@ class RoamBlogGenerator {
       }
     });
     
-    // Sort by date (newest first)
     streamPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-    
     return streamPosts;
   }
 
@@ -336,7 +308,6 @@ class RoamBlogGenerator {
             const artifactTitle = linkMatch[1];
             const artifactPage = this.pages.get(artifactTitle);
             
-            // Get subtitle from nested content
             let subtitle = '';
             if (child.children && child.children[0] && child.children[0].string) {
               subtitle = child.children[0].string;
@@ -349,7 +320,7 @@ class RoamBlogGenerator {
               gardenArtifacts.push({
                 title: artifactTitle,
                 slug: this.titleToSlug(artifactTitle),
-                subtitle: subtitle || metadata.subtitle || '', // Use subtitle from Garden page or metadata
+                subtitle: subtitle || metadata.subtitle || '',
                 content,
                 backlinks: this.backlinks.get(artifactTitle) || []
               });
@@ -397,7 +368,6 @@ class RoamBlogGenerator {
   generateHTML(template, data) {
     let html = template;
     
-    // Simple template replacement
     Object.keys(data).forEach(key => {
       const placeholder = new RegExp(`{{${key}}}`, 'g');
       html = html.replace(placeholder, data[key] || '');
@@ -411,25 +381,21 @@ class RoamBlogGenerator {
     console.log(`📚 Total pages in Roam: ${this.pages.size}`);
     console.log(`📅 Daily notes found: ${this.dailyNotes.size}`);
     
-    // Debug: List some key pages
     console.log('🔍 Key pages found:');
     ['Lab', 'Garden', 'Essays', 'Personal Lexicon', 'Chronological Snobbery'].forEach(key => {
       console.log(`  - ${key}: ${this.pages.has(key) ? '✅' : '❌'}`);
     });
     
-    // Ensure directories exist
     await fs.ensureDir('dist');
     await fs.ensureDir('dist/lab');
     await fs.ensureDir('dist/garden');
     await fs.ensureDir('dist/essays');
     
-    // Copy static assets
     await fs.copy('tufte-blog.css', 'dist/tufte-blog.css');
     if (await fs.pathExists('et-book')) {
       await fs.copy('et-book', 'dist/et-book');
     }
     
-    // Generate content
     console.log('📝 Generating content...');
     const streamPosts = this.generateStream();
     console.log(`📰 Stream posts: ${streamPosts.length}`);
@@ -443,13 +409,11 @@ class RoamBlogGenerator {
     const essays = this.generateEssays();
     console.log(`📖 Essays: ${essays.length}`);
     
-    // Load templates
     console.log('📋 Loading templates...');
     const labTemplate = await fs.readFile('templates/lab-post-template.html', 'utf8');
     const essayTemplate = await fs.readFile('templates/essay-template.html', 'utf8');
     console.log('✅ Templates loaded successfully');
     
-    // Generate stream.html
     console.log('🌊 Generating stream.html...');
     let streamHTML = await fs.readFile('stream.html', 'utf8');
     const streamPostsHTML = streamPosts.map(post => 
@@ -460,17 +424,14 @@ class RoamBlogGenerator {
        </div>`
     ).join('\n');
     
-    // Replace placeholder in stream.html (you'll need to add this)
     streamHTML = streamHTML.replace('{{stream-posts}}', streamPostsHTML);
     await fs.writeFile('dist/stream.html', streamHTML);
     console.log('✅ Stream.html generated');
     
-    // Generate lab posts
     console.log('🧪 Generating lab posts...');
     for (const post of labPosts) {
       const metadata = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}${post.category ? ` | ${post.category}` : ''}`;
       
-      // Generate backlinks HTML
       let backlinksHTML = '';
       if (post.backlinks && post.backlinks.length > 0) {
         backlinksHTML = `
@@ -496,10 +457,8 @@ class RoamBlogGenerator {
     }
     console.log('✅ Lab posts generated');
     
-    // Generate garden artifacts
     console.log('🌱 Generating garden artifacts...');
     for (const artifact of gardenArtifacts) {
-      // Use a simplified template for garden artifacts
       const html = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -533,12 +492,10 @@ class RoamBlogGenerator {
     }
     console.log('✅ Garden artifacts generated');
     
-    // Generate essays
     console.log('📖 Generating essays...');
     for (const essay of essays) {
       const metadata = `${essay.dateCreated ? `Created: ${essay.dateCreated}` : ''}${essay.dateUpdated ? ` | Updated: ${essay.dateUpdated}` : ''}${essay.category ? ` | ${essay.category}` : ''}`;
       
-      // Generate backlinks HTML  
       let backlinksHTML = '';
       if (essay.backlinks && essay.backlinks.length > 0) {
         backlinksHTML = `
@@ -564,10 +521,8 @@ class RoamBlogGenerator {
     }
     console.log('✅ Essays generated');
     
-    // Update index pages with generated content
     await this.updateIndexPages(streamPosts, labPosts, gardenArtifacts, essays);
     
-    // Copy remaining static pages
     const staticPages = ['index.html', 'about.html'];
     for (const page of staticPages) {
       if (await fs.pathExists(page)) {
@@ -580,7 +535,6 @@ class RoamBlogGenerator {
   }
 
   async updateIndexPages(streamPosts, labPosts, gardenArtifacts, essays) {
-    // Update lab.html
     const labIndexHTML = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -620,7 +574,6 @@ class RoamBlogGenerator {
     
     await fs.writeFile('dist/lab.html', labIndexHTML);
     
-    // Update garden.html
     const gardenIndexHTML = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -658,7 +611,6 @@ class RoamBlogGenerator {
     
     await fs.writeFile('dist/garden.html', gardenIndexHTML);
     
-    // Update essays.html
     const essaysIndexHTML = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -700,18 +652,17 @@ class RoamBlogGenerator {
   }
 }
 
-// Usage
 async function main() {
   try {
     const generator = new RoamBlogGenerator('roam-export.json');
     await generator.buildSite();
   } catch (error) {
     console.error('❌ Error generating blog:', error);
+    console.error(error.stack);
     process.exit(1);
   }
 }
 
-// Export for use as module or run directly
 if (require.main === module) {
   main();
 }
