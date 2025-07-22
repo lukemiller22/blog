@@ -1,4 +1,82 @@
-const fs = require('fs-extra');
+getPageUrl(title, currentSection = '') {
+    const slug = this.titleToSlug(title);
+    const section = this.pageToSection.get(title);
+    
+    if (!section) {
+      // If we don't know the section, assume it's in the same section as current page
+      return currentSection ? `${slug}.html` : `${slug}.html`;
+    }
+    
+    // Generate the correct path based on current location
+    if (currentSection && currentSection !== 'root') {
+      // We're in a subfolder, need to go up one level
+      return `../${section}/${slug}.html`;
+    } else {
+      // We're at root level
+      if (section === 'stream') {
+        return `#`; // Stream posts don't have individual pages
+      }
+      return `${section}/${slug}.html`;
+    }
+  }  buildPageSectionMap() {
+    // Map pages to their sections based on where they're referenced
+    const labPage = this.pages.get('Lab');
+    const gardenPage = this.pages.get('Garden');
+    const essaysPage = this.pages.get('Essays');
+    
+    // Map lab posts
+    if (labPage && labPage.children) {
+      labPage.children.forEach(child => {
+        if (child.string && child.string.includes('[[')) {
+          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+          if (linkMatch) {
+            this.pageToSection.set(linkMatch[1], 'lab');
+          }
+        }
+      });
+    }
+    
+    // Map garden artifacts
+    if (gardenPage && gardenPage.children) {
+      gardenPage.children.forEach(child => {
+        if (child.string && child.string.includes('[[')) {
+          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+          if (linkMatch) {
+            this.pageToSection.set(linkMatch[1], 'garden');
+          }
+        }
+      });
+    }
+    
+    // Map essays
+    if (essaysPage && essaysPage.children) {
+      essaysPage.children.forEach(child => {
+        if (child.string && child.string.includes('[[')) {
+          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+          if (linkMatch) {
+            this.pageToSection.set(linkMatch[1], 'essays');
+          }
+        }
+      });
+    }
+    
+    // Map stream posts (from daily notes)
+    this.dailyNotes.forEach((dailyNote) => {
+      if (dailyNote.children) {
+        dailyNote.children.forEach(child => {
+          if (child.string && child.string.includes('[[')) {
+            const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+            if (linkMatch) {
+              // Only set as stream if not already categorized elsewhere
+              if (!this.pageToSection.has(linkMatch[1])) {
+                this.pageToSection.set(linkMatch[1], 'stream');
+              }
+            }
+          }
+        });
+      }
+    });
+  }const fs = require('fs-extra');
 const path = require('path');
 
 class RoamBlogGenerator {
@@ -7,6 +85,7 @@ class RoamBlogGenerator {
     this.pages = new Map();
     this.dailyNotes = new Map();
     this.backlinks = new Map();
+    this.pageToSection = new Map(); // Track which section each page belongs to
     
     // Initialize data structures
     this.processRoamData();
@@ -25,6 +104,9 @@ class RoamBlogGenerator {
       // Build backlinks
       this.extractBacklinks(page);
     });
+    
+    // Build the page-to-section mapping
+    this.buildPageSectionMap();
   }
 
   isDatePage(title) {
@@ -91,7 +173,7 @@ class RoamBlogGenerator {
     return dateString;
   }
 
-  parseContent(children, level = 0) {
+  parseContent(children, level = 0, currentSection = '') {
     if (!children) return '';
     
     let html = '';
@@ -104,26 +186,26 @@ class RoamBlogGenerator {
       
       if (child.heading) {
         // Add heading
-        html += `<h${child.heading}>${this.formatInlineContent(child.string || '')}</h${child.heading}>\n`;
+        html += `<h${child.heading}>${this.formatInlineContent(child.string || '', currentSection)}</h${child.heading}>\n`;
       } else if (child.string && child.string.trim()) {
         // Each block with string content becomes its own paragraph
-        html += `<p>${this.formatInlineContent(child.string.trim())}</p>\n`;
+        html += `<p>${this.formatInlineContent(child.string.trim(), currentSection)}</p>\n`;
       }
       
       // Process nested children, but skip if parent was "Metadata"
       if (child.children && !(child.heading === 1 && child.string === 'Metadata')) {
-        html += this.parseContent(child.children, level + 1);
+        html += this.parseContent(child.children, level + 1, currentSection);
       }
     });
     
     return html;
   }
 
-  formatInlineContent(text) {
+  formatInlineContent(text, currentSection = '') {
     // Handle Roam links [[Page Title]]
     text = text.replace(/\[\[([^\]]+)\]\]/g, (match, title) => {
-      const slug = this.titleToSlug(title);
-      return `<a href="${slug}.html">${title}</a>`;
+      const url = this.getPageUrl(title, currentSection);
+      return `<a href="${url}">${title}</a>`;
     });
     
     // Handle Tufte CSS sidenotes (+1 content)
@@ -224,7 +306,7 @@ class RoamBlogGenerator {
             
             if (linkedPage) {
               const metadata = this.extractMetadata(linkedPage);
-              const content = this.parseContent(linkedPage.children);
+              const content = this.parseContent(linkedPage.children, 0, 'stream');
               
               labPosts.push({
                 title: linkedPageTitle,
@@ -262,7 +344,7 @@ class RoamBlogGenerator {
             
             if (artifactPage) {
               const metadata = this.extractMetadata(artifactPage);
-              const content = this.parseContent(artifactPage.children);
+              const content = this.parseContent(artifactPage.children, 0, 'garden');
               
               gardenArtifacts.push({
                 title: artifactTitle,
@@ -294,7 +376,7 @@ class RoamBlogGenerator {
             
             if (essayPage) {
               const metadata = this.extractMetadata(essayPage);
-              const content = this.parseContent(essayPage.children);
+              const content = this.parseContent(essayPage.children, 0, 'essays');
               
               essays.push({
                 title: essayTitle,
@@ -396,8 +478,8 @@ class RoamBlogGenerator {
         <h3>Referenced by</h3>
         <ul>
           ${post.backlinks.map(backlinkTitle => {
-            const slug = this.titleToSlug(backlinkTitle);
-            return `<li><a href="../${slug}.html">${backlinkTitle}</a></li>`;
+            const url = this.getPageUrl(backlinkTitle, 'lab');
+            return `<li><a href="${url}">${backlinkTitle}</a></li>`;
           }).join('\n          ')}
         </ul>
       </div>`;
@@ -464,8 +546,8 @@ class RoamBlogGenerator {
         <h3>Referenced by</h3>
         <ul>
           ${essay.backlinks.map(backlinkTitle => {
-            const slug = this.titleToSlug(backlinkTitle);
-            return `<li><a href="../${slug}.html">${backlinkTitle}</a></li>`;
+            const url = this.getPageUrl(backlinkTitle, 'essays');
+            return `<li><a href="${url}">${backlinkTitle}</a></li>`;
           }).join('\n          ')}
         </ul>
       </div>`;
