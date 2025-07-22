@@ -425,13 +425,14 @@ class RoamBlogGenerator {
     
     console.log('🌊 Generating stream.html...');
     let streamHTML = await fs.readFile('stream.html', 'utf8');
-    const streamPostsHTML = streamPosts.map(post => 
-      `<div class="post-entry">
+    const streamPostsHTML = streamPosts.map(post => {
+      const tagsText = post.tags ? ` | Tags: ${post.tags.join(', ')}` : '';
+      return `<div class="post-entry">
          <h3 class="post-title">${post.title}</h3>
-         <div class="post-meta">${post.date}${post.category ? ` | ${post.category}` : ''}</div>
+         <div class="post-meta">${post.date}${post.category ? ` | ${post.category}` : ''}${tagsText}</div>
          <div class="post-content">${post.content}</div>
-       </div>`
-    ).join('\n');
+       </div>`;
+    }).join('\n');
     
     streamHTML = streamHTML.replace('{{stream-posts}}', streamPostsHTML);
     await fs.writeFile('dist/stream.html', streamHTML);
@@ -439,7 +440,8 @@ class RoamBlogGenerator {
     
     console.log('🧪 Generating lab posts...');
     for (const post of labPosts) {
-      const metadata = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}${post.category ? ` | ${post.category}` : ''}`;
+      const tagsText = post.tags ? ` | Tags: ${post.tags.join(', ')}` : '';
+      const metadata = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}${tagsText}`;
       
       let backlinksHTML = '';
       if (post.backlinks && post.backlinks.length > 0) {
@@ -468,6 +470,8 @@ class RoamBlogGenerator {
     
     console.log('🌱 Generating garden artifacts...');
     for (const artifact of gardenArtifacts) {
+      const tagsText = artifact.tags ? `Tags: ${artifact.tags.join(', ')}` : '';
+      
       const html = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -490,6 +494,7 @@ class RoamBlogGenerator {
     <article>
       <h1>${artifact.title}</h1>
       ${artifact.subtitle ? `<p class="subtitle">${artifact.subtitle}</p>` : ''}
+      ${tagsText ? `<div class="post-meta">${tagsText}</div>` : ''}
       <section>
         ${artifact.content}
       </section>
@@ -503,7 +508,14 @@ class RoamBlogGenerator {
     
     console.log('📖 Generating essays...');
     for (const essay of essays) {
-      const metadata = `${essay.dateCreated ? `Created: ${essay.dateCreated}` : ''}${essay.dateUpdated ? ` | Updated: ${essay.dateUpdated}` : ''}${essay.category ? ` | ${essay.category}` : ''}`;
+      // For essays: show category (differentiated) and tags
+      const categoryText = essay.category ? `Category: ${essay.category}` : '';
+      const tagsText = essay.tags ? `Tags: ${essay.tags.join(', ')}` : '';
+      const dateText = `${essay.dateCreated ? `Created: ${essay.dateCreated}` : ''}${essay.dateUpdated ? ` | Updated: ${essay.dateUpdated}` : ''}`;
+      
+      // Combine metadata with proper separators
+      const metadataParts = [dateText, categoryText, tagsText].filter(part => part.trim());
+      const metadata = metadataParts.join(' | ');
       
       let backlinksHTML = '';
       if (essay.backlinks && essay.backlinks.length > 0) {
