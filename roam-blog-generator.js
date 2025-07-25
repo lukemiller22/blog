@@ -293,6 +293,16 @@ class RoamBlogGenerator {
   }
 
   async updateIndexPages(streamPosts, gardenPosts) {
+    // Create the garden posts data for JavaScript
+    const gardenData = gardenPosts.map(post => ({
+      title: post.title,
+      slug: post.slug,
+      type: post.type || '',
+      tags: post.tags || [],
+      dateCreated: post.dateCreated || '',
+      dateUpdated: post.dateUpdated || ''
+    }));
+
     const gardenIndexHTML = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -300,6 +310,42 @@ class RoamBlogGenerator {
     <title>Garden - Luke Miller</title>
     <link rel="stylesheet" href="tufte-blog.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      .garden-controls {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background-color: #fafafa;
+        border: 1px solid #e6e6e6;
+      }
+      .garden-controls input, .garden-controls select {
+        padding: 0.5rem;
+        margin-right: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      .garden-controls input {
+        width: 300px;
+      }
+      .garden-controls select {
+        width: 150px;
+      }
+      .post-entry {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+      .post-entry.hidden {
+        display: none;
+      }
+      .no-results {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        margin: 2rem 0;
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <nav>
@@ -312,9 +358,21 @@ class RoamBlogGenerator {
     </nav>
     <article>
       <h1>Garden</h1>
-      <section>
+      
+      <div class="garden-controls">
+        <input type="text" id="searchInput" placeholder="Search posts..." />
+        <select id="typeFilter">
+          <option value="">All Types</option>
+          <option value="Element">Element</option>
+          <option value="Pattern">Pattern</option>
+          <option value="Structure">Structure</option>
+        </select>
+        <span id="resultCount">${gardenPosts.length} posts</span>
+      </div>
+
+      <section id="gardenPosts">
         ${gardenPosts.map(post => 
-          `<div class="post-entry">
+          `<div class="post-entry" data-type="${post.type || ''}" data-title="${post.title.toLowerCase()}" data-tags="${(post.tags || []).join(' ').toLowerCase()}">
              <h3 class="post-title">
                <a href="garden/${post.slug}.html">${post.title}</a>
              </h3>
@@ -324,7 +382,63 @@ class RoamBlogGenerator {
            </div>`
         ).join('\n        ')}
       </section>
+      
+      <div class="no-results" id="noResults">
+        No posts match your search criteria.
+      </div>
     </article>
+
+    <script>
+      const searchInput = document.getElementById('searchInput');
+      const typeFilter = document.getElementById('typeFilter');
+      const resultCount = document.getElementById('resultCount');
+      const noResults = document.getElementById('noResults');
+      const postEntries = document.querySelectorAll('.post-entry');
+
+      function filterPosts() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedType = typeFilter.value;
+        let visibleCount = 0;
+
+        postEntries.forEach(post => {
+          const title = post.dataset.title;
+          const tags = post.dataset.tags;
+          const type = post.dataset.type;
+          
+          // Check if post matches search term (in title or tags)
+          const matchesSearch = !searchTerm || 
+            title.includes(searchTerm) || 
+            tags.includes(searchTerm);
+          
+          // Check if post matches type filter
+          const matchesType = !selectedType || type === selectedType;
+          
+          // Show post if it matches both criteria
+          if (matchesSearch && matchesType) {
+            post.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            post.classList.add('hidden');
+          }
+        });
+
+        // Update result count and show/hide no results message
+        resultCount.textContent = \`\${visibleCount} post\${visibleCount !== 1 ? 's' : ''}\`;
+        
+        if (visibleCount === 0) {
+          noResults.style.display = 'block';
+        } else {
+          noResults.style.display = 'none';
+        }
+      }
+
+      // Add event listeners
+      searchInput.addEventListener('input', filterPosts);
+      typeFilter.addEventListener('change', filterPosts);
+      
+      // Initial filter
+      filterPosts();
+    </script>
   </body>
 </html>`;
     
