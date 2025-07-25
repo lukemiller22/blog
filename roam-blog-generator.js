@@ -315,9 +315,7 @@ class RoamBlogGenerator {
       }
       .garden-controls {
         margin-bottom: 2rem;
-        padding: 1rem;
-        background-color: #fafafa;
-        border: 1px solid #e6e6e6;
+        padding: 0;
         width: 100%;
         box-sizing: border-box;
       }
@@ -327,6 +325,7 @@ class RoamBlogGenerator {
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 1rem;
+        background-color: white;
       }
       .garden-controls input {
         width: 300px;
