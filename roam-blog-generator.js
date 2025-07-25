@@ -310,11 +310,16 @@ class RoamBlogGenerator {
     <link rel="stylesheet" href="tufte-blog.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+      article {
+        position: relative;
+      }
       .garden-controls {
         margin-bottom: 2rem;
         padding: 1rem;
         background-color: #fafafa;
         border: 1px solid #e6e6e6;
+        width: 100%;
+        box-sizing: border-box;
       }
       .garden-controls input, .garden-controls select {
         padding: 0.5rem;
@@ -325,7 +330,6 @@ class RoamBlogGenerator {
       }
       .garden-controls input {
         width: 300px;
-        max-width: 60%;
       }
       .garden-controls select {
         width: 150px;
@@ -380,16 +384,23 @@ class RoamBlogGenerator {
       </div>
 
       <section id="gardenPosts">
-        ${gardenPosts.map(post => 
-          `<div class="post-entry" data-type="${post.type || ''}" data-title="${post.title.toLowerCase()}" data-tags="${(post.tags || []).join(' ').toLowerCase()}" data-content="${stripHtml(post.content)}">
+        ${gardenPosts.map(post => {
+          const searchableContent = stripHtml(post.content);
+          console.log('Processing post:', post.title);
+          console.log('Full content length:', searchableContent.length);
+          console.log('Content preview:', searchableContent.substring(0, 200));
+          console.log('Contains "intellectual":', searchableContent.includes('intellectual'));
+          
+          return `<div class="post-entry" data-type="${post.type || ''}" data-title="${post.title.toLowerCase()}" data-tags="${(post.tags || []).join(' ').toLowerCase()}">
              <h3 class="post-title">
                <a href="garden/${post.slug}.html">${post.title}</a>
              </h3>
              <div class="post-meta">
                ${post.type ? `Type: ${post.type}` : ''}${post.type && (post.dateCreated || post.dateUpdated) ? ' | ' : ''}${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}
              </div>
-           </div>`
-        ).join('\n        ')}
+             <div class="hidden-content" style="display: none;">${searchableContent}</div>
+           </div>`;
+        }).join('\n        ')}
       </section>
       
       <div class="no-results" id="noResults">
@@ -412,13 +423,14 @@ class RoamBlogGenerator {
         postEntries.forEach(post => {
           const title = post.dataset.title;
           const tags = post.dataset.tags;
-          const content = post.dataset.content;
+          const content = post.querySelector('.hidden-content').textContent.toLowerCase();
           const type = post.dataset.type;
           
           console.log('Debugging search:', {
             searchTerm,
             title: title.substring(0, 50),
             content: content.substring(0, 100),
+            fullContent: content.includes('intellectual'),
             titleMatch: title.includes(searchTerm),
             contentMatch: content.includes(searchTerm)
           });
