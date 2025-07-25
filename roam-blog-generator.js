@@ -295,7 +295,11 @@ class RoamBlogGenerator {
   async updateIndexPages(streamPosts, gardenPosts) {
     // Helper function to strip HTML tags and get plain text for searching
     const stripHtml = (html) => {
-      return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+      return html.replace(/<[^>]*>/g, ' ')
+                 .replace(/&[^;]+;/g, ' ')
+                 .replace(/\s+/g, ' ')
+                 .trim()
+                 .toLowerCase();
     };
 
     const gardenIndexHTML = `<!DOCTYPE html>
@@ -307,8 +311,7 @@ class RoamBlogGenerator {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       .garden-controls {
-        max-width: 55rem;
-        margin: 0 auto 2rem auto;
+        margin-bottom: 2rem;
         padding: 1rem;
         background-color: #fafafa;
         border: 1px solid #e6e6e6;
@@ -411,6 +414,14 @@ class RoamBlogGenerator {
           const tags = post.dataset.tags;
           const content = post.dataset.content;
           const type = post.dataset.type;
+          
+          console.log('Debugging search:', {
+            searchTerm,
+            title: title.substring(0, 50),
+            content: content.substring(0, 100),
+            titleMatch: title.includes(searchTerm),
+            contentMatch: content.includes(searchTerm)
+          });
           
           // Check if post matches search term (in title, tags, or content)
           const matchesSearch = !searchTerm || 
