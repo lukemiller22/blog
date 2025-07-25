@@ -216,13 +216,13 @@ class RoamBlogGenerator {
       const findMetadata = (children) => {
         children.forEach(child => {
           if (child.string) {
-            const categoryMatch = child.string.match(/Category::\s*(.+)/);
+            const typeMatch = child.string.match(/Type::\s*(.+)/);
             const tagsMatch = child.string.match(/Tags::\s*(.+)/);
             const dateCreatedMatch = child.string.match(/Date Created::\s*\[\[([^\]]+)\]\]/);
             const dateUpdatedMatch = child.string.match(/Date Updated::\s*\[\[([^\]]+)\]\]/);
             const subtitleMatch = child.string.match(/Subtitle::\s*(.+)/);
             
-            if (categoryMatch) metadata.category = categoryMatch[1];
+            if (typeMatch) metadata.type = typeMatch[1];
             if (tagsMatch) metadata.tags = tagsMatch[1].split(',').map(t => t.trim());
             if (dateCreatedMatch) metadata.dateCreated = this.formatDate(dateCreatedMatch[1]);
             if (dateUpdatedMatch) metadata.dateUpdated = this.formatDate(dateUpdatedMatch[1]);
@@ -305,41 +305,36 @@ class RoamBlogGenerator {
   }
 
   generateGarden() {
-    const gardenPage = this.pages.get('Garden');
-    const gardenArtifacts = [];
-    
-    if (gardenPage && gardenPage.children) {
-      gardenPage.children.forEach(child => {
-        if (child.string && child.string.includes('[[')) {
-          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-          if (linkMatch) {
-            const artifactTitle = linkMatch[1];
-            const artifactPage = this.pages.get(artifactTitle);
+  const gardenPage = this.pages.get('Garden');
+  const gardenPosts = [];
+  
+  if (gardenPage && gardenPage.children) {
+    gardenPage.children.forEach(child => {
+      if (child.string && child.string.includes('[[')) {
+        const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+        if (linkMatch) {
+          const postTitle = linkMatch[1];
+          const postPage = this.pages.get(postTitle);
+          
+          if (postPage) {
+            const metadata = this.extractMetadata(postPage);
+            const content = this.parseContent(postPage.children, 0, 'garden');
             
-            let subtitle = '';
-            if (child.children && child.children[0] && child.children[0].string) {
-              subtitle = child.children[0].string;
-            }
-            
-            if (artifactPage) {
-              const metadata = this.extractMetadata(artifactPage);
-              const content = this.parseContent(artifactPage.children, 0, 'garden');
-              
-              gardenArtifacts.push({
-                title: artifactTitle,
-                slug: this.titleToSlug(artifactTitle),
-                subtitle: subtitle || metadata.subtitle || '',
-                content,
-                backlinks: this.backlinks.get(artifactTitle) || []
-              });
-            }
+            gardenPosts.push({
+              title: postTitle,
+              slug: this.titleToSlug(postTitle),
+              content,
+              backlinks: this.backlinks.get(postTitle) || [],
+              ...metadata
+            });
           }
         }
-      });
-    }
-    
-    return gardenArtifacts;
+      }
+    });
   }
+  
+  return gardenPosts;
+}
 
   generateEssays() {
     const essaysPage = this.pages.get('Essays');
@@ -412,8 +407,8 @@ class RoamBlogGenerator {
     const labPosts = this.generateLab();
     console.log(`🧪 Lab posts: ${labPosts.length}`);
     
-    const gardenArtifacts = this.generateGarden();
-    console.log(`🌱 Garden artifacts: ${gardenArtifacts.length}`);
+    const gardenPosts = this.generateGarden();
+    console.log(`🌱 Garden posts: ${gardenPosts.length}`);
     
     const essays = this.generateEssays();
     console.log(`📖 Essays: ${essays.length}`);
@@ -432,7 +427,7 @@ class RoamBlogGenerator {
          <h3 class="post-title">
            <a href="stream/${post.slug}.html">${post.title}</a>
          </h3>
-         <div class="post-meta">${post.date}${post.category ? ` | ${post.category}` : ''}${tagsText}</div>
+         <div class="post-meta">${post.date}${post.type ? ` | ${post.type}` : ''}${tagsText}</div>
          <div class="post-content">${post.content}</div>
        </div>`;
     }).join('\n');
@@ -445,7 +440,7 @@ class RoamBlogGenerator {
     console.log('🌊 Generating individual stream posts...');
     for (const post of streamPosts) {
       const tagsText = post.tags ? ` | Tags: ${post.tags.join(', ')}` : '';
-      const metadata = `${post.date}${post.category ? ` | ${post.category}` : ''}${tagsText}`;
+      const metadata = `${post.date}${post.type ? ` | ${post.type}` : ''}${tagsText}`;
       
       let backlinksHTML = '';
       if (post.backlinks && post.backlinks.length > 0) {
@@ -502,8 +497,8 @@ class RoamBlogGenerator {
     }
     console.log('✅ Lab posts generated');
     
-    console.log('🌱 Generating garden artifacts...');
-    for (const artifact of gardenArtifacts) {
+    console.log('🌱 Generating garden posts...');
+    for (const post of gardenPosts) {
       const tagsText = artifact.tags ? `Tags: ${artifact.tags.join(', ')}` : '';
       
       const html = `<!DOCTYPE html>
@@ -543,12 +538,12 @@ class RoamBlogGenerator {
     console.log('📖 Generating essays...');
     for (const essay of essays) {
       // For essays: show category (differentiated) and tags
-      const categoryText = essay.category ? `Category: ${essay.category}` : '';
+      const typeText = essay.type ? `Type: ${essay.type}` : '';
       const tagsText = essay.tags ? `Tags: ${essay.tags.join(', ')}` : '';
       const dateText = `${essay.dateCreated ? `Created: ${essay.dateCreated}` : ''}${essay.dateUpdated ? ` | Updated: ${essay.dateUpdated}` : ''}`;
       
       // Combine metadata with proper separators
-      const metadataParts = [dateText, categoryText, tagsText].filter(part => part.trim());
+      const metadataParts = [dateText, typeText, tagsText].filter(part => part.trim());
       const metadata = metadataParts.join(' | ');
       
       let backlinksHTML = '';
@@ -576,7 +571,7 @@ class RoamBlogGenerator {
     }
     console.log('✅ Essays generated');
     
-    await this.updateIndexPages(streamPosts, labPosts, gardenArtifacts, essays);
+    await this.updateIndexPages(streamPosts, labPosts, gardenPosts, essays);
     
     const staticPages = ['index.html', 'about.html'];
     for (const page of staticPages) {
