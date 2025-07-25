@@ -293,15 +293,10 @@ class RoamBlogGenerator {
   }
 
   async updateIndexPages(streamPosts, gardenPosts) {
-    // Create the garden posts data for JavaScript
-    const gardenData = gardenPosts.map(post => ({
-      title: post.title,
-      slug: post.slug,
-      type: post.type || '',
-      tags: post.tags || [],
-      dateCreated: post.dateCreated || '',
-      dateUpdated: post.dateUpdated || ''
-    }));
+    // Helper function to strip HTML tags and get plain text for searching
+    const stripHtml = (html) => {
+      return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
+    };
 
     const gardenIndexHTML = `<!DOCTYPE html>
 <html lang="en">
@@ -312,7 +307,8 @@ class RoamBlogGenerator {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       .garden-controls {
-        margin-bottom: 2rem;
+        max-width: 55rem;
+        margin: 0 auto 2rem auto;
         padding: 1rem;
         background-color: #fafafa;
         border: 1px solid #e6e6e6;
@@ -326,6 +322,7 @@ class RoamBlogGenerator {
       }
       .garden-controls input {
         width: 300px;
+        max-width: 60%;
       }
       .garden-controls select {
         width: 150px;
@@ -344,6 +341,15 @@ class RoamBlogGenerator {
         font-style: italic;
         margin: 2rem 0;
         display: none;
+      }
+      @media (max-width: 760px) {
+        .garden-controls input {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+        .garden-controls select {
+          width: 100%;
+        }
       }
     </style>
   </head>
@@ -372,7 +378,7 @@ class RoamBlogGenerator {
 
       <section id="gardenPosts">
         ${gardenPosts.map(post => 
-          `<div class="post-entry" data-type="${post.type || ''}" data-title="${post.title.toLowerCase()}" data-tags="${(post.tags || []).join(' ').toLowerCase()}">
+          `<div class="post-entry" data-type="${post.type || ''}" data-title="${post.title.toLowerCase()}" data-tags="${(post.tags || []).join(' ').toLowerCase()}" data-content="${stripHtml(post.content)}">
              <h3 class="post-title">
                <a href="garden/${post.slug}.html">${post.title}</a>
              </h3>
@@ -403,12 +409,14 @@ class RoamBlogGenerator {
         postEntries.forEach(post => {
           const title = post.dataset.title;
           const tags = post.dataset.tags;
+          const content = post.dataset.content;
           const type = post.dataset.type;
           
-          // Check if post matches search term (in title or tags)
+          // Check if post matches search term (in title, tags, or content)
           const matchesSearch = !searchTerm || 
             title.includes(searchTerm) || 
-            tags.includes(searchTerm);
+            tags.includes(searchTerm) ||
+            content.includes(searchTerm);
           
           // Check if post matches type filter
           const matchesType = !selectedType || type === selectedType;
