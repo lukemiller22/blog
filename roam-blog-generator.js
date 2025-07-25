@@ -499,13 +499,13 @@ class RoamBlogGenerator {
     
     console.log('🌱 Generating garden posts...');
     for (const post of gardenPosts) {
-      const tagsText = artifact.tags ? `Tags: ${artifact.tags.join(', ')}` : '';
+      const tagsText = post.tags ? `Tags: ${post.tags.join(', ')}` : '';
       
       const html = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>${artifact.title} - Garden - Luke Miller</title>
+    <title>${post.title} - Garden - Luke Miller</title>
     <link rel="stylesheet" href="../tufte-blog.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -521,19 +521,19 @@ class RoamBlogGenerator {
       </ul>
     </nav>
     <article>
-      <h1>${artifact.title}</h1>
-      ${artifact.subtitle ? `<p class="subtitle">${artifact.subtitle}</p>` : ''}
+      <h1>${post.title}</h1>
+      ${post.subtitle ? `<p class="subtitle">${post.subtitle}</p>` : ''}
       ${tagsText ? `<div class="post-meta">${tagsText}</div>` : ''}
       <section>
-        ${artifact.content}
+        ${post.content}
       </section>
     </article>
   </body>
 </html>`;
       
-      await fs.writeFile(`dist/garden/${artifact.slug}.html`, html);
+      await fs.writeFile(`dist/garden/${post.slug}.html`, html);
     }
-    console.log('✅ Garden artifacts generated');
+    console.log('✅ Garden posts generated');
     
     console.log('📖 Generating essays...');
     for (const essay of essays) {
@@ -581,10 +581,10 @@ class RoamBlogGenerator {
     }
     
     console.log('✅ Blog generated successfully!');
-    console.log(`📊 Generated: ${streamPosts.length} stream posts, ${labPosts.length} lab posts, ${gardenArtifacts.length} garden artifacts, ${essays.length} essays`);
+    console.log(`📊 Generated: ${streamPosts.length} stream posts, ${labPosts.length} lab posts, ${gardenPosts.length} garden posts, ${essays.length} essays`);
   }
 
-  async updateIndexPages(streamPosts, labPosts, gardenArtifacts, essays) {
+  async updateIndexPages(streamPosts, labPosts, gardenPosts, essays) {
     const labIndexHTML = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -646,12 +646,14 @@ class RoamBlogGenerator {
     <article>
       <h1>Garden</h1>
       <section>
-        ${gardenArtifacts.map(artifact => 
+        ${gardenPosts.map(post => 
           `<div class="post-entry">
              <h3 class="post-title">
-               <a href="garden/${artifact.slug}.html">${artifact.title}</a>
+               <a href="garden/${post.slug}.html">${post.title}</a>
              </h3>
-             <p class="garden-subtitle">${artifact.subtitle}</p>
+             <div class="post-meta">
+               ${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}
+             </div>
            </div>`
         ).join('\n        ')}
       </section>
