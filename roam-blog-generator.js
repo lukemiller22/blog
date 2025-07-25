@@ -36,7 +36,7 @@ class RoamBlogGenerator {
 
   extractBacklinks(page) {
     // Skip creating backlinks for main index pages and daily notes pages
-    const indexPages = ['Lab', 'Garden', 'Essays', 'Stream'];
+    const indexPages = ['Garden', 'Stream'];
     if (indexPages.includes(page.title) || this.isDatePage(page.title)) {
       return;
     }
@@ -67,20 +67,7 @@ class RoamBlogGenerator {
   }
 
   buildPageSectionMap() {
-    const labPage = this.pages.get('Lab');
     const gardenPage = this.pages.get('Garden');
-    const essaysPage = this.pages.get('Essays');
-    
-    if (labPage && labPage.children) {
-      labPage.children.forEach(child => {
-        if (child.string && child.string.includes('[[')) {
-          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-          if (linkMatch) {
-            this.pageToSection.set(linkMatch[1], 'lab');
-          }
-        }
-      });
-    }
     
     if (gardenPage && gardenPage.children) {
       gardenPage.children.forEach(child => {
@@ -93,17 +80,7 @@ class RoamBlogGenerator {
       });
     }
     
-    if (essaysPage && essaysPage.children) {
-      essaysPage.children.forEach(child => {
-        if (child.string && child.string.includes('[[')) {
-          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-          if (linkMatch) {
-            this.pageToSection.set(linkMatch[1], 'essays');
-          }
-        }
-      });
-    }
-    
+    // Map daily note links to stream
     this.dailyNotes.forEach((dailyNote) => {
       if (dailyNote.children) {
         dailyNote.children.forEach(child => {
@@ -272,91 +249,27 @@ class RoamBlogGenerator {
     return streamPosts;
   }
 
-  generateLab() {
-    const labPage = this.pages.get('Lab');
-    const labPosts = [];
-    
-    if (labPage && labPage.children) {
-      labPage.children.forEach(child => {
-        if (child.string && child.string.includes('[[')) {
-          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-          if (linkMatch) {
-            const linkedPageTitle = linkMatch[1];
-            const linkedPage = this.pages.get(linkedPageTitle);
-            
-            if (linkedPage) {
-              const metadata = this.extractMetadata(linkedPage);
-              const content = this.parseContent(linkedPage.children, 0, 'lab');
-              
-              labPosts.push({
-                title: linkedPageTitle,
-                slug: this.titleToSlug(linkedPageTitle),
-                content,
-                backlinks: this.backlinks.get(linkedPageTitle) || [],
-                ...metadata
-              });
-            }
-          }
-        }
-      });
-    }
-    
-    return labPosts;
-  }
-
   generateGarden() {
-  const gardenPage = this.pages.get('Garden');
-  const gardenPosts = [];
-  
-  if (gardenPage && gardenPage.children) {
-    gardenPage.children.forEach(child => {
-      if (child.string && child.string.includes('[[')) {
-        const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-        if (linkMatch) {
-          const postTitle = linkMatch[1];
-          const postPage = this.pages.get(postTitle);
-          
-          if (postPage) {
-            const metadata = this.extractMetadata(postPage);
-            const content = this.parseContent(postPage.children, 0, 'garden');
-            
-            gardenPosts.push({
-              title: postTitle,
-              slug: this.titleToSlug(postTitle),
-              content,
-              backlinks: this.backlinks.get(postTitle) || [],
-              ...metadata
-            });
-          }
-        }
-      }
-    });
-  }
-  
-  return gardenPosts;
-}
-
-  generateEssays() {
-    const essaysPage = this.pages.get('Essays');
-    const essays = [];
+    const gardenPage = this.pages.get('Garden');
+    const gardenPosts = [];
     
-    if (essaysPage && essaysPage.children) {
-      essaysPage.children.forEach(child => {
+    if (gardenPage && gardenPage.children) {
+      gardenPage.children.forEach(child => {
         if (child.string && child.string.includes('[[')) {
           const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
           if (linkMatch) {
-            const essayTitle = linkMatch[1];
-            const essayPage = this.pages.get(essayTitle);
+            const postTitle = linkMatch[1];
+            const postPage = this.pages.get(postTitle);
             
-            if (essayPage) {
-              const metadata = this.extractMetadata(essayPage);
-              const content = this.parseContent(essayPage.children, 0, 'essays');
+            if (postPage) {
+              const metadata = this.extractMetadata(postPage);
+              const content = this.parseContent(postPage.children, 0, 'garden');
               
-              essays.push({
-                title: essayTitle,
-                slug: this.titleToSlug(essayTitle),
+              gardenPosts.push({
+                title: postTitle,
+                slug: this.titleToSlug(postTitle),
                 content,
-                backlinks: this.backlinks.get(essayTitle) || [],
+                backlinks: this.backlinks.get(postTitle) || [],
                 ...metadata
               });
             }
@@ -365,7 +278,7 @@ class RoamBlogGenerator {
       });
     }
     
-    return essays;
+    return gardenPosts;
   }
 
   generateHTML(template, data) {
@@ -379,20 +292,57 @@ class RoamBlogGenerator {
     return html;
   }
 
+  async updateIndexPages(streamPosts, gardenPosts) {
+    const gardenIndexHTML = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <title>Garden - Luke Miller</title>
+    <link rel="stylesheet" href="tufte-blog.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="stream.html">Stream</a></li>
+        <li><a href="garden.html">Garden</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
+    <article>
+      <h1>Garden</h1>
+      <section>
+        ${gardenPosts.map(post => 
+          `<div class="post-entry">
+             <h3 class="post-title">
+               <a href="garden/${post.slug}.html">${post.title}</a>
+             </h3>
+             <div class="post-meta">
+               ${post.type ? `Type: ${post.type}` : ''}${post.type && (post.dateCreated || post.dateUpdated) ? ' | ' : ''}${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}
+             </div>
+           </div>`
+        ).join('\n        ')}
+      </section>
+    </article>
+  </body>
+</html>`;
+    
+    await fs.writeFile('dist/garden.html', gardenIndexHTML);
+  }
+
   async buildSite() {
     console.log('🚀 Starting blog generation...');
     console.log(`📚 Total pages in Roam: ${this.pages.size}`);
     console.log(`📅 Daily notes found: ${this.dailyNotes.size}`);
     
     console.log('🔍 Key pages found:');
-    ['Lab', 'Garden', 'Essays', 'Personal Lexicon', 'Chronological Snobbery'].forEach(key => {
+    ['Garden', 'Stream'].forEach(key => {
       console.log(`  - ${key}: ${this.pages.has(key) ? '✅' : '❌'}`);
     });
     
     await fs.ensureDir('dist');
-    await fs.ensureDir('dist/lab');
     await fs.ensureDir('dist/garden');
-    await fs.ensureDir('dist/essays');
     await fs.ensureDir('dist/stream');
     
     await fs.copy('tufte-blog.css', 'dist/tufte-blog.css');
@@ -404,18 +354,10 @@ class RoamBlogGenerator {
     const streamPosts = this.generateStream();
     console.log(`📰 Stream posts: ${streamPosts.length}`);
     
-    const labPosts = this.generateLab();
-    console.log(`🧪 Lab posts: ${labPosts.length}`);
-    
     const gardenPosts = this.generateGarden();
     console.log(`🌱 Garden posts: ${gardenPosts.length}`);
     
-    const essays = this.generateEssays();
-    console.log(`📖 Essays: ${essays.length}`);
-    
     console.log('📋 Loading templates...');
-    const labTemplate = await fs.readFile('templates/lab-post-template.html', 'utf8');
-    const essayTemplate = await fs.readFile('templates/essay-template.html', 'utf8');
     const streamTemplate = await fs.readFile('templates/stream-post-template.html', 'utf8');
     console.log('✅ Templates loaded successfully');
     
@@ -467,10 +409,15 @@ class RoamBlogGenerator {
     }
     console.log('✅ Individual stream posts generated');
     
-    console.log('🧪 Generating lab posts...');
-    for (const post of labPosts) {
-      const tagsText = post.tags ? ` | Tags: ${post.tags.join(', ')}` : '';
-      const metadata = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}${tagsText}`;
+    console.log('🌱 Generating garden posts...');
+    for (const post of gardenPosts) {
+      const typeText = post.type ? `Type: ${post.type}` : '';
+      const tagsText = post.tags ? `Tags: ${post.tags.join(', ')}` : '';
+      const dateText = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}`;
+      
+      // Combine metadata with proper separators
+      const metadataParts = [dateText, typeText, tagsText].filter(part => part.trim());
+      const metadata = metadataParts.join(' | ');
       
       let backlinksHTML = '';
       if (post.backlinks && post.backlinks.length > 0) {
@@ -479,27 +426,12 @@ class RoamBlogGenerator {
         <h3>Referenced by</h3>
         <ul>
           ${post.backlinks.map(backlinkTitle => {
-            const url = this.getPageUrl(backlinkTitle, 'lab');
+            const url = this.getPageUrl(backlinkTitle, 'garden');
             return `<li><a href="${url}">${backlinkTitle}</a></li>`;
           }).join('\n          ')}
         </ul>
       </div>`;
       }
-      
-      const html = this.generateHTML(labTemplate, {
-        title: post.title,
-        metadata,
-        content: post.content,
-        backlinks: backlinksHTML
-      });
-      
-      await fs.writeFile(`dist/lab/${post.slug}.html`, html);
-    }
-    console.log('✅ Lab posts generated');
-    
-    console.log('🌱 Generating garden posts...');
-    for (const post of gardenPosts) {
-      const tagsText = post.tags ? `Tags: ${post.tags.join(', ')}` : '';
       
       const html = `<!DOCTYPE html>
 <html lang="en">
@@ -520,11 +452,11 @@ class RoamBlogGenerator {
     </nav>
     <article>
       <h1>${post.title}</h1>
-      ${post.subtitle ? `<p class="subtitle">${post.subtitle}</p>` : ''}
-      ${tagsText ? `<div class="post-meta">${tagsText}</div>` : ''}
+      ${metadata ? `<div class="post-meta">${metadata}</div>` : ''}
       <section>
         ${post.content}
       </section>
+      ${backlinksHTML}
     </article>
   </body>
 </html>`;
@@ -533,43 +465,7 @@ class RoamBlogGenerator {
     }
     console.log('✅ Garden posts generated');
     
-    console.log('📖 Generating essays...');
-    for (const essay of essays) {
-      // For essays: show category (differentiated) and tags
-      const typeText = essay.type ? `Type: ${essay.type}` : '';
-      const tagsText = essay.tags ? `Tags: ${essay.tags.join(', ')}` : '';
-      const dateText = `${essay.dateCreated ? `Created: ${essay.dateCreated}` : ''}${essay.dateUpdated ? ` | Updated: ${essay.dateUpdated}` : ''}`;
-      
-      // Combine metadata with proper separators
-      const metadataParts = [dateText, typeText, tagsText].filter(part => part.trim());
-      const metadata = metadataParts.join(' | ');
-      
-      let backlinksHTML = '';
-      if (essay.backlinks && essay.backlinks.length > 0) {
-        backlinksHTML = `
-      <div class="backlinks">
-        <h3>Referenced by</h3>
-        <ul>
-          ${essay.backlinks.map(backlinkTitle => {
-            const url = this.getPageUrl(backlinkTitle, 'essays');
-            return `<li><a href="${url}">${backlinkTitle}</a></li>`;
-          }).join('\n          ')}
-        </ul>
-      </div>`;
-      }
-      
-      const html = this.generateHTML(essayTemplate, {
-        title: essay.title,
-        metadata,
-        content: essay.content,
-        backlinks: backlinksHTML
-      });
-      
-      await fs.writeFile(`dist/essays/${essay.slug}.html`, html);
-    }
-    console.log('✅ Essays generated');
-    
-    await this.updateIndexPages(streamPosts, labPosts, gardenPosts, essays);
+    await this.updateIndexPages(streamPosts, gardenPosts);
     
     const staticPages = ['index.html', 'about.html'];
     for (const page of staticPages) {
@@ -579,126 +475,7 @@ class RoamBlogGenerator {
     }
     
     console.log('✅ Blog generated successfully!');
-    console.log(`📊 Generated: ${streamPosts.length} stream posts, ${labPosts.length} lab posts, ${gardenPosts.length} garden posts, ${essays.length} essays`);
-  }
-
-  async updateIndexPages(streamPosts, labPosts, gardenPosts, essays) {
-    const labIndexHTML = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <title>Lab - Luke Miller</title>
-    <link rel="stylesheet" href="tufte-blog.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="stream.html">Stream</a></li>
-        <li><a href="lab.html">Lab</a></li>
-        <li><a href="garden.html">Garden</a></li>
-        <li><a href="essays.html">Essays</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
-    </nav>
-    <article>
-      <h1>Lab</h1>
-      <section>
-        ${labPosts.map(post => 
-          `<div class="post-entry">
-             <h3 class="post-title">
-               <a href="lab/${post.slug}.html">${post.title}</a>
-             </h3>
-             <div class="post-meta">
-               ${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}
-             </div>
-           </div>`
-        ).join('\n        ')}
-      </section>
-    </article>
-  </body>
-</html>`;
-    
-    await fs.writeFile('dist/lab.html', labIndexHTML);
-    
-    const gardenIndexHTML = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <title>Garden - Luke Miller</title>
-    <link rel="stylesheet" href="tufte-blog.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="stream.html">Stream</a></li>
-        <li><a href="lab.html">Lab</a></li>
-        <li><a href="garden.html">Garden</a></li>
-        <li><a href="essays.html">Essays</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
-    </nav>
-    <article>
-      <h1>Garden</h1>
-      <section>
-        ${gardenPosts.map(post => 
-          `<div class="post-entry">
-             <h3 class="post-title">
-               <a href="garden/${post.slug}.html">${post.title}</a>
-             </h3>
-             <div class="post-meta">
-               ${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}
-             </div>
-           </div>`
-        ).join('\n        ')}
-      </section>
-    </article>
-  </body>
-</html>`;
-    
-    await fs.writeFile('dist/garden.html', gardenIndexHTML);
-    
-    const essaysIndexHTML = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <title>Essays - Luke Miller</title>
-    <link rel="stylesheet" href="tufte-blog.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="stream.html">Stream</a></li>
-        <li><a href="lab.html">Lab</a></li>
-        <li><a href="garden.html">Garden</a></li>
-        <li><a href="essays.html">Essays</a></li>
-        <li><a href="about.html">About</a></li>
-      </ul>
-    </nav>
-    <article>
-      <h1>Essays</h1>
-      <section>
-        ${essays.map(essay => 
-          `<div class="post-entry">
-             <h3 class="post-title">
-               <a href="essays/${essay.slug}.html">${essay.title}</a>
-             </h3>
-             <div class="post-meta">
-               ${essay.dateCreated ? `Created: ${essay.dateCreated}` : ''}${essay.dateUpdated ? ` | Updated: ${essay.dateUpdated}` : ''}
-             </div>
-           </div>`
-        ).join('\n        ')}
-      </section>
-    </article>
-  </body>
-</html>`;
-    
-    await fs.writeFile('dist/essays.html', essaysIndexHTML);
+    console.log(`📊 Generated: ${streamPosts.length} stream posts, ${gardenPosts.length} garden posts`);
   }
 }
 
