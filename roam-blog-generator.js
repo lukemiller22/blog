@@ -187,34 +187,59 @@ class RoamBlogGenerator {
   }
 
   extractMetadata(page) {
-    const metadata = {};
-    
-    if (page.children) {
-      const findMetadata = (children) => {
-        children.forEach(child => {
-          if (child.string) {
-            const typeMatch = child.string.match(/Type::\s*(.+)/);
-            const tagsMatch = child.string.match(/Tags::\s*(.+)/);
-            const dateCreatedMatch = child.string.match(/Date Created::\s*\[\[([^\]]+)\]\]/);
-            const dateUpdatedMatch = child.string.match(/Date Updated::\s*\[\[([^\]]+)\]\]/);
-            const subtitleMatch = child.string.match(/Subtitle::\s*(.+)/);
-            
-            if (typeMatch) metadata.type = typeMatch[1];
-            if (tagsMatch) metadata.tags = tagsMatch[1].split(',').map(t => t.trim());
-            if (dateCreatedMatch) metadata.dateCreated = this.formatDate(dateCreatedMatch[1]);
-            if (dateUpdatedMatch) metadata.dateUpdated = this.formatDate(dateUpdatedMatch[1]);
-            if (subtitleMatch) metadata.subtitle = subtitleMatch[1];
-          }
+  const metadata = {};
+  
+  if (page.children) {
+    const findMetadata = (children) => {
+      children.forEach(child => {
+        if (child.string) {
+          const typeMatch = child.string.match(/Type::\s*(.+)/);
+          const tagsMatch = child.string.match(/Tags::\s*(.+)/);
+          const dateCreatedMatch = child.string.match(/Date Created::\s*\[\[([^\]]+)\]\]/);
+          const dateUpdatedMatch = child.string.match(/Date Updated::\s*\[\[([^\]]+)\]\]/);
+          const subtitleMatch = child.string.match(/Subtitle::\s*(.+)/);
           
-          if (child.children) findMetadata(child.children);
-        });
-      };
-      
-      findMetadata(page.children);
-    }
+          if (typeMatch) metadata.type = typeMatch[1];
+          if (tagsMatch) {
+            // Keep the raw tags string with wikilinks intact
+            metadata.tagsRaw = tagsMatch[1];
+            // Also create a clean array for any processing that needs plain text
+            metadata.tags = tagsMatch[1]
+              .split(',')
+              .map(t => t.replace(/\[\[([^\]]+)\]\]/g, '$1').trim()); // Remove [[ ]] for plain text version
+          }
+          if (dateCreatedMatch) metadata.dateCreated = this.formatDate(dateCreatedMatch[1]);
+          if (dateUpdatedMatch) metadata.dateUpdated = this.formatDate(dateUpdatedMatch[1]);
+          if (subtitleMatch) metadata.subtitle = subtitleMatch[1];
+        }
+        
+        if (child.children) findMetadata(child.children);
+      });
+    };
     
-    return metadata;
+    findMetadata(page.children);
   }
+  
+  return metadata;
+}
+
+formatTags(tagsRaw, currentSection = '') {
+  if (!tagsRaw) return '';
+  
+  // Split by comma and process each tag individually
+  const tagLinks = tagsRaw.split(',').map(tag => {
+    const trimmedTag = tag.trim();
+    // If it's a wikilink, make it clickable
+    if (trimmedTag.includes('[[')) {
+      return this.formatInlineContent(trimmedTag, currentSection);
+    } else {
+      // Plain text tag, just return as-is
+      return trimmedTag;
+    }
+  });
+  
+  return tagLinks.join(', ');
+}
 
   generateStream() {
     const streamPosts = [];
@@ -508,7 +533,7 @@ class RoamBlogGenerator {
     console.log('🌊 Generating stream.html...');
     let streamHTML = await fs.readFile('stream.html', 'utf8');
     const streamPostsHTML = streamPosts.map(post => {
-      const tagsText = post.tags ? ` | Tags: ${post.tags.join(', ')}` : '';
+      const tagsText = post.tagsRaw ? ` | Tags: ${this.formatTags(post.tagsRaw, 'root')}` : '';
       return `<div class="post-entry">
          <h3 class="post-title">
            <a href="stream/${post.slug}.html">${post.title}</a>
@@ -525,7 +550,7 @@ class RoamBlogGenerator {
     // Generate individual stream post pages
     console.log('🌊 Generating individual stream posts...');
     for (const post of streamPosts) {
-      const tagsText = post.tags ? ` | Tags: ${post.tags.join(', ')}` : '';
+      const tagsText = post.tagsRaw ? ` | Tags: ${this.formatTags(post.tagsRaw, 'stream')}` : '';
       const metadata = `${post.date}${post.type ? ` | ${post.type}` : ''}${tagsText}`;
       
       let backlinksHTML = '';
@@ -556,7 +581,7 @@ class RoamBlogGenerator {
     console.log('🌱 Generating garden posts...');
     for (const post of gardenPosts) {
       const typeText = post.type ? `Type: ${post.type}` : '';
-      const tagsText = post.tags ? `Tags: ${post.tags.join(', ')}` : '';
+      const tagsText = post.tagsRaw ? `Tags: ${this.formatTags(post.tagsRaw, 'garden')}` : '';
       const dateText = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}`;
       
       // Combine metadata with proper separators
