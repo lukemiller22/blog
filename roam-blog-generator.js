@@ -169,6 +169,9 @@ class RoamBlogGenerator {
   }
 
   formatInlineContent(text, currentSection = '') {
+    // Handle images: ![](URL) -> <img> tags
+    text = text.replace(/!\[\]\(([^)]+)\)/g, '<img src="$1" alt="" style="max-width: 100%; height: auto;" />');
+    
     // Handle sidenotes: (+1 content) -> numbered sidenote
     text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
       const id = `sn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
