@@ -36,7 +36,7 @@ class RoamBlogGenerator {
 
   extractBacklinks(page) {
     // Skip creating backlinks for main index pages and daily notes pages
-    const indexPages = ['Garden', 'Stream'];
+    const indexPages = ['Garden', 'Stream', 'Lab', 'Essays'];
     if (indexPages.includes(page.title) || this.isDatePage(page.title)) {
       return;
     }
@@ -67,18 +67,21 @@ class RoamBlogGenerator {
   }
 
   buildPageSectionMap() {
-    const gardenPage = this.pages.get('Garden');
+    const sectionPages = ['Garden', 'Lab', 'Essays'];
     
-    if (gardenPage && gardenPage.children) {
-      gardenPage.children.forEach(child => {
-        if (child.string && child.string.includes('[[')) {
-          const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-          if (linkMatch) {
-            this.pageToSection.set(linkMatch[1], 'garden');
+    sectionPages.forEach(sectionName => {
+      const sectionPage = this.pages.get(sectionName);
+      if (sectionPage && sectionPage.children) {
+        sectionPage.children.forEach(child => {
+          if (child.string && child.string.includes('[[')) {
+            const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
+            if (linkMatch) {
+              this.pageToSection.set(linkMatch[1], sectionName.toLowerCase());
+            }
           }
-        }
-      });
-    }
+        });
+      }
+    });
     
     // Map daily note links to stream
     this.dailyNotes.forEach((dailyNote) => {
@@ -125,57 +128,36 @@ class RoamBlogGenerator {
     return dateString;
   }
 
-  getPageUrl(title, currentSection = '') {
-    const slug = this.titleToSlug(title);
-    const section = this.pageToSection.get(title);
+  getPageUrl(pageTitle, currentSection) {
+    const section = this.pageToSection.get(pageTitle) || 'stream';
+    const slug = this.titleToSlug(pageTitle);
     
-    if (!section) {
-      return currentSection ? `${slug}.html` : `${slug}.html`;
-    }
-    
-    if (currentSection && currentSection !== 'root') {
-      return `../${section}/${slug}.html`;
+    if (currentSection === section) {
+      return `${slug}.html`;
     } else {
-      return `${section}/${slug}.html`;
+      return `../${section}/${slug}.html`;
     }
   }
 
-  formatInlineContent(text, currentSection = '') {
-    text = text.replace(/\[\[([^\]]+)\]\]/g, (match, title) => {
-      const url = this.getPageUrl(title, currentSection);
-      return `<a href="${url}">${title}</a>`;
-    });
-    
-    text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
-      const id = `sn-${Date.now()}-${num}`;
-      return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
-    });
-    
-    text = text.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
-      const id = `mn-${Date.now()}`;
-      return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
-    });
-    
-    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-    
-    return text;
-  }
-
-  parseContent(children, level = 0, currentSection = '') {
+  parseContent(children, level = 0, currentSection = 'stream') {
     if (!children) return '';
     
     let html = '';
     
     children.forEach(child => {
-      if (child.heading === 1 && child.string === 'Metadata') {
+      if (child.heading && child.heading === 1 && child.string === 'Metadata') {
         return;
       }
       
-      if (child.heading) {
-        html += `<h${child.heading}>${this.formatInlineContent(child.string || '', currentSection)}</h${child.heading}>\n`;
-      } else if (child.string && child.string.trim()) {
-        html += `<p>${this.formatInlineContent(child.string.trim(), currentSection)}</p>\n`;
+      if (child.string) {
+        const content = this.formatInlineContent(child.string, currentSection);
+        
+        if (child.heading) {
+          const headingLevel = Math.min(child.heading + level, 6);
+          html += `<h${headingLevel}>${content}</h${headingLevel}>\n`;
+        } else {
+          html += `<p>${content}</p>\n`;
+        }
       }
       
       if (child.children && !(child.heading === 1 && child.string === 'Metadata')) {
@@ -186,60 +168,65 @@ class RoamBlogGenerator {
     return html;
   }
 
-  extractMetadata(page) {
-  const metadata = {};
-  
-  if (page.children) {
-    const findMetadata = (children) => {
-      children.forEach(child => {
-        if (child.string) {
-          const typeMatch = child.string.match(/Type::\s*(.+)/);
-          const tagsMatch = child.string.match(/Tags::\s*(.+)/);
-          const dateCreatedMatch = child.string.match(/Date Created::\s*\[\[([^\]]+)\]\]/);
-          const dateUpdatedMatch = child.string.match(/Date Updated::\s*\[\[([^\]]+)\]\]/);
-          const subtitleMatch = child.string.match(/Subtitle::\s*(.+)/);
-          
-          if (typeMatch) metadata.type = typeMatch[1];
-          if (tagsMatch) {
-            // Keep the raw tags string with wikilinks intact
-            metadata.tagsRaw = tagsMatch[1];
-            // Also create a clean array for any processing that needs plain text
-            metadata.tags = tagsMatch[1]
-              .split(',')
-              .map(t => t.replace(/\[\[([^\]]+)\]\]/g, '$1').trim()); // Remove [[ ]] for plain text version
-          }
-          if (dateCreatedMatch) metadata.dateCreated = this.formatDate(dateCreatedMatch[1]);
-          if (dateUpdatedMatch) metadata.dateUpdated = this.formatDate(dateUpdatedMatch[1]);
-          if (subtitleMatch) metadata.subtitle = subtitleMatch[1];
-        }
-        
-        if (child.children) findMetadata(child.children);
-      });
-    };
-    
-    findMetadata(page.children);
+  formatInlineContent(text, currentSection = '') {
+    return text
+      .replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
+        const url = this.getPageUrl(linkText, currentSection);
+        return `<a href="${url}">${linkText}</a>`;
+      })
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*([^*]+)\*/g, '<em>$1</em>');
   }
-  
-  return metadata;
-}
 
-formatTags(tagsRaw, currentSection = '') {
-  if (!tagsRaw) return '';
-  
-  // Split by comma and process each tag individually
-  const tagLinks = tagsRaw.split(',').map(tag => {
-    const trimmedTag = tag.trim();
-    // If it's a wikilink, make it clickable
-    if (trimmedTag.includes('[[')) {
-      return this.formatInlineContent(trimmedTag, currentSection);
-    } else {
-      // Plain text tag, just return as-is
-      return trimmedTag;
+  extractMetadata(page) {
+    const metadata = {};
+    
+    if (page.children) {
+      const findMetadata = (children) => {
+        children.forEach(child => {
+          if (child.string) {
+            const typeMatch = child.string.match(/Type::\s*(.+)/);
+            const tagsMatch = child.string.match(/Tags::\s*(.+)/);
+            const dateCreatedMatch = child.string.match(/Date Created::\s*\[\[([^\]]+)\]\]/);
+            const dateUpdatedMatch = child.string.match(/Date Updated::\s*\[\[([^\]]+)\]\]/);
+            const subtitleMatch = child.string.match(/Subtitle::\s*(.+)/);
+            
+            if (typeMatch) metadata.type = typeMatch[1];
+            if (tagsMatch) {
+              metadata.tagsRaw = tagsMatch[1];
+              metadata.tags = tagsMatch[1]
+                .split(',')
+                .map(t => t.replace(/\[\[([^\]]+)\]\]/g, '$1').trim());
+            }
+            if (dateCreatedMatch) metadata.dateCreated = this.formatDate(dateCreatedMatch[1]);
+            if (dateUpdatedMatch) metadata.dateUpdated = this.formatDate(dateUpdatedMatch[1]);
+            if (subtitleMatch) metadata.subtitle = subtitleMatch[1];
+          }
+          
+          if (child.children) findMetadata(child.children);
+        });
+      };
+      
+      findMetadata(page.children);
     }
-  });
-  
-  return tagLinks.join(', ');
-}
+    
+    return metadata;
+  }
+
+  formatTags(tagsRaw, currentSection = '') {
+    if (!tagsRaw) return '';
+    
+    const tagLinks = tagsRaw.split(',').map(tag => {
+      const trimmedTag = tag.trim();
+      if (trimmedTag.includes('[[')) {
+        return this.formatInlineContent(trimmedTag, currentSection);
+      } else {
+        return trimmedTag;
+      }
+    });
+    
+    return tagLinks.join(', ');
+  }
 
   generateStream() {
     const streamPosts = [];
@@ -274,12 +261,12 @@ formatTags(tagsRaw, currentSection = '') {
     return streamPosts;
   }
 
-  generateGarden() {
-    const gardenPage = this.pages.get('Garden');
-    const gardenPosts = [];
+  generateSectionPosts(sectionName) {
+    const sectionPage = this.pages.get(sectionName);
+    const posts = [];
     
-    if (gardenPage && gardenPage.children) {
-      gardenPage.children.forEach(child => {
+    if (sectionPage && sectionPage.children) {
+      sectionPage.children.forEach(child => {
         if (child.string && child.string.includes('[[')) {
           const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
           if (linkMatch) {
@@ -288,9 +275,9 @@ formatTags(tagsRaw, currentSection = '') {
             
             if (postPage) {
               const metadata = this.extractMetadata(postPage);
-              const content = this.parseContent(postPage.children, 0, 'garden');
+              const content = this.parseContent(postPage.children, 0, sectionName.toLowerCase());
               
-              gardenPosts.push({
+              posts.push({
                 title: postTitle,
                 slug: this.titleToSlug(postTitle),
                 content,
@@ -303,7 +290,19 @@ formatTags(tagsRaw, currentSection = '') {
       });
     }
     
-    return gardenPosts;
+    return posts;
+  }
+
+  generateGarden() {
+    return this.generateSectionPosts('Garden');
+  }
+
+  generateLab() {
+    return this.generateSectionPosts('Lab');
+  }
+
+  generateEssays() {
+    return this.generateSectionPosts('Essays');
   }
 
   generateHTML(template, data) {
@@ -317,8 +316,7 @@ formatTags(tagsRaw, currentSection = '') {
     return html;
   }
 
-  async updateIndexPages(streamPosts, gardenPosts) {
-    // Helper function to strip HTML tags and get plain text for searching
+  createSectionIndexHTML(sectionName, posts) {
     const stripHtml = (html) => {
       return html.replace(/<[^>]*>/g, ' ')
                  .replace(/&[^;]+;/g, ' ')
@@ -327,36 +325,31 @@ formatTags(tagsRaw, currentSection = '') {
                  .toLowerCase();
     };
 
-    const gardenIndexHTML = `<!DOCTYPE html>
+    return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>Garden - Luke Miller</title>
+    <title>${sectionName} - Luke Miller</title>
     <link rel="stylesheet" href="tufte-blog.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       article {
         position: relative;
       }
-      .garden-controls {
+      .section-controls {
         margin-bottom: 2rem;
         padding: 0;
         width: 100%;
         box-sizing: border-box;
       }
-      .garden-controls input, .garden-controls select {
+      .section-controls input {
         padding: 0.5rem;
         margin-right: 1rem;
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 1rem;
         background-color: white;
-      }
-      .garden-controls input {
         width: 300px;
-      }
-      .garden-controls select {
-        width: 150px;
       }
       .post-entry {
         margin-bottom: 1.5rem;
@@ -366,6 +359,22 @@ formatTags(tagsRaw, currentSection = '') {
       .post-entry.hidden {
         display: none;
       }
+      .post-title {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+      }
+      .post-title a {
+        text-decoration: none;
+        color: #333;
+      }
+      .post-title a:hover {
+        text-decoration: underline;
+      }
+      .post-meta {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
       .no-results {
         text-align: center;
         color: #666;
@@ -374,12 +383,9 @@ formatTags(tagsRaw, currentSection = '') {
         display: none;
       }
       @media (max-width: 760px) {
-        .garden-controls input {
+        .section-controls input {
           width: 100%;
           margin-bottom: 0.5rem;
-        }
-        .garden-controls select {
-          width: 100%;
         }
       }
     </style>
@@ -389,38 +395,30 @@ formatTags(tagsRaw, currentSection = '') {
       <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="stream.html">Stream</a></li>
+        <li><a href="lab.html">Lab</a></li>
         <li><a href="garden.html">Garden</a></li>
+        <li><a href="essays.html">Essays</a></li>
         <li><a href="about.html">About</a></li>
       </ul>
     </nav>
     <article>
-      <h1>Garden</h1>
+      <h1>${sectionName}</h1>
       
-      <div class="garden-controls">
+      <div class="section-controls">
         <input type="text" id="searchInput" placeholder="Search posts..." />
-        <select id="typeFilter">
-          <option value="">All Types</option>
-          <option value="Element">Element</option>
-          <option value="Pattern">Pattern</option>
-          <option value="Structure">Structure</option>
-        </select>
-        <span id="resultCount">${gardenPosts.length} posts</span>
+        <span id="resultCount">${posts.length} posts</span>
       </div>
 
-      <section id="gardenPosts">
-        ${gardenPosts.map(post => {
+      <section id="sectionPosts">
+        ${posts.map(post => {
           const searchableContent = stripHtml(post.content);
-          console.log('Processing post:', post.title);
-          console.log('Full content length:', searchableContent.length);
-          console.log('Content preview:', searchableContent.substring(0, 200));
-          console.log('Contains "intellectual":', searchableContent.includes('intellectual'));
           
-          return `<div class="post-entry" data-type="${post.type || ''}" data-title="${post.title.toLowerCase()}" data-tags="${(post.tags || []).join(' ').toLowerCase()}">
+          return `<div class="post-entry" data-title="${post.title.toLowerCase()}">
              <h3 class="post-title">
-               <a href="garden/${post.slug}.html">${post.title}</a>
+               <a href="${sectionName.toLowerCase()}/${post.slug}.html">${post.title}</a>
              </h3>
              <div class="post-meta">
-               ${post.type ? `Type: ${post.type}` : ''}${post.type && (post.dateCreated || post.dateUpdated) ? ' | ' : ''}${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}
+               ${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}${post.tagsRaw ? ` | Tags: ${this.formatTags(post.tagsRaw, 'root')}` : ''}
              </div>
              <div class="hidden-content" style="display: none;">${searchableContent}</div>
            </div>`;
@@ -434,42 +432,21 @@ formatTags(tagsRaw, currentSection = '') {
 
     <script>
       const searchInput = document.getElementById('searchInput');
-      const typeFilter = document.getElementById('typeFilter');
       const resultCount = document.getElementById('resultCount');
       const noResults = document.getElementById('noResults');
-      const postEntries = document.querySelectorAll('.post-entry');
+      const allPosts = document.querySelectorAll('.post-entry');
 
       function filterPosts() {
         const searchTerm = searchInput.value.toLowerCase();
-        const selectedType = typeFilter.value;
         let visibleCount = 0;
 
-        postEntries.forEach(post => {
+        allPosts.forEach(post => {
           const title = post.dataset.title;
-          const tags = post.dataset.tags;
           const content = post.querySelector('.hidden-content').textContent.toLowerCase();
-          const type = post.dataset.type;
           
-          console.log('Debugging search:', {
-            searchTerm,
-            title: title.substring(0, 50),
-            content: content.substring(0, 100),
-            fullContent: content.includes('intellectual'),
-            titleMatch: title.includes(searchTerm),
-            contentMatch: content.includes(searchTerm)
-          });
+          const matchesSearch = !searchTerm || title.includes(searchTerm) || content.includes(searchTerm);
           
-          // Check if post matches search term (in title, tags, or content)
-          const matchesSearch = !searchTerm || 
-            title.includes(searchTerm) || 
-            tags.includes(searchTerm) ||
-            content.includes(searchTerm);
-          
-          // Check if post matches type filter
-          const matchesType = !selectedType || type === selectedType;
-          
-          // Show post if it matches both criteria
-          if (matchesSearch && matchesType) {
+          if (matchesSearch) {
             post.classList.remove('hidden');
             visibleCount++;
           } else {
@@ -477,7 +454,6 @@ formatTags(tagsRaw, currentSection = '') {
           }
         });
 
-        // Update result count and show/hide no results message
         resultCount.textContent = \`\${visibleCount} post\${visibleCount !== 1 ? 's' : ''}\`;
         
         if (visibleCount === 0) {
@@ -487,17 +463,13 @@ formatTags(tagsRaw, currentSection = '') {
         }
       }
 
-      // Add event listeners
       searchInput.addEventListener('input', filterPosts);
-      typeFilter.addEventListener('change', filterPosts);
       
       // Initial filter
       filterPosts();
     </script>
   </body>
 </html>`;
-    
-    await fs.writeFile('dist/garden.html', gardenIndexHTML);
   }
 
   async buildSite() {
@@ -506,13 +478,15 @@ formatTags(tagsRaw, currentSection = '') {
     console.log(`📅 Daily notes found: ${this.dailyNotes.size}`);
     
     console.log('🔍 Key pages found:');
-    ['Garden', 'Stream'].forEach(key => {
+    ['Garden', 'Stream', 'Lab', 'Essays'].forEach(key => {
       console.log(`  - ${key}: ${this.pages.has(key) ? '✅' : '❌'}`);
     });
     
     await fs.ensureDir('dist');
     await fs.ensureDir('dist/garden');
     await fs.ensureDir('dist/stream');
+    await fs.ensureDir('dist/lab');
+    await fs.ensureDir('dist/essays');
     
     await fs.copy('tufte-blog.css', 'dist/tufte-blog.css');
     if (await fs.pathExists('et-book')) {
@@ -521,15 +495,20 @@ formatTags(tagsRaw, currentSection = '') {
     
     console.log('📝 Generating content...');
     const streamPosts = this.generateStream();
-    console.log(`📰 Stream posts: ${streamPosts.length}`);
-    
     const gardenPosts = this.generateGarden();
+    const labPosts = this.generateLab();
+    const essayPosts = this.generateEssays();
+    
+    console.log(`📰 Stream posts: ${streamPosts.length}`);
     console.log(`🌱 Garden posts: ${gardenPosts.length}`);
+    console.log(`🔬 Lab posts: ${labPosts.length}`);
+    console.log(`📝 Essay posts: ${essayPosts.length}`);
     
     console.log('📋 Loading templates...');
     const streamTemplate = await fs.readFile('templates/stream-post-template.html', 'utf8');
     console.log('✅ Templates loaded successfully');
     
+    // Generate stream pages
     console.log('🌊 Generating stream.html...');
     let streamHTML = await fs.readFile('stream.html', 'utf8');
     const streamPostsHTML = streamPosts.map(post => {
@@ -578,35 +557,47 @@ formatTags(tagsRaw, currentSection = '') {
     }
     console.log('✅ Individual stream posts generated');
     
-    console.log('🌱 Generating garden posts...');
-    for (const post of gardenPosts) {
-      const typeText = post.type ? `Type: ${post.type}` : '';
-      const tagsText = post.tagsRaw ? `Tags: ${this.formatTags(post.tagsRaw, 'garden')}` : '';
-      const dateText = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}`;
+    // Generate section pages and individual posts
+    const sections = [
+      { name: 'Garden', posts: gardenPosts },
+      { name: 'Lab', posts: labPosts },
+      { name: 'Essays', posts: essayPosts }
+    ];
+
+    for (const section of sections) {
+      console.log(`🎯 Generating ${section.name.toLowerCase()} posts...`);
       
-      // Combine metadata with proper separators
-      const metadataParts = [dateText, typeText, tagsText].filter(part => part.trim());
-      const metadata = metadataParts.join(' | ');
+      // Generate index page
+      const indexHTML = this.createSectionIndexHTML(section.name, section.posts);
+      await fs.writeFile(`dist/${section.name.toLowerCase()}.html`, indexHTML);
       
-      let backlinksHTML = '';
-      if (post.backlinks && post.backlinks.length > 0) {
-        backlinksHTML = `
+      // Generate individual posts
+      for (const post of section.posts) {
+        const tagsText = post.tagsRaw ? `Tags: ${this.formatTags(post.tagsRaw, section.name.toLowerCase())}` : '';
+        const dateText = `${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}`;
+        
+        const metadataParts = [dateText, tagsText].filter(part => part.trim());
+        const metadata = metadataParts.join(' | ');
+        
+        let backlinksHTML = '';
+        if (post.backlinks && post.backlinks.length > 0) {
+          backlinksHTML = `
       <div class="backlinks">
         <h3>Referenced by</h3>
         <ul>
           ${post.backlinks.map(backlinkTitle => {
-            const url = this.getPageUrl(backlinkTitle, 'garden');
+            const url = this.getPageUrl(backlinkTitle, section.name.toLowerCase());
             return `<li><a href="${url}">${backlinkTitle}</a></li>`;
           }).join('\n          ')}
         </ul>
       </div>`;
-      }
-      
-      const html = `<!DOCTYPE html>
+        }
+        
+        const html = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>${post.title} - Garden - Luke Miller</title>
+    <title>${post.title} - ${section.name} - Luke Miller</title>
     <link rel="stylesheet" href="../tufte-blog.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -615,7 +606,9 @@ formatTags(tagsRaw, currentSection = '') {
       <ul>
         <li><a href="../index.html">Home</a></li>
         <li><a href="../stream.html">Stream</a></li>
+        <li><a href="../lab.html">Lab</a></li>
         <li><a href="../garden.html">Garden</a></li>
+        <li><a href="../essays.html">Essays</a></li>
         <li><a href="../about.html">About</a></li>
       </ul>
     </nav>
@@ -629,22 +622,37 @@ formatTags(tagsRaw, currentSection = '') {
     </article>
   </body>
 </html>`;
-      
-      await fs.writeFile(`dist/garden/${post.slug}.html`, html);
+        
+        await fs.writeFile(`dist/${section.name.toLowerCase()}/${post.slug}.html`, html);
+      }
+      console.log(`✅ ${section.name} posts generated`);
     }
-    console.log('✅ Garden posts generated');
     
-    await this.updateIndexPages(streamPosts, gardenPosts);
-    
+    // Copy static pages with updated navigation
     const staticPages = ['index.html', 'about.html'];
     for (const page of staticPages) {
       if (await fs.pathExists(page)) {
-        await fs.copy(page, `dist/${page}`);
+        let content = await fs.readFile(page, 'utf8');
+        // Update navigation in static pages
+        content = content.replace(
+          /<nav>[\s\S]*?<\/nav>/,
+          `<nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="stream.html">Stream</a></li>
+        <li><a href="lab.html">Lab</a></li>
+        <li><a href="garden.html">Garden</a></li>
+        <li><a href="essays.html">Essays</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>`
+        );
+        await fs.writeFile(`dist/${page}`, content);
       }
     }
     
     console.log('✅ Blog generated successfully!');
-    console.log(`📊 Generated: ${streamPosts.length} stream posts, ${gardenPosts.length} garden posts`);
+    console.log(`📊 Generated: ${streamPosts.length} stream posts, ${gardenPosts.length} garden posts, ${labPosts.length} lab posts, ${essayPosts.length} essay posts`);
   }
 }
 
