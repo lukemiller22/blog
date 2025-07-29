@@ -370,6 +370,12 @@ class RoamBlogGenerator {
       .post-title a:hover {
         text-decoration: underline;
       }
+      .post-subtitle {
+        font-size: 1rem;
+        color: #666;
+        font-style: italic;
+        margin: 0.25rem 0 0.5rem 0;
+      }
       .post-meta {
         font-size: 0.9rem;
         color: #666;
@@ -412,11 +418,14 @@ class RoamBlogGenerator {
       <section id="sectionPosts">
         ${posts.map(post => {
           const searchableContent = stripHtml(post.content);
+          const subtitleHTML = (sectionName === 'Garden' && post.subtitle) ? 
+            `<div class="post-subtitle">${post.subtitle}</div>` : '';
           
           return `<div class="post-entry" data-title="${post.title.toLowerCase()}">
              <h3 class="post-title">
                <a href="${sectionName.toLowerCase()}/${post.slug}.html">${post.title}</a>
              </h3>
+             ${subtitleHTML}
              <div class="post-meta">
                ${post.dateCreated ? `Created: ${post.dateCreated}` : ''}${post.dateUpdated ? ` | Updated: ${post.dateUpdated}` : ''}${post.tagsRaw ? ` | Tags: ${this.formatTags(post.tagsRaw, 'root')}` : ''}
              </div>
@@ -600,6 +609,14 @@ class RoamBlogGenerator {
     <title>${post.title} - ${section.name} - Luke Miller</title>
     <link rel="stylesheet" href="../tufte-blog.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      .post-subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        font-style: italic;
+        margin: 0.5rem 0 1rem 0;
+      }
+    </style>
   </head>
   <body>
     <nav>
@@ -614,6 +631,7 @@ class RoamBlogGenerator {
     </nav>
     <article>
       <h1>${post.title}</h1>
+      ${section.name === 'Garden' && post.subtitle ? `<div class="post-subtitle">${post.subtitle}</div>` : ''}
       ${metadata ? `<div class="post-meta">${metadata}</div>` : ''}
       <section>
         ${post.content}
