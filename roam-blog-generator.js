@@ -169,13 +169,29 @@ class RoamBlogGenerator {
   }
 
   formatInlineContent(text, currentSection = '') {
-    return text
-      .replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
-        const url = this.getPageUrl(linkText, currentSection);
-        return `<a href="${url}">${linkText}</a>`;
-      })
-      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    // Handle sidenotes: (+1 content) -> numbered sidenote
+    text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
+      const id = `sn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
+    });
+    
+    // Handle margin notes: (+ content) -> margin note with symbol
+    text = text.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
+      const id = `mn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
+    });
+    
+    // Handle wiki links
+    text = text.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
+      const url = this.getPageUrl(linkText, currentSection);
+      return `<a href="${url}">${linkText}</a>`;
+    });
+    
+    // Handle bold and italic
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    
+    return text;
   }
 
   extractMetadata(page) {
@@ -527,7 +543,7 @@ class RoamBlogGenerator {
            <a href="stream/${post.slug}.html">${post.title}</a>
          </h3>
          <div class="post-meta">${post.date}${post.type ? ` | ${post.type}` : ''}${tagsText}</div>
-         <div class="post-content">${post.content}</div>
+         <div class="post-content stream-preview">${post.content}</div>
        </div>`;
     }).join('\n');
     
