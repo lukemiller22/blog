@@ -183,6 +183,9 @@ class RoamBlogGenerator {
       const id = `mn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
     });
+
+    // Handle markdown links: [text](url) -> <a> tags
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
     
     // Handle wiki links
     text = text.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
