@@ -241,11 +241,14 @@ class RoamBlogGenerator {
 
     const rows = [];
     let isFirstRow = true;
+    let maxColumns = 0;
 
+    // First pass: collect all rows and find max columns
     tableChild.children.forEach(child => {
       if (child.string || (child.children && child.children.length > 0)) {
         const row = this.parseTableRow(child, currentSection);
         if (row.length > 0) {
+          maxColumns = Math.max(maxColumns, row.length);
           rows.push({ cells: row, isHeader: isFirstRow });
           isFirstRow = false;
         }
@@ -256,15 +259,23 @@ class RoamBlogGenerator {
       return '<p>Empty table</p>';
     }
 
-    // Generate table HTML
+    // Second pass: pad all rows to have the same number of columns
+    rows.forEach(row => {
+      while (row.cells.length < maxColumns) {
+        row.cells.push(''); // Add empty cells to fill the row
+      }
+    });
+
+    // Generate table HTML with constrained width
     let tableHTML = `
-      <table style="width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
+      <div style="overflow-x: auto; margin: 1rem 0;">
+        <table style="width: 100%; max-width: 55rem; border-collapse: collapse; font-size: 0.9rem;">
     `;
 
     rows.forEach((row, rowIndex) => {
       const rowStyle = row.isHeader 
         ? 'border-bottom: 2px solid #333; background-color: #f5f5f5;' 
-        : (rowIndex % 2 === 0 ? 'background-color: #fafafa;' : '');
+        : (rowIndex % 2 === 1 ? 'background-color: #fafafa;' : ''); // Fixed alternating rows
       
       tableHTML += `<tr style="${rowStyle}">`;
       
@@ -280,7 +291,10 @@ class RoamBlogGenerator {
       tableHTML += '</tr>';
     });
 
-    tableHTML += '</table>';
+    tableHTML += `
+        </table>
+      </div>
+    `;
     return tableHTML;
   }
 
@@ -306,7 +320,18 @@ class RoamBlogGenerator {
   extractTableCells(children, cells, currentSection) {
     children.forEach(child => {
       if (child.string) {
-        const content = this.formatInlineContent(child.string, currentSection);
+        let content = child.string;
+        
+        // Special handling for review links - convert to simple "Review" text
+        const linkMatch = content.match(/\[\[([^\]]+)\]\]/);
+        if (linkMatch && linkMatch[1].toLowerCase().includes('review')) {
+          const reviewTitle = linkMatch[1];
+          const reviewUrl = this.getPageUrl(reviewTitle, currentSection);
+          content = `<a href="${reviewUrl}">Review</a>`;
+        } else {
+          content = this.formatInlineContent(content, currentSection);
+        }
+        
         cells.push(content);
       } else {
         cells.push(''); // Empty cell
