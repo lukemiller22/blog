@@ -327,17 +327,6 @@ class RoamBlogGenerator {
     return this.generateSectionPosts('Essays');
   }
 
-  generateHTML(template, data) {
-    let html = template;
-    
-    Object.keys(data).forEach(key => {
-      const placeholder = new RegExp(`{{${key}}}`, 'g');
-      html = html.replace(placeholder, data[key] || '');
-    });
-    
-    return html;
-  }
-
   createSectionIndexHTML(sectionName, posts) {
     const stripHtml = (html) => {
       return html.replace(/<[^>]*>/g, ' ')
@@ -535,10 +524,6 @@ class RoamBlogGenerator {
     console.log(`🔬 Lab posts: ${labPosts.length}`);
     console.log(`📝 Essay posts: ${essayPosts.length}`);
     
-    console.log('📋 Loading templates...');
-    const streamTemplate = await fs.readFile('templates/stream-post-template.html', 'utf8');
-    console.log('✅ Templates loaded successfully');
-    
     // Generate stream pages
     console.log('🌊 Generating stream.html...');
     let streamHTML = await fs.readFile('stream.html', 'utf8');
@@ -558,14 +543,14 @@ class RoamBlogGenerator {
     console.log('✅ Stream.html generated');
     
     // Generate individual stream post pages
-    console.log('🌊 Generating individual stream posts...');
-    for (const post of streamPosts) {
-      const tagsText = post.tagsRaw ? ` | Tags: ${this.formatTags(post.tagsRaw, 'stream')}` : '';
-      const metadata = `${post.date}${post.type ? ` | ${post.type}` : ''}${tagsText}`;
-      
-      let backlinksHTML = '';
-      if (post.backlinks && post.backlinks.length > 0) {
-        backlinksHTML = `
+console.log('🌊 Generating individual stream posts...');
+for (const post of streamPosts) {
+  const tagsText = post.tagsRaw ? ` | Tags: ${this.formatTags(post.tagsRaw, 'stream')}` : '';
+  const metadata = `${post.date}${post.type ? ` | ${post.type}` : ''}${tagsText}`;
+  
+  let backlinksHTML = '';
+  if (post.backlinks && post.backlinks.length > 0) {
+    backlinksHTML = `
       <div class="backlinks">
         <h3>Referenced by</h3>
         <ul>
@@ -575,17 +560,41 @@ class RoamBlogGenerator {
           }).join('\n          ')}
         </ul>
       </div>`;
-      }
-      
-      const html = this.generateHTML(streamTemplate, {
-        title: post.title,
-        metadata,
-        content: post.content,
-        backlinks: backlinksHTML
-      });
+  }
+  
+    const html = `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8"/>
+        <title>${post.title} - Stream - Luke Miller</title>
+        <link rel="stylesheet" href="../tufte-blog.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+      </head>
+      <body>
+        <nav>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../stream.html">Stream</a></li>
+            <li><a href="../lab.html">Lab</a></li>
+            <li><a href="../garden.html">Garden</a></li>
+            <li><a href="../essays.html">Essays</a></li>
+            <li><a href="../about.html">About</a></li>
+          </ul>
+        </nav>
+        <article>
+          <h1>${post.title}</h1>
+          <div class="post-meta">${metadata}</div>
+          <section>
+            ${post.content}
+          </section>
+          ${backlinksHTML}
+        </article>
+      </body>
+    </html>`;
       
       await fs.writeFile(`dist/stream/${post.slug}.html`, html);
     }
+    
     console.log('✅ Individual stream posts generated');
     
     // Generate section pages and individual posts
