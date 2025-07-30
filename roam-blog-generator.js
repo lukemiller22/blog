@@ -150,6 +150,15 @@ class RoamBlogGenerator {
       }
       
       if (child.string) {
+        // Check if this is a Roam table
+        if (child.string.includes('{{[[table]]}}')) {
+          // Find the table content (should be in the children)
+          if (child.children && child.children.length > 0) {
+            html += this.parseRoamTable(child, currentSection);
+          }
+          return; // Skip normal processing for table blocks
+        }
+        
         // Check if this is an image with a link in the next child
         const hasImage = child.string.includes('![](');
         const nextChild = child.children && child.children[0];
@@ -163,14 +172,11 @@ class RoamBlogGenerator {
           const linkUrl = nextChild.string.trim();
           content = this.formatInlineContent(child.string, currentSection);
           
-          // Replace the img tag with a clickable version
           content = content.replace(
             /<img src="([^"]+)" alt="([^"]*)" style="([^"]*)" \/>/g,
             `<a href="${linkUrl}" target="_blank"><img src="$1" alt="$2" style="$3 cursor: pointer;" /></a>`
           );
           
-          // Skip processing the link child since we've used it
-          // We'll mark it as processed by setting a flag
           if (nextChild) nextChild._processed = true;
         } else {
           content = this.formatInlineContent(child.string, currentSection);
@@ -226,6 +232,91 @@ class RoamBlogGenerator {
     text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
     
     return text;
+  }
+
+  parseRoamTable(tableChild, currentSection = 'stream') {
+    if (!tableChild.children || tableChild.children.length === 0) {
+      return '<p>Empty table</p>';
+    }
+
+    const rows = [];
+    let isFirstRow = true;
+
+    tableChild.children.forEach(child => {
+      if (child.string || (child.children && child.children.length > 0)) {
+        const row = this.parseTableRow(child, currentSection);
+        if (row.length > 0) {
+          rows.push({ cells: row, isHeader: isFirstRow });
+          isFirstRow = false;
+        }
+      }
+    });
+
+    if (rows.length === 0) {
+      return '<p>Empty table</p>';
+    }
+
+    // Generate table HTML
+    let tableHTML = `
+      <table style="width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
+    `;
+
+    rows.forEach((row, rowIndex) => {
+      const rowStyle = row.isHeader 
+        ? 'border-bottom: 2px solid #333; background-color: #f5f5f5;' 
+        : (rowIndex % 2 === 0 ? 'background-color: #fafafa;' : '');
+      
+      tableHTML += `<tr style="${rowStyle}">`;
+      
+      row.cells.forEach(cell => {
+        const cellTag = row.isHeader ? 'th' : 'td';
+        const cellStyle = row.isHeader 
+          ? 'text-align: left; padding: 0.75rem 0.5rem; font-weight: bold;'
+          : 'padding: 0.75rem 0.5rem; border-bottom: 1px solid #eee; vertical-align: top;';
+        
+        tableHTML += `<${cellTag} style="${cellStyle}">${cell}</${cellTag}>`;
+      });
+      
+      tableHTML += '</tr>';
+    });
+
+    tableHTML += '</table>';
+    return tableHTML;
+  }
+
+  parseTableRow(rowChild, currentSection) {
+    const cells = [];
+    
+    // First cell is the row child's string content
+    if (rowChild.string) {
+      const content = this.formatInlineContent(rowChild.string, currentSection);
+      cells.push(content);
+    } else {
+      cells.push(''); // Empty first cell
+    }
+    
+    // Subsequent cells are nested children
+    if (rowChild.children) {
+      this.extractTableCells(rowChild.children, cells, currentSection);
+    }
+    
+    return cells;
+  }
+
+  extractTableCells(children, cells, currentSection) {
+    children.forEach(child => {
+      if (child.string) {
+        const content = this.formatInlineContent(child.string, currentSection);
+        cells.push(content);
+      } else {
+        cells.push(''); // Empty cell
+      }
+      
+      // Recursively extract nested cells
+      if (child.children) {
+        this.extractTableCells(child.children, cells, currentSection);
+      }
+    });
   }
 
   extractMetadata(page) {
