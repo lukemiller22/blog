@@ -144,13 +144,37 @@ class RoamBlogGenerator {
     
     let html = '';
     
-    children.forEach(child => {
+    children.forEach((child, index) => {
       if (child.heading && child.heading === 1 && child.string === 'Metadata') {
         return;
       }
       
       if (child.string) {
-        const content = this.formatInlineContent(child.string, currentSection);
+        // Check if this is an image with a link in the next child
+        const hasImage = child.string.includes('![](');
+        const nextChild = child.children && child.children[0];
+        const nextChildIsLink = nextChild && nextChild.string && 
+          (nextChild.string.startsWith('http://') || nextChild.string.startsWith('https://'));
+        
+        let content;
+        
+        if (hasImage && nextChildIsLink) {
+          // Handle clickable image case
+          const linkUrl = nextChild.string.trim();
+          content = this.formatInlineContent(child.string, currentSection);
+          
+          // Replace the img tag with a clickable version
+          content = content.replace(
+            /<img src="([^"]+)" alt="([^"]*)" style="([^"]*)" \/>/g,
+            `<a href="${linkUrl}" target="_blank"><img src="$1" alt="$2" style="$3 cursor: pointer;" /></a>`
+          );
+          
+          // Skip processing the link child since we've used it
+          // We'll mark it as processed by setting a flag
+          if (nextChild) nextChild._processed = true;
+        } else {
+          content = this.formatInlineContent(child.string, currentSection);
+        }
         
         if (child.heading) {
           const headingLevel = Math.min(child.heading + level, 6);
@@ -161,7 +185,11 @@ class RoamBlogGenerator {
       }
       
       if (child.children && !(child.heading === 1 && child.string === 'Metadata')) {
-        html += this.parseContent(child.children, level + 1, currentSection);
+        // Filter out processed children
+        const unprocessedChildren = child.children.filter(c => !c._processed);
+        if (unprocessedChildren.length > 0) {
+          html += this.parseContent(unprocessedChildren, level + 1, currentSection);
+        }
       }
     });
     
