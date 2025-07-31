@@ -223,6 +223,12 @@ blockquote footer {
     width: 55%;
     font-size: 1.1rem;
     text-align: right;
+    font-style: normal;  /* Ensures citations aren't italicized */
+    margin-top: 0.5rem;  /* Adds space between quote and citation */
+}
+
+blockquote footer::before {
+    content: "— ";  /* Adds an em dash before citations */
 }
 
 section > p,
