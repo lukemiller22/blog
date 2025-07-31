@@ -158,6 +158,28 @@ class RoamBlogGenerator {
           }
           return; // Skip normal processing for table blocks
         }
+
+        // Check if this is a blockquote with potential citation
+      if (child.string.trim().startsWith('>')) {
+        const blockquoteContent = child.string.replace(/^>\s*/, '').trim();
+        let processedContent = this.processBlockquoteFormatting(blockquoteContent, currentSection);
+        
+        // Check if there are children (potential citations)
+        let citationHTML = '';
+        if (child.children && child.children.length > 0) {
+          // Process children as citations
+          const citations = child.children
+            .filter(c => c.string && c.string.trim())
+            .map(c => this.processBlockquoteFormatting(c.string.trim(), currentSection));
+          
+          if (citations.length > 0) {
+            citationHTML = `<footer>${citations.join(' ')}</footer>`;
+          }
+        }
+        
+        html += `<blockquote><p>${processedContent}</p>${citationHTML}</blockquote>\n`;
+        return; // Skip normal processing for blockquote
+      }
         
         // Check if this is an image with a link in the next child
         const hasImage = child.string.includes('![](');
@@ -262,6 +284,36 @@ class RoamBlogGenerator {
     
     return text;
   }
+
+  processBlockquoteFormatting(text, currentSection) {
+  // Handle sidenotes: (+1 content) -> numbered sidenote
+  text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
+    const id = `sn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
+  });
+  
+  // Handle margin notes: (+ content) -> margin note with symbol
+  text = text.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
+    const id = `mn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
+  });
+  
+  // Handle markdown links: [text](url) -> <a> tags (external links open in new tab)
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+  
+  // Handle wiki links
+  text = text.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
+    const url = this.getPageUrl(linkText, currentSection);
+    return `<a href="${url}">${linkText}</a>`;
+  });
+  
+  // Handle bold, italic, and highlighting
+  text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  text = text.replace(/\^\^([^^]+)\^\^/g, '<mark>$1</mark>');
+  
+  return text;
+}
 
   parseRoamTable(tableChild, currentSection = 'stream') {
     if (!tableChild.children || tableChild.children.length === 0) {
