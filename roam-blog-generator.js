@@ -205,6 +205,34 @@ class RoamBlogGenerator {
   formatInlineContent(text, currentSection = '') {
     // Handle images: ![](URL) -> <img> tags
     text = text.replace(/!\[\]\(([^)]+)\)/g, '<img src="$1" alt="" style="max-width: 100%; height: auto;" />');
+
+    // Handle Roam blockquotes (lines starting with >)
+    if (text.trim().startsWith('>')) {
+      const blockquoteContent = text.replace(/^>\s*/, '').trim();
+      // Process the blockquote content through the rest of the formatting
+      let processedContent = blockquoteContent;
+      
+      // Apply the same formatting as below to blockquote content
+      processedContent = processedContent.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
+        const id = `sn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
+      });
+      processedContent = processedContent.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
+        const id = `mn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
+      });
+      processedContent = processedContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+      processedContent = processedContent.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
+        const url = this.getPageUrl(linkText, currentSection);
+        return `<a href="${url}">${linkText}</a>`;
+      });
+      processedContent = processedContent.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      processedContent = processedContent.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      processedContent = processedContent.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      processedContent = processedContent.replace(/\^\^([^^]+)\^\^/g, '<mark>$1</mark>');
+      
+      return `<blockquote><p>${processedContent}</p></blockquote>`;
+    }
     
     // Handle sidenotes: (+1 content) -> numbered sidenote
     text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
@@ -227,9 +255,10 @@ class RoamBlogGenerator {
       return `<a href="${url}">${linkText}</a>`;
     });
     
-    // Handle bold and italic
+    // Handle bold, italic, and highlighting
     text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    text = text.replace(/\^\^([^^]+)\^\^/g, '<mark>$1</mark>');
     
     return text;
   }
@@ -357,7 +386,13 @@ class RoamBlogGenerator {
             const dateUpdatedMatch = child.string.match(/Date Updated::\s*\[\[([^\]]+)\]\]/);
             const subtitleMatch = child.string.match(/Subtitle::\s*(.+)/);
             
-            if (typeMatch) metadata.type = typeMatch[1];
+            // Store type for internal categorization but don't display it
+            if (typeMatch) {
+              metadata.type = typeMatch[1];
+              metadata.typeForCategorization = typeMatch[1]; // Keep for internal use
+              // Don't set type for display purposes
+              delete metadata.type; 
+            }
             if (tagsMatch) {
               metadata.tagsRaw = tagsMatch[1];
               metadata.tags = tagsMatch[1]
@@ -677,7 +712,7 @@ class RoamBlogGenerator {
          <h3 class="post-title">
            <a href="stream/${post.slug}.html">${post.title}</a>
          </h3>
-         <div class="post-meta">${post.date}${post.type ? ` | ${post.type}` : ''}${tagsText}</div>
+         <div class="post-meta">${post.date}${tagsText}</div>
          <div class="post-content stream-preview">${post.content}</div>
        </div>`;
     }).join('\n');
@@ -690,7 +725,7 @@ class RoamBlogGenerator {
 console.log('🌊 Generating individual stream posts...');
 for (const post of streamPosts) {
   const tagsText = post.tagsRaw ? ` | Tags: ${this.formatTags(post.tagsRaw, 'stream')}` : '';
-  const metadata = `${post.date}${post.type ? ` | ${post.type}` : ''}${tagsText}`;
+  const metadata = `${post.date}${tagsText}`;
   
   let backlinksHTML = '';
   if (post.backlinks && post.backlinks.length > 0) {
