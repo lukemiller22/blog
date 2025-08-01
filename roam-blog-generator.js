@@ -128,6 +128,14 @@ class RoamBlogGenerator {
     return dateString;
   }
 
+  parseDateString(dateString) {
+    if (!dateString) return new Date('1900-01-01'); // fallback for missing dates
+    
+    // Remove the ordinal suffix (st, nd, rd, th) and parse
+    const cleanDate = dateString.replace(/(\d+)(?:st|nd|rd|th)/, '$1');
+    return new Date(cleanDate);
+  }
+
   getPageUrl(pageTitle, currentSection) {
     const section = this.pageToSection.get(pageTitle) || 'stream';
     const slug = this.titleToSlug(pageTitle);
@@ -542,6 +550,13 @@ class RoamBlogGenerator {
         }
       });
     }
+    
+    // Sort posts by Date Updated (most recent first)
+    posts.sort((a, b) => {
+      const dateA = this.parseDateString(a.dateUpdated || a.dateCreated);
+      const dateB = this.parseDateString(b.dateUpdated || b.dateCreated);
+      return dateB - dateA; // Most recent first
+    });
     
     return posts;
   }
