@@ -282,8 +282,15 @@ class RoamBlogGenerator {
     // Handle wiki links
     text = text.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
       const url = this.getPageUrl(linkText, currentSection);
-      return `<a href="${url}">${linkText}</a>`;
-    });
+      
+    // Extract display text: if there's a namespace (contains '/'), 
+    // show only the part after the last '/'
+    const displayText = linkText.includes('/') 
+      ? linkText.split('/').pop()  // Get everything after the last slash
+      : linkText;                  // Use full text if no namespace
+    
+    return `<a href="${url}">${displayText}</a>`;
+  });
     
     // Handle bold, italic, and highlighting
     text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
