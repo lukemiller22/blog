@@ -8,22 +8,24 @@ class RoamBlogGenerator {
     this.dailyNotes = new Map();
     this.backlinks = new Map();
     this.pageToSection = new Map();
-    
+    this.uidMap = new Map(); // Map from uid -> { string, pageTitle }
+
     this.processRoamData();
   }
 
   processRoamData() {
     this.roamData.forEach(page => {
       this.pages.set(page.title, page);
-      
+
       if (this.isDatePage(page.title)) {
         this.dailyNotes.set(page.title, page);
       }
-      
+
       this.extractBacklinks(page);
     });
-    
+
     this.buildPageSectionMap();
+    this.buildUidMap();
   }
 
   isDatePage(title) {
@@ -68,7 +70,7 @@ class RoamBlogGenerator {
 
   buildPageSectionMap() {
     const sectionPages = ['Garden', 'Lab', 'Essays'];
-    
+
     sectionPages.forEach(sectionName => {
       const sectionPage = this.pages.get(sectionName);
       if (sectionPage && sectionPage.children) {
@@ -82,7 +84,7 @@ class RoamBlogGenerator {
         });
       }
     });
-    
+
     // Map daily note links to stream
     this.dailyNotes.forEach((dailyNote) => {
       if (dailyNote.children) {
@@ -95,6 +97,27 @@ class RoamBlogGenerator {
           }
         });
       }
+    });
+  }
+
+  buildUidMap() {
+    const walkBlocks = (blocks, pageTitle) => {
+      if (!blocks) return;
+      blocks.forEach(block => {
+        if (block.uid && block.string) {
+          this.uidMap.set(block.uid, {
+            string: block.string,
+            pageTitle: pageTitle
+          });
+        }
+        if (block.children) {
+          walkBlocks(block.children, pageTitle);
+        }
+      });
+    };
+
+    this.pages.forEach((page, title) => {
+      walkBlocks(page.children, title);
     });
   }
 
@@ -139,7 +162,7 @@ class RoamBlogGenerator {
   getPageUrl(pageTitle, currentSection) {
     const section = this.pageToSection.get(pageTitle) || 'stream';
     const slug = this.titleToSlug(pageTitle);
-    
+
     if (currentSection === section) {
       return `${slug}.html`;
     } else {
@@ -147,16 +170,71 @@ class RoamBlogGenerator {
     }
   }
 
+  resolveBlockRefs(text, currentSection, depth = 0, visited = new Set()) {
+    if (!text || depth > 5) return text;
+
+    // Handle embeds first: {{[[embed]]: ((uid))}} or {{embed: ((uid))}}
+    text = text.replace(/\{\{(?:\[\[embed\]\]:\s*|\bembed:\s*)\(\(([a-zA-Z0-9_-]+)\)\)\}\}/g, (match, uid) => {
+      return `((${uid}))`; // Convert to simple block ref for processing
+    });
+
+    // Replace block references: ((uid))
+    return text.replace(/\(\(([a-zA-Z0-9_-]+)\)\)/g, (match, uid) => {
+      // Prevent cycles
+      if (visited.has(uid)) {
+        return '[circular reference]';
+      }
+
+      const refData = this.uidMap.get(uid);
+      if (!refData) {
+        return '[missing reference]';
+      }
+
+      // Recursively resolve nested block refs
+      visited.add(uid);
+      let resolvedText = this.resolveBlockRefs(refData.string, currentSection, depth + 1, new Set(visited));
+      visited.delete(uid);
+
+      // Wrap in span and add source link if page is published
+      const sourcePageSection = this.pageToSection.get(refData.pageTitle);
+      if (sourcePageSection) {
+        const sourceUrl = this.getPageUrl(refData.pageTitle, currentSection);
+        return `<span class="block-ref">${resolvedText} <a class="block-ref-source" href="${sourceUrl}">↗</a></span>`;
+      } else {
+        return `<span class="block-ref">${resolvedText}</span>`;
+      }
+    });
+  }
+
+  hasMeaningfulContent(block) {
+    // Check if block has non-empty string
+    if (block.string && block.string.trim()) {
+      return true;
+    }
+
+    // Check if block has children with meaningful content
+    if (block.children && block.children.length > 0) {
+      return block.children.some(child => this.hasMeaningfulContent(child));
+    }
+
+    return false;
+  }
+
   parseContent(children, level = 0, currentSection = 'stream') {
     if (!children) return '';
-    
+
     let html = '';
-    
+
     children.forEach((child, index) => {
       if (child.heading && child.heading === 1 && child.string === 'Metadata') {
         return;
       }
-      
+
+      // Skip heading blocks that have no meaningful content
+      if (child.heading && !this.hasMeaningfulContent(child)) {
+        return;
+      }
+
       if (child.string) {
         // Check if this is a Roam table
         if (child.string.includes('{{[[table]]}}')) {
@@ -233,6 +311,9 @@ class RoamBlogGenerator {
   }
 
   formatInlineContent(text, currentSection = '') {
+    // Resolve block references first
+    text = this.resolveBlockRefs(text, currentSection);
+
     // Handle images: ![](URL) -> <img> tags
     text = text.replace(/!\[\]\(([^)]+)\)/g, '<img src="$1" alt="" style="max-width: 100%; height: auto;" />');
 
@@ -301,6 +382,9 @@ class RoamBlogGenerator {
   }
 
   processBlockquoteFormatting(text, currentSection) {
+  // Resolve block references first
+  text = this.resolveBlockRefs(text, currentSection);
+
   // Handle sidenotes: (+1 content) -> numbered sidenote
   text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
     const id = `sn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -663,8 +747,7 @@ class RoamBlogGenerator {
   <body>
     <nav>
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="stream.html">Stream</a></li>
+        <li><a href="index.html">Stream</a></li>
         <li><a href="lab.html">Lab</a></li>
         <li><a href="garden.html">Garden</a></li>
         <li><a href="essays.html">Essays</a></li>
@@ -777,9 +860,9 @@ class RoamBlogGenerator {
     console.log(`🔬 Lab posts: ${labPosts.length}`);
     console.log(`📝 Essay posts: ${essayPosts.length}`);
     
-    // Generate stream pages
-    console.log('🌊 Generating stream.html...');
-    let streamHTML = await fs.readFile('stream.html', 'utf8');
+    // Generate stream pages (now index.html)
+    console.log('🌊 Generating index.html (Stream)...');
+    let streamHTML = await fs.readFile('index.html', 'utf8');
     const streamPostsHTML = streamPosts.map(post => {
       const tagsText = post.tagsRaw ? ` | Tags: ${this.formatTags(post.tagsRaw, 'root')}` : '';
       return `<div class="post-entry">
@@ -790,10 +873,10 @@ class RoamBlogGenerator {
          <div class="post-content stream-preview">${post.content}</div>
        </div>`;
     }).join('\n');
-    
+
     streamHTML = streamHTML.replace('{{stream-posts}}', streamPostsHTML);
-    await fs.writeFile('dist/stream.html', streamHTML);
-    console.log('✅ Stream.html generated');
+    await fs.writeFile('dist/index.html', streamHTML);
+    console.log('✅ Index.html (Stream) generated');
     
     // Generate individual stream post pages
 console.log('🌊 Generating individual stream posts...');
@@ -826,8 +909,7 @@ for (const post of streamPosts) {
       <body>
         <nav>
           <ul>
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="../stream.html">Stream</a></li>
+            <li><a href="../index.html">Stream</a></li>
             <li><a href="../lab.html">Lab</a></li>
             <li><a href="../garden.html">Garden</a></li>
             <li><a href="../essays.html">Essays</a></li>
@@ -905,8 +987,7 @@ for (const post of streamPosts) {
   <body>
     <nav>
       <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="../stream.html">Stream</a></li>
+        <li><a href="../index.html">Stream</a></li>
         <li><a href="../lab.html">Lab</a></li>
         <li><a href="../garden.html">Garden</a></li>
         <li><a href="../essays.html">Essays</a></li>
@@ -930,8 +1011,8 @@ for (const post of streamPosts) {
       console.log(`✅ ${section.name} posts generated`);
     }
     
-    // Copy static pages with updated navigation
-    const staticPages = ['index.html', 'about.html'];
+    // Copy static pages with updated navigation (index.html is generated above with stream content)
+    const staticPages = ['about.html'];
     for (const page of staticPages) {
       if (await fs.pathExists(page)) {
         let content = await fs.readFile(page, 'utf8');
@@ -940,8 +1021,7 @@ for (const post of streamPosts) {
           /<nav>[\s\S]*?<\/nav>/,
           `<nav>
       <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="stream.html">Stream</a></li>
+        <li><a href="index.html">Stream</a></li>
         <li><a href="lab.html">Lab</a></li>
         <li><a href="garden.html">Garden</a></li>
         <li><a href="essays.html">Essays</a></li>
