@@ -1,0 +1,120 @@
+- ## **How to use this page**
+    - This is a reference for writing in Roam so that `roam-blog-generator.js` can rebuild the blog from the JSON export.
+    - Keep this guide on its own page. **Never** paste it into a daily note, or onto the Garden, Lab or Essays pages.
+    - Examples are in `code` so Roam doesn't turn them into live links or pages. Page names like `[[My Post Title]]` are placeholders.
+- ## **1. How the script decides what gets published**
+    - A page is published **only** if one of these links to it:
+        - A **top-level** block on a **daily note page** → Stream post (only if the page has a `Type::` attribute; see §2)
+        - A **top-level** block on the `[[Garden]]` page → Garden (structure) post
+        - A **top-level** block on the `[[Lab]]` page → Lab post
+        - A **top-level** block on the `[[Essays]]` page → Essay
+    - Where a page is linked from decides its section. The *value* of `Type::` doesn't matter, but daily notes only publish pages that **have** a `Type::` (§2).
+    - Only the **first** `[[link]]` in each top-level block counts. Any other links in that block are ignored.
+    - Nested (indented) blocks on these pages are **ignored**. You can't group posts under a heading on the Lab page, because the script won't see links nested under it.
+    - The linked page must actually exist in the graph and have content. Linking to a page that doesn't exist publishes nothing.
+- ## **2. Stream posts (daily notes)**
+    - **How to post:** on today's daily note, add a **top-level** block whose first link is the post's page.
+        - `[[My Stream Post Title]]`
+        - Text after the link is fine, but it isn't shown anywhere: `[[My Stream Post Title]] — quick thought on X`
+    - Write the actual post **on its own page** (`[[My Stream Post Title]]`), not on the daily note. The daily-note block only points to it.
+    - **Date:** the Stream shows the date of the **daily note** the post is linked from, not `Date Created::`. Posts are sorted newest first.
+    - **The home page shows the full text** of every Stream post, not a preview, so keep Stream posts short.
+    - **The post page must have a `Type::` attribute** in its Metadata block (e.g. `Type:: [[Stream Post]]`, which the Stream template already includes). This is what separates a post from an ordinary link.
+        - `Talked with [[Jane Doe]]` or `{{[[TODO]]}} call the bank` on a daily note publishes nothing, because those pages have no `Type::`. Journal freely.
+        - ⚠️ So a page you *don't* want published shouldn't have a `Type::` if you link it at the top level of a daily note.
+    - **Linking the same post from several daily notes is fine.** It appears once, dated by the **earliest** daily note that links it.
+    - **Announcing a Lab, Garden or Essay post on the Stream:** link it from a daily note too. It then shows on the home page **and** in its section, and every link to it goes to the section version.
+- ## **3. Lab, Garden (structure) and Essay posts**
+    - **How to publish:** add a **top-level** block on the `[[Lab]]`, `[[Garden]]` or `[[Essays]]` page containing the post's link.
+        - `[[My Lab Post Title]]`
+        - One post per block. Only the first link in the block counts.
+    - **Order on the index page** is set by `Date Updated::`, then `Date Created::`, newest first. The order of blocks on the section page doesn't matter. Posts with neither date sink to the bottom.
+    - **If a page is listed in more than one section**, Essays wins over Lab, and Lab wins over Garden. List each page in only one section.
+    - **What shows at the top of each post:**
+        - Lab / Essays: `Created: … | Updated: … | Tags: …`
+        - Garden: the same, plus the `Subtitle::` line under the title, on both the index and the post page. Subtitles are **only** shown for Garden.
+        - Stream: `date of daily note | Tags: …`
+- ## **4. The Metadata block**
+    - Every post page starts with a top-level **Heading 1** block whose text is exactly `Metadata`, with the attributes nested underneath:
+        - `# Metadata` (Heading 1, the word "Metadata" and nothing else)
+            - `Date Created:: [[September 28th, 2026]]`
+            - `Date Updated:: [[September 28th, 2026]]`
+            - `Subtitle:: One line describing the structure` (Garden only)
+            - `Tags:: [[Tag One]], [[Tag Two]]`
+            - `Type:: [[Lab Post]]`
+    - The whole Metadata block and everything nested under it is **hidden** on the site. `Pattern::`, `Notes:` and template instructions can live there safely.
+        - ⚠️ It has to be **Heading 1** and say exactly `Metadata`. As an H2, or as `Metadata:`, it will print on the page.
+    - **Dates must be Roam date links** (use `/Today` or the date picker): `[[September 28th, 2026]]`. Plain text like `9/28/2026` is ignored.
+    - **Tags** are split on commas. Linked tags `[[Tag]]` become links, and unlinked text is shown as plain text.
+        - Namespaced tags show only the last part: `[[Person/Jane Doe]]` shows as "Jane Doe".
+        - A tag page that isn't published shows as plain text, not a link (see §9).
+    - The script searches the **whole page** for `Tags::`, `Date Created::`, `Date Updated::` and `Subtitle::`, and the last match wins. Don't type those attribute names anywhere else on a post page, even in the body.
+- ## **5. Sidenotes and margin notes**
+    - **Numbered sidenote**: superscript number in the text, note in the margin.
+        - Syntax: `(+1 your note text)`
+        - Example: `Progress is not linear(+1 See Kuhn on paradigm shifts.) and history shows it.`
+        - The number is **required but ignored**. The site numbers sidenotes automatically in order, so you can write `(+1 …)` every time.
+    - **Margin note**: ⊕ symbol in the text, unnumbered note in the margin.
+        - Syntax: `(+ your note text)` (a plus sign, then a **space**)
+        - Example: `Chesterton said something similar.(+ G.K. Chesterton, __Orthodoxy__, ch. 4.)`
+    - **Rules for both:**
+        - There must be a **space** after `+1` or after `+`. `(+1note)` doesn't work.
+        - Put the note **right after** the word or punctuation it annotates, with no space before `(`.
+        - **Parentheses and external links are fine inside notes**, as long as every `(` has a matching `)`.
+            - `(+1 Kuhn (1962) argues this; see [his book](https://example.com).)` works.
+            - If the parentheses don't balance, the note never closes and the whole `(+ …` is left as plain text on the site.
+        - These all work inside notes: `**bold**`, `__italic__`, `^^highlight^^`, `[[internal links]]`, `[external](links)`.
+        - Notes work in normal blocks, `>` blockquotes, citations and table cells.
+- ## **6. Text formatting: what renders and what doesn't**
+    - ✅ **Works**
+        - Bold: `**bold**`
+        - Italic: Roam's normal `__italic__` (or `*italic*`)
+        - Highlight: `^^highlight^^` (becomes a highlighted `<mark>`)
+        - Internal link: `[[Page Title]]`. Namespaced titles show only the last part: `[[Dating/Some Event]]` → "Some Event". Unpublished pages show as plain text (§9).
+        - External link: `[link text](https://example.com)` opens in a new tab
+    - ❌ **Does not render** (appears as literal characters on the site)
+        - Strikethrough `~~text~~`, inline code `` `code` ``, code blocks, LaTeX
+        - Hashtags: `#tag` shows as plain text, and `#[[tag]]` shows a stray `#` before the link. Use `[[tag]]` instead.
+        - Aliases `[text]([[Page]])` **produce broken HTML**. Just use `[[Page]]`.
+        - Attributes in the body (`Something:: value`) print literally. Keep attributes in Metadata.
+        - `{{[[TODO]]}}`, `{{[[DONE]]}}` and other `{{ }}` components other than tables and embeds.
+- ## **7. Structure: headings, nesting and paragraphs**
+    - **Every block becomes its own paragraph.** Indentation is **flattened**: there are no bullets, no nested lists and no indent on the site. Write each block as a paragraph that stands on its own.
+    - **Headings:** the size on the site = Roam heading level + how deeply the block is nested.
+        - Top-level `## Section` → H2 on the site. Nested one level → H3, and so on (up to H6).
+        - Don't use Heading 1 in the body, because it's the same size as the post title. Use **H2** for top-level sections and **H3** for sub-sections.
+    - **Empty headings disappear.** A heading with no text below it (e.g. an unfilled `## Aftermath` from a Lab template) is left out, so unused template sections can stay in Roam.
+    - Empty blocks are skipped.
+- ## **8. Blockquotes, images, tables, block references**
+    - **Blockquote:** start the block with `>`. Nest the citation as a child block.
+        - `> The quoted passage goes here.`
+            - `— Author, __Title__, p. 12`
+        - All child blocks are joined into one citation line. Grandchildren are ignored.
+        - Quotes and citations support all the same formatting as normal blocks, including sidenotes.
+    - **Image:** `![](https://image-url)` with **empty** alt text.
+        - ⚠️ `![caption](url)` does **not** make an image. It turns into a text link with a stray `!`.
+        - **Clickable image:** make the image's **first child** either a bare URL (`https://…`) or a single page link (`[[Some Page]]`). The image then links there, and that child block is hidden. If the linked page isn't published, the image just isn't clickable.
+    - **Table:** a block containing `{{[[table]]}}` with rows nested under it, as Roam builds tables.
+        - The **first row is the header row**.
+        - Each row's block is the first cell. Each further cell is nested under the one before it, which is Roam's normal table structure.
+        - A cell containing a link to a *published* page whose title includes "review" (e.g. `[[Review of Some Book]]`) shows as a link reading **Review**.
+    - **Block reference** `((uid))` and **embed** `{{[[embed]]: ((uid))}}`:
+        - The referenced block's **text** is placed inline. **Children are not included**, including for embeds.
+        - If the source block's page is published, a ↗ link to that page is added.
+        - Nested references resolve up to 5 levels deep. A reference to a block not in the export shows `[missing reference]`.
+- ## **9. Links, URLs and page titles**
+    - **Link as freely as you like.** A `[[link]]` becomes a hyperlink only if the page it points to is published. Otherwise it shows as plain text, so stub `Person/` pages and `Time/` or `Concept/` tags never produce dead links.
+        - When you later publish a page, every existing link to it becomes a real link on the next build.
+    - **"Referenced by"** at the bottom of each post lists the **published** pages that link to it, each once. Unpublished pages, daily notes and section index pages are left out.
+    - **URLs come from page titles:** lowercase, spaces → hyphens, all other punctuation **removed**.
+        - `Person/Jane Doe` → `personjane-doe.html`
+        - `Finished Reading "A Book"` → `finished-reading-a-book.html`
+        - Renaming a published page **changes its URL** and breaks outside links to it.
+        - Two titles that differ only in punctuation or capitals get the **same URL**, and one overwrites the other.
+- ## **10. Pre-export checklist**
+    - [ ] Each new post has a `# Metadata` block (**Heading 1**) with dates as `[[date links]]`.
+    - [ ] It has a `Type::` attribute and is linked from a top-level daily-note block (Stream) and/or listed in **one** section (a top-level block on Lab, Garden or Essays).
+    - [ ] Pages you want kept private have no `Type::`.
+    - [ ] Sidenotes have a space after `+`/`+1`, and their parentheses balance.
+    - [ ] Images use `![](url)` with empty alt text.
+    - [ ] Export: **All Pages → JSON**, save as `roam-export.json` in the blog folder, run `npm run build`, and check `dist/`.

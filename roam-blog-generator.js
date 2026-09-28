@@ -77,7 +77,7 @@ class RoamBlogGenerator {
         sectionPage.children.forEach(child => {
           if (child.string && child.string.includes('[[')) {
             const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-            if (linkMatch) {
+            if (linkMatch && this.pages.has(linkMatch[1])) {
               this.pageToSection.set(linkMatch[1], sectionName.toLowerCase());
             }
           }
@@ -87,17 +87,35 @@ class RoamBlogGenerator {
 
     // Map daily note links to stream
     this.dailyNotes.forEach((dailyNote) => {
-      if (dailyNote.children) {
-        dailyNote.children.forEach(child => {
-          if (child.string && child.string.includes('[[')) {
-            const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-            if (linkMatch && !this.pageToSection.has(linkMatch[1])) {
-              this.pageToSection.set(linkMatch[1], 'stream');
-            }
-          }
-        });
-      }
+      (dailyNote.children || []).forEach(child => {
+        const postTitle = this.getStreamPostTitle(child);
+        if (postTitle && !this.pageToSection.has(postTitle)) {
+          this.pageToSection.set(postTitle, 'stream');
+        }
+      });
     });
+  }
+
+  // A top-level daily note block publishes the first page it links to, but only
+  // if that page is a post (has a Type:: attribute). This keeps incidental links
+  // like "Talked with [[Someone]]" or {{[[TODO]]}} from publishing pages.
+  getStreamPostTitle(block) {
+    if (!block.string) return null;
+    const linkMatch = block.string.match(/\[\[([^\]]+)\]\]/);
+    if (!linkMatch) return null;
+    const page = this.pages.get(linkMatch[1]);
+    if (!page || !this.extractMetadata(page).typeForCategorization) return null;
+    return linkMatch[1];
+  }
+
+  isPublished(pageTitle) {
+    return this.pageToSection.has(pageTitle);
+  }
+
+  // Unique backlinks, limited to pages that are actually published
+  getBacklinks(pageTitle) {
+    const titles = this.backlinks.get(pageTitle) || [];
+    return [...new Set(titles)].filter(title => this.isPublished(title));
   }
 
   buildUidMap() {
@@ -248,7 +266,7 @@ class RoamBlogGenerator {
         // Check if this is a blockquote with potential citation
       if (child.string.trim().startsWith('>')) {
         const blockquoteContent = child.string.replace(/^>\s*/, '').trim();
-        let processedContent = this.processBlockquoteFormatting(blockquoteContent, currentSection);
+        let processedContent = this.formatInlineContent(blockquoteContent, currentSection);
         
         // Check if there are children (potential citations)
         let citationHTML = '';
@@ -256,7 +274,7 @@ class RoamBlogGenerator {
           // Process children as citations
           const citations = child.children
             .filter(c => c.string && c.string.trim())
-            .map(c => this.processBlockquoteFormatting(c.string.trim(), currentSection));
+            .map(c => this.formatInlineContent(c.string.trim(), currentSection));
           
           if (citations.length > 0) {
             citationHTML = `<footer>${citations.join(' ')}</footer>`;
@@ -270,21 +288,36 @@ class RoamBlogGenerator {
         // Check if this is an image with a link in the next child
         const hasImage = child.string.includes('![](');
         const nextChild = child.children && child.children[0];
-        const nextChildIsLink = nextChild && nextChild.string && 
-          (nextChild.string.startsWith('http://') || nextChild.string.startsWith('https://'));
-        
+
+        // Check if next child is a bare URL or a wiki-link
+        const nextChildString = nextChild && nextChild.string ? nextChild.string.trim() : '';
+        const isBareUrl = nextChildString.startsWith('http://') || nextChildString.startsWith('https://');
+        const wikiLinkMatch = nextChildString.match(/^\[\[([^\]]+)\]\]$/);
+        const isWikiLink = wikiLinkMatch !== null;
+        const nextChildIsLink = isBareUrl || isWikiLink;
+
         let content;
-        
+
         if (hasImage && nextChildIsLink) {
           // Handle clickable image case
-          const linkUrl = nextChild.string.trim();
+          let linkUrl;
+          if (isBareUrl) {
+            // Use bare URL as-is
+            linkUrl = nextChildString;
+          } else if (isWikiLink && this.isPublished(wikiLinkMatch[1])) {
+            // Resolve wiki-link to page URL (unpublished pages leave the image unlinked)
+            linkUrl = this.getPageUrl(wikiLinkMatch[1], currentSection);
+          }
+
           content = this.formatInlineContent(child.string, currentSection);
-          
-          content = content.replace(
-            /<img src="([^"]+)" alt="([^"]*)" style="([^"]*)" \/>/g,
-            `<a href="${linkUrl}" target="_blank"><img src="$1" alt="$2" style="$3 cursor: pointer;" /></a>`
-          );
-          
+
+          if (linkUrl) {
+            content = content.replace(
+              /<img src="([^"]+)" alt="([^"]*)" style="([^"]*)" \/>/g,
+              `<a href="${linkUrl}" target="_blank"><img src="$1" alt="$2" style="$3 cursor: pointer;" /></a>`
+            );
+          }
+
           if (nextChild) nextChild._processed = true;
         } else {
           content = this.formatInlineContent(child.string, currentSection);
@@ -319,100 +352,84 @@ class RoamBlogGenerator {
 
     // Handle Roam blockquotes (lines starting with >)
     if (text.trim().startsWith('>')) {
-      const blockquoteContent = text.replace(/^>\s*/, '').trim();
-      // Process the blockquote content through the rest of the formatting
-      let processedContent = blockquoteContent;
-      
-      // Apply the same formatting as below to blockquote content
-      processedContent = processedContent.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
-        const id = `sn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
-      });
-      processedContent = processedContent.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
-        const id = `mn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-        return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
-      });
-      processedContent = processedContent.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-      processedContent = processedContent.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
-        const url = this.getPageUrl(linkText, currentSection);
-        return `<a href="${url}">${linkText}</a>`;
-      });
-      processedContent = processedContent.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-      processedContent = processedContent.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-      processedContent = processedContent.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-      processedContent = processedContent.replace(/\^\^([^^]+)\^\^/g, '<mark>$1</mark>');
-      
-      return `<blockquote><p>${processedContent}</p></blockquote>`;
+      const blockquoteContent = text.replace(/^\s*>\s*/, '').trim();
+      return `<blockquote><p>${this.formatText(blockquoteContent, currentSection)}</p></blockquote>`;
     }
-    
-    // Handle sidenotes: (+1 content) -> numbered sidenote
-    text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
-      const id = `sn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
-    });
-    
-    // Handle margin notes: (+ content) -> margin note with symbol
-    text = text.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
-      const id = `mn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
-    });
+
+    return this.formatText(text, currentSection);
+  }
+
+  formatText(text, currentSection) {
+    // Handle sidenotes (+1 content) and margin notes (+ content)
+    text = this.replaceSidenotes(text);
 
     // Handle markdown links: [text](url) -> <a> tags (external links open in new tab)
     text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-    
+
     // Handle wiki links
     text = text.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
-      const url = this.getPageUrl(linkText, currentSection);
-      
-    // Extract display text: if there's a namespace (contains '/'), 
-    // show only the part after the last '/'
-    const displayText = linkText.includes('/') 
-      ? linkText.split('/').pop()  // Get everything after the last slash
-      : linkText;                  // Use full text if no namespace
-    
-    return `<a href="${url}">${displayText}</a>`;
-  });
-    
-    // Handle bold, italic, and highlighting
+      // Extract display text: if there's a namespace (contains '/'),
+      // show only the part after the last '/'
+      const displayText = linkText.includes('/')
+        ? linkText.split('/').pop()
+        : linkText;
+
+      // Unpublished pages render as plain text rather than a dead link
+      if (!this.isPublished(linkText)) return displayText;
+
+      return `<a href="${this.getPageUrl(linkText, currentSection)}">${displayText}</a>`;
+    });
+
+    // Handle bold, italic (*text* or Roam's __text__), and highlighting
     text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    text = text.replace(/__(.+?)__/g, '<em>$1</em>');
     text = text.replace(/\^\^([^^]+)\^\^/g, '<mark>$1</mark>');
-    
+
     return text;
   }
 
-  processBlockquoteFormatting(text, currentSection) {
-  // Resolve block references first
-  text = this.resolveBlockRefs(text, currentSection);
+  // Replace (+1 content) with a numbered sidenote and (+ content) with a margin note.
+  // Parentheses are matched by depth, so notes can contain (parentheses) and [links](url).
+  replaceSidenotes(text) {
+    let result = '';
+    let pos = 0;
 
-  // Handle sidenotes: (+1 content) -> numbered sidenote
-  text = text.replace(/\(\+(\d+)\s+([^)]+)\)/g, (match, num, content) => {
-    const id = `sn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    return `<label for="${id}" class="margin-toggle sidenote-number"></label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="sidenote">${content}</span>`;
-  });
-  
-  // Handle margin notes: (+ content) -> margin note with symbol
-  text = text.replace(/\(\+\s+([^)]+)\)/g, (match, content) => {
-    const id = `mn-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    return `<label for="${id}" class="margin-toggle">⊕</label><input type="checkbox" id="${id}" class="margin-toggle"/><span class="marginnote">${content}</span>`;
-  });
-  
-  // Handle markdown links: [text](url) -> <a> tags (external links open in new tab)
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-  
-  // Handle wiki links
-  text = text.replace(/\[\[([^\]]+)\]\]/g, (match, linkText) => {
-    const url = this.getPageUrl(linkText, currentSection);
-    return `<a href="${url}">${linkText}</a>`;
-  });
-  
-  // Handle bold, italic, and highlighting
-  text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  text = text.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-  text = text.replace(/\^\^([^^]+)\^\^/g, '<mark>$1</mark>');
-  
-  return text;
-}
+    while (true) {
+      const start = text.indexOf('(+', pos);
+      if (start === -1) break;
+
+      const opener = text.slice(start).match(/^\(\+(\d*)\s+/);
+      let end = -1;
+      if (opener) {
+        let depth = 1;
+        for (let i = start + opener[0].length; i < text.length; i++) {
+          if (text[i] === '(') depth++;
+          else if (text[i] === ')' && --depth === 0) { end = i; break; }
+        }
+      }
+
+      // Not a sidenote, or never closed: leave the text as-is
+      if (end === -1) {
+        result += text.slice(pos, start + 2);
+        pos = start + 2;
+        continue;
+      }
+
+      const content = text.slice(start + opener[0].length, end);
+      const isNumbered = opener[1] !== '';
+      const id = `${isNumbered ? 'sn' : 'mn'}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      const label = isNumbered
+        ? `<label for="${id}" class="margin-toggle sidenote-number"></label>`
+        : `<label for="${id}" class="margin-toggle">⊕</label>`;
+
+      result += text.slice(pos, start) +
+        `${label}<input type="checkbox" id="${id}" class="margin-toggle"/><span class="${isNumbered ? 'sidenote' : 'marginnote'}">${content}</span>`;
+      pos = end + 1;
+    }
+
+    return result + text.slice(pos);
+  }
 
   parseRoamTable(tableChild, currentSection = 'stream') {
     if (!tableChild.children || tableChild.children.length === 0) {
@@ -504,7 +521,7 @@ class RoamBlogGenerator {
         
         // Special handling for review links - convert to simple "Review" text
         const linkMatch = content.match(/\[\[([^\]]+)\]\]/);
-        if (linkMatch && linkMatch[1].toLowerCase().includes('review')) {
+        if (linkMatch && linkMatch[1].toLowerCase().includes('review') && this.isPublished(linkMatch[1])) {
           const reviewTitle = linkMatch[1];
           const reviewUrl = this.getPageUrl(reviewTitle, currentSection);
           content = `<a href="${reviewUrl}">Review</a>`;
@@ -581,36 +598,33 @@ class RoamBlogGenerator {
   }
 
   generateStream() {
-    const streamPosts = [];
-    
+    // Keyed by title so a page linked from several daily notes appears once,
+    // dated by the earliest daily note that links it
+    const streamPosts = new Map();
+
     this.dailyNotes.forEach((dailyNote, date) => {
-      if (dailyNote.children) {
-        dailyNote.children.forEach(child => {
-          if (child.string && child.string.includes('[[')) {
-            const linkMatch = child.string.match(/\[\[([^\]]+)\]\]/);
-            if (linkMatch) {
-              const linkedPageTitle = linkMatch[1];
-              const linkedPage = this.pages.get(linkedPageTitle);
-              
-              if (linkedPage) {
-                const metadata = this.extractMetadata(linkedPage);
-                streamPosts.push({
-                  title: linkedPageTitle,
-                  slug: this.titleToSlug(linkedPageTitle),
-                  date: this.formatDate(date),
-                  content: this.parseContent(linkedPage.children, 0, 'stream'),
-                  backlinks: this.backlinks.get(linkedPageTitle) || [],
-                  ...metadata
-                });
-              }
-            }
-          }
+      (dailyNote.children || []).forEach(child => {
+        const linkedPageTitle = this.getStreamPostTitle(child);
+        if (!linkedPageTitle) return;
+
+        const formattedDate = this.formatDate(date);
+        const existing = streamPosts.get(linkedPageTitle);
+        if (existing && new Date(existing.date) <= new Date(formattedDate)) return;
+
+        const linkedPage = this.pages.get(linkedPageTitle);
+        const metadata = this.extractMetadata(linkedPage);
+        streamPosts.set(linkedPageTitle, {
+          title: linkedPageTitle,
+          slug: this.titleToSlug(linkedPageTitle),
+          date: formattedDate,
+          content: this.parseContent(linkedPage.children, 0, 'stream'),
+          backlinks: this.getBacklinks(linkedPageTitle),
+          ...metadata
         });
-      }
+      });
     });
-    
-    streamPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-    return streamPosts;
+
+    return [...streamPosts.values()].sort((a, b) => new Date(b.date) - new Date(a.date));
   }
 
   generateSectionPosts(sectionName) {
@@ -633,7 +647,7 @@ class RoamBlogGenerator {
                 title: postTitle,
                 slug: this.titleToSlug(postTitle),
                 content,
-                backlinks: this.backlinks.get(postTitle) || [],
+                backlinks: this.getBacklinks(postTitle),
                 ...metadata
               });
             }
