@@ -224,17 +224,27 @@ class RoamBlogGenerator {
     });
   }
 
+  // A block has content if it has text or content nested under it. A heading's
+  // own text doesn't count: it only has content if there's something below it.
   hasMeaningfulContent(block) {
-    // Check if block has non-empty string
-    if (block.string && block.string.trim()) {
+    if (!block.heading && block.string && block.string.trim()) {
       return true;
     }
+    return (block.children || []).some(child => this.hasMeaningfulContent(child));
+  }
 
-    // Check if block has children with meaningful content
-    if (block.children && block.children.length > 0) {
-      return block.children.some(child => this.hasMeaningfulContent(child));
+  // A heading is shown only if something is nested under it, or if a following
+  // sibling (before the next heading of the same or higher level) has content.
+  // This lets unfilled template sections stay in Roam without showing on the site.
+  headingHasContent(siblings, index) {
+    const heading = siblings[index];
+    if (this.hasMeaningfulContent(heading)) return true;
+
+    for (let i = index + 1; i < siblings.length; i++) {
+      const sibling = siblings[i];
+      if (sibling.heading && sibling.heading <= heading.heading) break;
+      if (this.hasMeaningfulContent(sibling)) return true;
     }
-
     return false;
   }
 
@@ -249,11 +259,11 @@ class RoamBlogGenerator {
       }
 
       // Skip heading blocks that have no meaningful content
-      if (child.heading && !this.hasMeaningfulContent(child)) {
+      if (child.heading && !this.headingHasContent(children, index)) {
         return;
       }
 
-      if (child.string) {
+      if (child.string && child.string.trim()) {
         // Check if this is a Roam table
         if (child.string.includes('{{[[table]]}}')) {
           // Find the table content (should be in the children)
@@ -516,7 +526,7 @@ class RoamBlogGenerator {
 
   extractTableCells(children, cells, currentSection) {
     children.forEach(child => {
-      if (child.string) {
+      if (child.string && child.string.trim()) {
         let content = child.string;
         
         // Special handling for review links - convert to simple "Review" text

@@ -83,8 +83,14 @@
     - **Headings:** the size on the site = Roam heading level + how deeply the block is nested.
         - Top-level `## Section` → H2 on the site. Nested one level → H3, and so on (up to H6).
         - Don't use Heading 1 in the body, because it's the same size as the post title. Use **H2** for top-level sections and **H3** for sub-sections.
-    - **Empty headings disappear.** A heading with no text below it (e.g. an unfilled `## Aftermath` from a Lab template) is left out, so unused template sections can stay in Roam.
-    - Empty blocks are skipped.
+    - **Headings with nothing under them are hidden.** Unfilled template sections can stay in Roam; the site only shows the ones you've written in.
+        - A heading's **section** is everything nested under it, plus the blocks after it at the same level until the next heading of the same or larger size. Either way of writing works:
+            - `## Account` followed by paragraphs at the same level, or
+            - `## Account` with paragraphs nested under it.
+        - If a section has any text, image, quote or table, its heading shows.
+        - A heading's own text doesn't count as content. `## Author: Jane Doe` with nothing below it is hidden, so put that kind of information in a normal block.
+        - A heading whose only content is empty sub-headings is hidden too, along with those sub-headings.
+    - Empty and whitespace-only blocks are skipped.
 - ## **8. Blockquotes, images, tables, block references**
     - **Blockquote:** start the block with `>`. Nest the citation as a child block.
         - `> The quoted passage goes here.`
