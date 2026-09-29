@@ -1,0 +1,131 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: Theology that reaches your fingertips.
+    - Type:: [[Garden Post]]
+    - Background and Inspiration:
+        - **William Perkins's Original Structure (1606):******
+        - 1. **Three-book division matching human relationships** -
+        - https://quod.lib.umich.edu/e/eebo/A09365.0001.001?view=toc, treating man in his
+        - three principle conditions: by himself, in relation to God, and in relation to
+        - others. Your God/Others/Self division directly mirrors this.
+        - 2. **Question-and-answer format** - https://wellcomecollection.org/works/ybzg95nv,
+        - making it a navigable reference work organized by concrete questions.
+        - 3. **Scripture text index** - Perkins also included "another table of the principall
+        - texts of Scripture, which are either explaned, or vindicated from corrupt
+        - interpretation"—showing biblical grounding was essential infrastructure.
+        - 4. **Posthumous compilation from lectures** -
+        - https://www.9marks.org/article/williamperkinsconscience/ and published after his
+        - death (1602) by Thomas Pickering in 1606. Cases arose from pastoral practice.
+        - 5. **Foundational to Puritan culture** -
+        - https://en.wikipedia.org/wiki/Puritan_casuistry, and "case divinity" was
+        - fundamental to Puritan culture as practical theology.
+        - **Medieval Catholic Casuistry (Pre-Reformation):******
+        - 6. **Summae confessorum structure** - https://www.oxfordbibliographies.com/display/doc
+        - ument/obo-9780195396584/obo-9780195396584-0235.xml, handbooks appeared to help
+        - priests interrogate penitents about "the precise circumstances and nature of their
+        - sins before prescribing penance."
+        - 7. **Alphabetical organization** -
+        - https://en.wikisource.org/wiki/Catholic_Encyclopedia_(1913)/Casuistry; Angelo da
+        - Chivasso's work (1486) arranged material alphabetically with numbered paragraphs
+        - for cross-referencing, designed for "simplices confessores" (priests without
+        - university degrees).
+        - 8. **Decalogue organization** - https://www.encyclopedia.com/philosophy-and-religion/p
+        - hilosophy/philosophy-terms-and-concepts/casuistry or, where virtues entered,
+        - around requirements of justice, though more loosely they were gathered by topic or
+        - example collections.
+        - 9. **Thomas of Chobham's influence** - https://en.wikipedia.org/wiki/Summa_confessorum
+        - and became a model for the genre, shaping how priests approached confession.
+        - **Protestant Adoption & Development:******
+        - 10. **Initial Lutheran resistance** - https://www.encyclopedia.com/philosophy-and-reli
+        - gion/philosophy/philosophy-terms-and-concepts/casuistry, influencing Lutheran
+        - moral guidance for centuries, though Protestants eventually engaged vigorously
+        - with the tradition.
+        - 11. **Reformed adaptation: concise and biblical** -
+        - https://en.wikipedia.org/wiki/Puritan_casuistry: "concise and biblical, and
+        - largely denying the separation of moral philosophy from theology." They rejected
+        - scholastic apparatus.
+        - 12. **"Practical theology" terminology** -
+        - https://www.cambridge.org/core/books/abs/conscience-and-casuistry-in-early-modern-
+        - europe/introduction/2F65CE6F0E13482C895F2C2C6AAB416E, distinguishing applied
+        - ethics from systematic doctrine.
+        - **Richard Baxter's Christian Directory (1673):******
+        - 13. **Four-part structure expanding Perkins** - https://collections.folger.edu/detail/
+        - baxter-richard-a-christian-directory-or-a-summ-of-practical-theologie-and-cases-of
+        - -conscience%C2%B7--directing-christians-how-to-use-their-knowledge-and-faith;-how-
+        - to-improve-all-helps-and-means-and-to-perform-all-duties;-how-to-overcome-temptati
+        - ons-and-to-escape-or-mortifie-every-sin-in-four-parts-i-christian-ethicks-(or-priv
+        - ate-duties)-ii-christian-oeconomicks-(or-family-duties)-iii-christian-ecclesiastic
+        - ks-(or-church-duties)-iv-christian-politicks-(or-duties-to-our-rulers-and-neighbou
+        - rs)-by-richard-baxter/efb0f99d-bc96-44b2-9799-0bd1f9f2b237: (1) Christian Ethicks
+        - (private duties/self), (2) Christian Oeconomicks (family duties), (3) Christian
+        - Ecclesiasticks (church duties), (4) Christian Politicks (civic/neighbor duties).
+        - 14. **Most comprehensive Protestant casuistry** - Baxter's work was "A Sum of
+        - Practical Theology and Cases of Conscience" providing "broad instructions for
+        - utilizing the Scripture to various aspects of life."
+        - **Jeremy Taylor's Ductor Dubitantium (1660):******
+        - 15. **Anglican systematization** -
+        - https://archive.org/details/taylorductordubitantium01 was designed as "a complete
+        - protestant answer to the many Roman Catholic manuals of casuistry."
+        - 16. **Four-book structure** - Taylor organized his comprehensive manual into four
+        - books, creating what was intended as "a capstone to the English Protestant edifice
+        - already created by Sanderson, Hall, and Perkins."
+        - 17. **Philosophical depth** - https://wellcomecollection.org/works/s7htsszh offering
+        - guidance rooted in scripture, reason, and tradition—more philosophical than
+        - Perkins's pastoral approach.
+        - **The Casuistic Method:******
+        - 18. **Paradigm case comparison** - https://www.britannica.com/topic/casuistry, where
+        - similar cases are treated similarly. Taxonomy situates the instant case in a
+        - series of similar cases.
+        - 19. **Morphology-Taxonomy-Kinetics framework** -
+        - https://link.springer.com/article/10.1007/BF00489890: (1) morphology (invariant
+        - structure and forms of argument), (2) taxonomy (situating in series of similar
+        - cases), (3) kinetics (movement/development of the case).
+        - 20. **Identifying morally significant features** -
+        - https://www.newworldencyclopedia.org/entry/Casuistry, accepted rules/values, and
+        - comparing analogous paradigm cases to the case study.
+    - Tasks:
+        - {{[[TODO]]}} Add Preface: Perkins and Baxter both included explanations of why cases of conscience matter, how to use the work, and what makes a true "case" vs. settled doctrine.
+        - {{[[TODO]]}} Add Prose Introduction to Each Major Division: Classical works included explanatory material. Why does God come first? What distinguishes duties to God from duties to neighbor? A short paragraph under each major heading would contextualize.
+        - {{[[DONE]]}} Fill Out more Subjects under Each Main Division
+- # Preface
+- # Self
+    - ## Spiritual Life and Disciplines
+    - ## Conscience, Assurance, and Doubt
+    - ## Depression and Spiritual Dryness
+    - ## Virtues, Vices, and Temptation
+    - ## Mind and Emotions
+    - ## Body, Health, and Sexuality
+    - ## Suffering and Grief
+    - ## Aging, and Death
+    - ## Productivity and Rest
+    - ## Technology, Media, and Entertainment
+    - ## Habits and Addictions
+- # Household
+    - ## Singleness
+    - ## Marriage and Divorce
+    - ## Parenting and Children
+    - ## Family Roles and Responsibilities
+    - ## Extended Family and Aging Parents
+    - ## Household Order, Work, and Stewardship
+    - ## Hospitality
+    - ## Family Conflict and Reconciliation
+- # Church
+    - ## Membership
+    - ## Worship and Attendance
+    - ## Pastoral Relationships
+    - ## Serving and Volunteering
+    - ## Giving
+    - ## Disagreement and Conflict
+    - ## Leaving or Choosing a Church
+    - ## Ministry Commitments
+- # Society
+    - ## Friendship
+    - ## Neighbors and Community
+    - ## Work and Workplace Relationships
+    - ## Money, Buying, Lending, and Giving
+    - ## Speech and Social Interaction
+    - ## Commitments, Promises, and Obligations
+    - ## Civic Participation
+    - ## Education and Institutions
+    - ## Technology and Public Conduct

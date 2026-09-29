@@ -1,0 +1,26 @@
+- Elements
+- Patterns
+- Structures
+    - **Annals and Histories**
+    - **Bibliography**
+    - **Cases of Conscience**
+    - **Chrestomathy**
+    - **Commentary**
+    - **Confessions**
+    - **Criticism**
+    - **Emblem Book**
+    - **Encyclopedia**
+    - **Florilegium**
+    - **Glossary of Concept Handles**
+    - **History of Redemption**
+    - **Household Liturgy**
+    - Inventory of Terms (AI generated from my notes)
+    - **Lexicon**
+    - **Pattern Language for Learning**
+    - **Reading Log**
+    - **Rule of Life**
+    - Scripture Index (AI generated from my notes)
+    - **Silva Rerum**
+    - **Summa**
+    - **Syntopicon**
+    - **Topographia Itinerum**

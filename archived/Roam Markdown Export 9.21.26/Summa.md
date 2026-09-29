@@ -1,0 +1,19 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: A summarized debate on theological questions
+    - Type:: [[Garden Post]]
+    - Tasks:
+        - {{[[TODO]]}} Write 6 Theological Domain Summaries
+- # [[Subject/Systematic Theology]]
+    - ## [[Subject/Theology Proper]]
+    - ## [[Subject/Soteriology]]
+    - ## [[Subject/Christology]]
+    - ## [[Subject/Eschatology]]
+    - ## [[Subject/Anthropology]]
+- # [[Subject/Biblical Theology]]
+    - ## [[Subject/Covenants]]
+- # [[Subject/Exegetical Theology]]
+- # [[Subject/Pastoral Theology]]
+- # [[Subject/Practical Theology]]
+- # [[Subject/Contemporary Theology]]

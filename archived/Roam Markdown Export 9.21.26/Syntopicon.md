@@ -1,0 +1,7 @@
+- # Metadata
+    - Date Created:: [[September 1st, 2025]]
+    - Date Updated:: [[September 1st, 2025]]
+    - Subtitle:: An index of contested ideas defined for clear thinking
+    - Type:: [[Garden Post]]
+- # Preface
+- 

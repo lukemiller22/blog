@@ -1,0 +1,172 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: A gallery of cultural symbols.
+    - Type:: [[Garden Post]]
+    - Notes:
+    - Prompt:
+        - Please create a separate "Early Modern Emblem Book Pictura" for each emblem I provide, outputting each emblem individually without collage, contact-sheet layouts, or multi-emblem combinations.
+        - The purpose of the image is not to reproduce one particular historical artifact. It is to create a normalized Pictura that clearly expresses the emblem's stable, historically attested symbolic form across its known instances.
+        - Treat any uploaded photographs, engravings, carvings, paintings, seals, printer's devices, heraldic examples, or other reference images as evidence for the emblem rather than as compositions that must be copied literally.
+        - If multiple historical instances are provided, compare them and identify the visual elements that remain essential across the examples. Preserve those stable symbolic relationships while removing incidental differences caused by period, artist, medium, setting, ornament, damage, photographic angle, or local decorative treatment.
+        - If only one historical instance is provided, use it carefully as evidence, but distinguish between:
+            - features necessary to the emblem's identity and meaning
+            - features merely belonging to that particular object's style, setting, or manufacture
+        - Do not invent new symbolic elements in order to make the image more visually interesting.
+        - Overall format:
+            - 4:3 landscape composition
+            - warm off-white or lightly aged rag-paper background
+            - one central emblematic composition
+            - generous surrounding whitespace
+            - restrained early-modern printmaking aesthetic
+            - no photographic background
+            - no modern graphic-design layout
+            - no text, title, motto, labels, captions, dates, or decorative typography inside the image unless I explicitly request them
+        - The image should feel like the Pictura from a carefully designed sixteenth- or seventeenth-century emblem book: visually concise, memorable, symbolically legible, handmade, and slightly imperfect.
+        - COMPOSITION
+        - Place the emblematic scene near the center of the page, generally occupying about 45%–65% of the total image area. Preserve ample blank paper around it.
+        - Do not enlarge the symbol until it fills the entire frame. The surrounding paper is part of the visual language.
+        - Use a simple rectangular visual field or extremely restrained printed boundary only when it helps the composition. Do not automatically place every Pictura inside an ornate frame, cartouche, shield, circular seal, or decorative border.
+        - The composition should read immediately at a glance but reward closer inspection.
+        - When the emblem includes multiple elements, preserve their historically meaningful spatial relationship.
+        - Examples:
+            - dolphin entwined around anchor: preserve the intertwining relationship, not merely a dolphin beside an anchor
+            - pelican in her piety: preserve parent, young, nest, and self-wounding action
+            - ouroboros: preserve the serpent consuming its own tail
+            - phoenix: preserve bird, flames, and rebirth imagery where historically integral
+            - ship and anchor: preserve whatever relative positioning carries the attested meaning
+            - personified virtues: preserve historically attested attributes that identify the figure
+            - heraldic animals or objects: preserve characteristic posture, attribute, and orientation when meaningful
+        - Do not simplify so aggressively that the symbolic action or relationship disappears.
+        - NORMALIZATION
+        - The Pictura should represent the emblem itself rather than one specific surviving artifact.
+        - Remove or greatly reduce incidental features such as:
+            - architectural backgrounds that occur only in one example
+            - unrelated landscape scenery
+            - decorative scrollwork
+            - ornamental borders
+            - inscriptions belonging only to one artifact
+            - museum display cases
+            - surrounding buildings
+            - photographic shadows or glare
+            - modern mounting hardware
+            - neighboring symbols
+            - accidental damage
+            - patina
+            - cracks
+            - stains
+            - perspective distortion
+            - irrelevant people or objects
+            - artist-specific flourishes that do not contribute to the emblem's identity
+        - Preserve features when they materially contribute to the emblem's established meaning.
+        - The goal is not generic iconography. The goal is the simplest historically defensible visual form that still preserves the emblem's distinctive symbolic logic.
+        - STYLE
+        - Render the Pictura primarily as an early-modern woodcut or restrained engraved emblem illustration.
+        - Use:
+            - hand-cut black or very dark brown ink lines
+            - irregular carved contours
+            - varied line weight
+            - small hatch marks
+            - cross-hatching only where useful
+            - slight ink breakup
+            - occasional paper show-through
+            - tiny defects in pressure
+            - subtle edge roughness
+            - imperfect registration characteristic of hand printing
+            - restrained tonal modeling
+            - visible handmade mark-making
+        - The image should feel printed from a physical block or plate onto matte rag paper.
+        - Avoid digitally perfect vector edges.
+        - Avoid photorealism.
+        - Avoid the appearance of a modern pen-and-ink filter placed over a photograph.
+        - The linework should be intentionally redrawn as emblematic printmaking.
+        - COLOR
+        - Default to monochrome black, charcoal, or dark umber ink on warm off-white paper.
+        - If historically or symbolically useful, allow one or at most two extremely restrained spot colors derived from the emblem's established tradition, such as:
+            - muted vermilion
+            - ochre
+            - faded indigo
+            - deep green
+            - dull gold-brown
+        - Color must never become decorative merely for visual variety.
+        - If color is not important to recognizing or understanding the emblem, remain monochrome.
+        - When spot color is used, render it with the same physical-print imperfections as the linework:
+            - uneven ink density
+            - slight misregistration
+            - granular edges
+            - small areas of paper show-through
+        - SYMBOLIC FIDELITY
+        - Before rendering, determine:
+        - 1. What objects, creatures, figures, gestures, or arrangements make this emblem recognizable?
+        - 2. Which relationships between those elements carry its meaning?
+        - 3. Which details recur across historically attested instances?
+        - 4. Which details are merely local decoration or artistic variation?
+        - Build the Pictura around answers 1–3 and remove most of 4.
+        - When historical examples disagree, prefer:
+            - the oldest well-attested form
+            - features occurring across multiple independent examples
+            - features specifically described in reliable textual sources
+            - the form most necessary to preserve the emblem's traditional meaning
+        - Do not resolve genuine historical ambiguity by inventing a hybrid detail. When uncertainty exists, use the simplest form supported by the available evidence.
+        - FIGURES, ANIMALS, AND OBJECTS
+        - Human figures should resemble early-modern emblem-book figures rather than modern illustrations or realistic portraits.
+        - Do not make historical or allegorical figures look like identifiable contemporary people.
+        - Animals should retain enough natural form to remain recognizable, but may be slightly stylized in the manner of historical woodcuts.
+        - Objects should be rendered clearly enough that their symbolic role is obvious.
+        - For emblems involving action, prioritize the action over decorative anatomy.
+        - For example:
+            - a lion breaking bonds should clearly be breaking bonds
+            - a hand emerging from clouds should clearly perform the relevant gesture
+            - a bird carrying or dropping an object should clearly interact with it
+            - a flame surrounding an object should not merely become background decoration
+        - SETTING
+        - Use only as much landscape, architecture, ground line, vegetation, cloud, water, or sky as necessary to make the symbolic action intelligible.
+        - The setting should support the emblem rather than compete with it.
+        - When a setting is historically essential, reduce it to a few characteristic forms:
+            - simple horizon
+            - sparse ground
+            - one tree
+            - minimal water lines
+            - distant city silhouette
+            - schematic mountain
+            - architectural fragment
+        - Do not turn the Pictura into a detailed narrative landscape unless the historical emblem itself depends on that narrative setting.
+        - WHITESPACE
+        - Preserve substantial unprinted space.
+        - Do not fill every region with hatching, clouds, vegetation, ornamental foliage, banners, flourishes, or textures.
+        - The blank paper should help isolate the symbolic relationship and create visual consistency across the Emblem Book.
+        - The Pictura should feel collectible when many examples are viewed sequentially.
+        - HISTORICAL CHARACTER
+        - Aim for the visual world of early printed emblem books, printer's devices, moral iconography, and Renaissance or early-modern woodcut illustration without slavishly copying the style of one named artist or edition.
+        - The result should feel historically plausible but newly composed.
+        - It should not pretend to be an authentic sixteenth-century artifact.
+        - It is a modern normalized rendering inspired by historical emblem-book visual language.
+        - The generated Pictura is a presentation image, not historical evidence.
+        - When actual historical instances exist, they belong separately in the Lab post's "Instances" section.
+        - CONSISTENCY ACROSS THE COLLECTION
+        - All Pictura images should appear to belong to the same imaginary edition of the same emblem book.
+        - Maintain consistency in:
+            - paper tone
+            - approximate scale
+            - amount of whitespace
+            - ink character
+            - line density
+            - border treatment
+            - visual weight
+            - level of simplification
+            - degree of aging
+            - use of spot color
+        - Do not change dramatically between ornate engraving, cartoon, watercolor, vector icon, photorealism, and other unrelated styles from one emblem to another.
+        - The specific symbol should vary; the visual system should remain stable.
+        - AI INTERPRETATION
+        - Use image generation to clarify and normalize the historically attested visual idea, not to redesign it.
+        - When references are visually poor, damaged, badly photographed, inconsistent, or stylistically incompatible, reconstruct the emblem from the underlying symbolic evidence rather than reproducing those visual deficiencies.
+        - The finished image should answer:
+        - "What is the essential visual form of this emblem, stripped of accidental differences between its surviving instances?"
+        - It should not answer:
+        - "What would a modern designer invent if given the same theme?"
+        - Avoid:
+        - photorealistic rendering, polished vector logos, modern brand marks, clip art, tattoo flash aesthetics, children's-book illustration, cartoon style, fantasy concept art, glossy digital gradients, 3D rendering, embossed effects, wax seals, postage stamps, circular badge layouts, heraldic shields added without historical basis, excessive ornamental frames, fake Latin text, gibberish inscriptions, decorative motto banners, modern typography, crowded backgrounds, unnecessary scenery, faux museum labels, collage, scrapbook effects, photographic textures, artificial distressing so heavy that the image becomes difficult to read, and any symbolic object or attribute unsupported by the historical evidence.
+    - Format Example:
+        - `![](image-url) (+ Erasmus, __Adagia__ II.i.1)`
+            - `[[Emblem/Festina Lente]]`

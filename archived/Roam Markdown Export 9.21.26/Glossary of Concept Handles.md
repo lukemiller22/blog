@@ -1,0 +1,10 @@
+- # Metadata
+    - Date Created:: [[September 1st, 2025]]
+    - Date Updated:: [[September 1st, 2025]]
+    - Subtitle:: A collection of concept handles for key ideas
+    - Type:: [[Garden Post]]
+    - Tasks
+        - {{[[TODO]]}} Write Preface
+- # Preface
+- # **A**
+- # **B**

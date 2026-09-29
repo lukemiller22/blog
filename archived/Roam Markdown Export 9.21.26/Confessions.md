@@ -1,0 +1,8 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle::
+    - Type:: [[Garden Post]]
+- # **I**
+- # **II**
+- # **III**

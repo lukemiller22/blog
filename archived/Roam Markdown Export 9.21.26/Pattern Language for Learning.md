@@ -1,0 +1,11 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle::
+    - Type:: [[Garden Post]]
+    - Tasks
+        - {{[[TODO]]}} Write Introduction
+- # Introduction
+- # Orientations
+- # Practices
+- # Moves

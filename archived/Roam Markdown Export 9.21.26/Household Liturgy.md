@@ -1,0 +1,697 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: A family walk through the story of Scripture.
+    - Type:: [[Garden Post]]
+- # Year 1
+    - ## Anticipation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - 
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - Christmas Eve
+    - ## Incarnation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Christmas Day
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - Epiphany
+    - ## Revelation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - 
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - 
+            - 8
+                - 
+            - 9
+                - 
+    - ## Suffering
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Ash Wednesday
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - Palm Sunday
+            - 8
+                - Maundy Thursday
+            - 9
+                - Good Friday
+            - 10
+                - Holy Saturday
+    - ## Resurrection
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Easter Sunday
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - Ascension Day
+    - ## Mission
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Pentecost Sunday
+            - 2
+                - Trinity Sunday
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - 
+            - 8
+                - 
+            - 9
+                - 
+            - 10
+                - 
+            - 11
+                - 
+            - 12
+                - 
+            - 13
+                - 
+            - 14
+                - 
+            - 15
+                - 
+            - 16
+                - 
+            - 17
+                - 
+            - 18
+                - 
+            - 19
+                - 
+            - 20
+                - 
+            - 21
+                - 
+            - 22
+                - 
+            - 23
+                - 
+            - 24
+                - 
+            - 25
+                - 
+            - 26
+                - 
+            - 27
+                - 
+            - 28
+                - 
+            - 29
+                - 
+            - 30
+                - 
+- # Year 2
+    - ## Anticipation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - 
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - Christmas Eve
+    - ## Incarnation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Christmas Day
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - Epiphany
+    - ## Revelation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - 
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - 
+            - 8
+                - 
+            - 9
+                - 
+    - ## Suffering
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Ash Wednesday
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - Palm Sunday
+            - 8
+                - Maundy Thursday
+            - 9
+                - Good Friday
+            - 10
+                - Holy Saturday
+    - ## Resurrection
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Easter Sunday
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - Ascension Day
+    - ## Mission
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Pentecost Sunday
+            - 2
+                - Trinity Sunday
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - 
+            - 8
+                - 
+            - 9
+                - 
+            - 10
+                - 
+            - 11
+                - 
+            - 12
+                - 
+            - 13
+                - 
+            - 14
+                - 
+            - 15
+                - 
+            - 16
+                - 
+            - 17
+                - 
+            - 18
+                - 
+            - 19
+                - 
+            - 20
+                - 
+            - 21
+                - 
+            - 22
+                - 
+            - 23
+                - 
+            - 24
+                - 
+            - 25
+                - 
+            - 26
+                - 
+            - 27
+                - 
+            - 28
+                - 
+            - 29
+                - 
+            - 30
+                - 
+- # Year 3
+    - ## Anticipation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - 
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - Christmas Eve
+    - ## Incarnation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Christmas Day
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - Epiphany
+    - ## Revelation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - 
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - 
+            - 8
+                - 
+            - 9
+                - 
+    - ## Suffering
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Ash Wednesday
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - Palm Sunday
+            - 8
+                - Maundy Thursday
+            - 9
+                - Good Friday
+            - 10
+                - Holy Saturday
+    - ## Resurrection
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Easter Sunday
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - Ascension Day
+    - ## Mission
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Pentecost Sunday
+            - 2
+                - Trinity Sunday
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - 
+            - 8
+                - 
+            - 9
+                - 
+            - 10
+                - 
+            - 11
+                - 
+            - 12
+                - 
+            - 13
+                - 
+            - 14
+                - 
+            - 15
+                - 
+            - 16
+                - 
+            - 17
+                - 
+            - 18
+                - 
+            - 19
+                - 
+            - 20
+                - 
+            - 21
+                - 
+            - 22
+                - 
+            - 23
+                - 
+            - 24
+                - 
+            - 25
+                - 
+            - 26
+                - 
+            - 27
+                - 
+            - 28
+                - 
+            - 29
+                - 
+            - 30
+                - 
+- # Year 4
+    - ## Anticipation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - 
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - Christmas Eve
+    - ## Incarnation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Christmas Day
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - Epiphany
+    - ## Revelation
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - 
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - 
+            - 8
+                - 
+            - 9
+                - 
+    - ## Suffering
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Ash Wednesday
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - Palm Sunday
+            - 8
+                - Maundy Thursday
+            - 9
+                - Good Friday
+            - 10
+                - Holy Saturday
+    - ## Resurrection
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Easter Sunday
+            - 2
+                - 
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - Ascension Day
+    - ## Mission
+        - {{[[table]]}}
+            - **Ordinal**
+                - **Occasion**
+                    - **Theme**
+                        - **O.T. Scripture**
+                            - **N.T. Scripture**
+            - 1
+                - Pentecost Sunday
+            - 2
+                - Trinity Sunday
+            - 3
+                - 
+            - 4
+                - 
+            - 5
+                - 
+            - 6
+                - 
+            - 7
+                - 
+            - 8
+                - 
+            - 9
+                - 
+            - 10
+                - 
+            - 11
+                - 
+            - 12
+                - 
+            - 13
+                - 
+            - 14
+                - 
+            - 15
+                - 
+            - 16
+                - 
+            - 17
+                - 
+            - 18
+                - 
+            - 19
+                - 
+            - 20
+                - 
+            - 21
+                - 
+            - 22
+                - 
+            - 23
+                - 
+            - 24
+                - 
+            - 25
+                - 
+            - 26
+                - 
+            - 27
+                - 
+            - 28
+                - 
+            - 29
+                - 
+            - 30
+                - 

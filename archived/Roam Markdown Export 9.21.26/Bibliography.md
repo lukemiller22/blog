@@ -1,0 +1,212 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: A shelf of mentors, living and dead.
+    - Type:: [[Garden Post]]
+    - Notes:
+        - Category Explanations:
+            - Truth = Knowing
+            - Memory = Remembering
+            - Imagination = Imagining
+            - Practice = Doing
+            - Craft = Making
+            - Language = Communicating
+    - Background and Inspiration:
+        - **Photius's Bibliotheca (9th Century):******
+        - 1. **Personal reading record, not reference work** -
+        - https://en.wikipedia.org/wiki/Bibliotheca_(Photius) contained 279 reviews of books
+        - "read by us" compiled for his brother Tarasius while Photius served as
+        - ambassador. It was never meant as a systematic reference work but became one
+        - anyway—the first Byzantine encyclopedia.
+        - 2. **Unsystematic, disorderly arrangement** - https://www.doaks.org/resources/publicat
+        - ions/books/the-nature-of-the-bibliotheca-of-photius that puzzled even informed
+        - readers. Sections (called "codices") varied from single sentences to many pages,
+        - with no clear organizational principle beyond reading sequence.
+        - 3. **Nearly equal sacred/secular balance** -
+        - https://www.historyofinformation.com/detail.php?id=1603, roughly balanced with
+        - Christian texts. This represented 14 centuries of Greek literature on nearly every
+        - subject.
+        - 4. **Preservation through summary** - https://www.jstor.org/stable/1291167 except
+        - through Photius's epitomes. Many classical works exist today only as "highly
+        - compressed one-paragraph summaries in the Bibliotheca."
+        - 5. **Codex structure** - Each entry was called a "codex" (manuscript). Photius
+        - provided: author, title, genre, summary/epitome, and often critical judgment or
+        - noteworthy features of the text.
+        - **Callimachus's Pinakes (c. 250 BC):******
+        - 6. **First systematic bibliography** - https://brewminate.com/pinakes-callimachus-of-c
+        - yrene-and-his-work-at-the-ancient-library-of-alexandria/ and provided "Tables of
+        - Those Who Were Outstanding in Every Phase of Culture, and Their Writings"—the
+        - first comprehensive bibliography of Greek literature.
+        - 7. **Subject classification, then alphabetical by author** -
+        - https://en.wikipedia.org/wiki/Pinakes (epic poetry, tragedy, comedy, philosophy,
+        - history, medicine, mathematics, natural sciences), then arranged alphabetically by
+        - author within each class.
+        - 8. **Bio-bibliographic entries** - Each entry included: author name, biographical
+        - details, work titles, opening lines (incipits), and approximate line counts. https
+        - ://library.bellevue.edu/articles/callimachus-and-the-pinakes-library-beginnings/.
+        - 9. **Universal scope, not just library holdings** -
+        - https://time.com/4730810/first-card-catalog/ but "a bibliographic inventory of all
+        - Greek literature," functioning as both bibliography and finding aid.
+        - **Gesner's Bibliotheca Universalis (1545):******
+        - 10. **Two-part structure: alphabetical + subject index** -
+        - https://www.britannica.com/topic/Bibliotheca-universalis, with annotations and
+        - evaluations. His Pandectae (1548-49) provided a 21-book subject index to the same
+        - material.
+        - 11. **Universal biography + bibliography** -
+        - https://www.historyofinformation.com/detail.php?id=1248, earning him the title
+        - "father of bibliography."
+        - 12. **Print-era comprehensiveness** - Gesner attempted to list "all the known books
+        - printed in Latin, Greek, or Hebrew" during the first century of printing—true
+        - universality within linguistic/temporal scope.
+        - **Medieval Library Organization:******
+        - 13. **Subject or alphabetical arrangement** -
+        - https://archive.org/details/scrivner-1980-carolingian-catalogs, though early
+        - catalogs were mostly treasure inventories, not research guides.
+        - 14. **Evolution from inventory to guide** - https://www.researchgate.net/publication/2
+        - 54359106_An_Overview_of_Medieval_Library_Cataloging, catalogs evolved from
+        - librarian inventories toward patron guides.
+        - **The Epitome Tradition:******
+        - 15. **Three distinct summary forms** - Your Photius template distinguishes epitome
+        - (essential features/spirit), précis (objective summary preserving
+        - structure/logic/tone), and distillation (paragraph-by-paragraph compression).
+        - https://wordpandit.com/wpt_vocabulary/the-origin-of-epitome-from-past-to-present/
+        - of larger works.
+        - 16. **Hellenistic preservation strategy** -
+        - https://onlinelibrary.wiley.com/doi/abs/10.1002/9781118830390.ch27 as a practical
+        - method to preserve and disseminate knowledge across generations.
+        - **Luhmann's Literature Notes:******
+        - 17. **Separate bibliographic slip box** -
+        - https://forum.zettelkasten.de/discussion/1386/luhmanns-literatur-note-examples:
+        - bibliographical notes in one, permanent notes in another. Literature notes were
+        - temporary, serving the specific book/article.
+        - 18. **Keyword-like reading records** - https://zettelkasten.de/introduction/ with page
+        - references. These became "permanent notes" only when integrated into larger
+        - narratives in the main Zettelkasten.
+        - **Dylan O'Sullivan's Modern Form:******
+        - 19. **Twenty subject categories** -
+        - https://www.essayful.co/p/1-the-bibliography-of-a-writing-life-42b, from "Academia
+        - & Science" to "Syntax & Grammar," each with "Five Greatest" selections followed
+        - by alphabetical lists.
+        - 20. **"Map, not manifesto"** - O'Sullivan frames his bibliography as navigational
+        - guidance through 1,703 books and 2,667+ articles—a curated resource addressing
+        - information overload, not prescriptive canon.
+        - 21. **Visual markers for status and significance** - He uses checkboxes (☒/☐) for
+        - read/unread status and bold lemniscate symbols (∞) for particularly notable
+        - entries.
+    - Tasks
+        - {{[[TODO]]}} Write the Preface: Why this collection exists, for whom, what it includes/excludes, and how it's organized. Maybe a personal intellectual autobiography explaining the six-fold framework.
+        - {{[[TODO]]}} Write the Section Introductions
+- # Preface
+- ![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Flukemiller%2FIpVC7hgdv-.webp?alt=media&token=93b06bc1-8aa5-4338-ab73-96baeef9edef)
+- # Truth
+    - ## Introduction
+    - ## Scripture & Commentary
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Doctrine & Theology
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Apologetics & Worldview
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Philosophy & Ideas
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Nature & Science
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+- # Memory
+    - ## Introduction
+    - ## History & Historiography
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Biography & Memoir
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+- # Imagination
+    - ## Introduction
+    - ## Story & Fiction
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Children's & Family Reading
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Poetry & Lyric
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+- # Practice
+    - ## Introduction
+    - ## Devotion & Formation
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Worship & Liturgy
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Church & Ministry
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Marriage & Household
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Politics & Society
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+- # Craft
+    - ## Introduction
+    - ## Work & Productivity
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Trades & Tools
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+- # Language
+    - ## Introduction
+    - ## Reading & Interpretation
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Language & Rhetoric
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays
+    - ## Literature & Criticism
+        - ### Five of the Greatest Books
+        - ### Books
+        - ### Five of the Greatest Essays
+        - ### Essays

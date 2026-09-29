@@ -1,0 +1,7 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: A collection of loanwords gathered from books and essays.
+    - Type:: [[Garden Post]]
+- # **A**
+- # **B**

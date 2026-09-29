@@ -1,0 +1,6 @@
+- # Metadata
+    - Date Created:: [[September 1st, 2025]]
+    - Date Updated:: [[September 1st, 2025]]
+    - Subtitle:: A forest of lists.
+    - Type:: [[Garden Post]]
+- [[Eco List/Countries Visited]]

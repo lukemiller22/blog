@@ -1,0 +1,11 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: A worldview-shaped commonplace book.
+    - Type:: [[Garden Post]]
+- # Truth
+- # Memory
+- # Imagination
+- # Practice
+- # Craft
+- # Language

@@ -1,0 +1,1422 @@
+- ## **Post Templates**
+    - Stream [[roam/templates]]
+        - # Metadata
+            - Tags::
+            - Type:: [[Stream Post]]
+    - Garden [[roam/templates]] 
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Subtitle::
+            - Type:: [[Garden Post]]
+    - Essay [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Essay Post]]
+- ## **Lab Post Templates**
+    - [[Annals and Histories]] [[Tacitus Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Tacitus Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `{Year}: {What happened?}`. Years: `49 BC`, `AD 70`, `1945`. E.g. `49 BC: Caesar Crosses the Rubicon`, `1755: Lisbon Earthquake`, `1945: Vannevar Bush Proposes the Memex`.
+                - Anchor: Event. The moment is the point; the entry loses its meaning without its historical setting.
+                - Boundary: this pattern records what happened, not the argument for when it happened. If the date requires explanation, justification, or comparison of alternatives, create a `Dating/{Event}` entry using the [[Ussher Pattern]] and link it here.
+                - Tags: `Time/{year}`, `Theme/`, and `Concept/` always; then `Person/`, `Place/`, `Event/`, `Artifact/`, `Source/` as they apply; `Topic/` as it arises.
+                - Garden: link to this post under the adopted year in the appropriate century block, one line only.
+                - Add to the Lab index page.
+                - Description:
+                    - Setting: Place and the circumstances that made the moment matter.
+                    - Persons: Who acted, suffered, witnessed, and how they stood to each other. Omit for authorless events.
+                    - Account: What happened, in order. For a work: what was made and what it did.
+                    - Aftermath: What followed, near and far.
+                    - Significance: The one turn the moment makes: archetype, idiom, or principle. Sprawl goes to a linked Syntopicon or Summa entry.
+                    - Dating: If an Ussher entry exists, link `Dating/{Event}` here. No dating argument belongs in this post.
+                    - Cross-References: to other posts.
+                    - Sources: Primary first, then secondary.
+        - ## Setting
+        - ## Persons
+        - ## Account
+        - ## Aftermath
+        - ## Significance
+        - ## Dating
+        - ## Cross-References
+        - ## Sources
+    - [[Annals and Histories]] [[Plutarch Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Plutarch Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: the Person page itself, `Person/C.S. Lewis`. Never create a second page for a person; the tag page __is__ the Life. Most `Person/` pages stay stubs; only written Lives go on the Lab index.
+                - Anchor: Person. The life is the point and spans years; you'd write it the same way whichever year they died.
+                - Boundary: ???
+                - Tags: `Time/{death year}` and `Time/{birth year}`; `Place/`; `Subject/` for their field; `Concept/` for the virtues and vices named below; `Source/` for their major works. `Topic/` if appropriate.
+                - Garden: link to the lab post under the birth year and death year in this format:`1963: [[Person/C.S. Lewis]] Death`
+                - Add to the Lab index page.
+                - Description:
+                    - Dates: Born, died, and the span in one line.
+                    - Origins: Family, place, formation; what they inherited.
+                    - Character: Plutarch's real subject: temperament, habits, the small revealing detail.
+                    - Deeds: The decisive acts, in order, each linked to its Tacitus entry if one exists.
+                    - Words: Sayings and characteristic phrases, as block references, with attestation.
+                    - Death: How they died and what they said or did at the end.
+                    - Virtue & Vice: What the life exemplifies and what it warns against, as `Concept/` links.
+                    - Parallel: The life this one is best read against, and the comparison: where they match, where they diverge, what the difference teaches.
+                    - Cross-References
+                    - Sources: Their own works first, then lives and letters, then studies.
+        - ## Dates
+        - ## Origins
+        - ## Character
+        - ## Deeds
+        - ## Words
+        - ## Death
+        - ## Virtue and Vice
+        - ## Parallel
+        - ## Cross-References
+        - ## Sources
+    - [[Annals and Histories]] [[Chreia Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Chreia Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `{Year}: "{The words}"`, e.g. `49 BC: "The die is cast"`, `44 BC: "Et tu, Brute?"`. Quotation marks in the title mark the pattern.
+                - Anchor: Quotation, fixed to a Person and a Time. The saying is the point; the occasion exists to explain it.
+                - Boundary: ???
+                - Tags: `Time/{year}`, `Person/{speaker}`, `Place/`, `Source/{attesting work}`, `Event/`; `Concept/` for the virtue or vice it exemplifies (Valerius's principle). `Topic/` if appropriate.
+                - Garden: link to the lab post under the year
+                - Add to the Lab index page.
+                - Description:
+                    - Saying: Original language, pronunciation (stressed syllable in caps), translation, attestation. This block is the export; keep it clean. Attestation is the whole game in this genre: apophthegm collections are famously unreliable. Say who reports it, how far from the event, and whether it's record, tradition, or literature (Suetonius vs. Shakespeare). Never let a legend pass as a record.
+                    - Occasion: The circumstance in which it was said, told briefly and in order.
+                    - Speaker: Who said it and what about them makes the words land (the chreia's "praise"). Link the Plutarch Life if there is one.
+                    - Sense: The saying paraphrased: what it actually claims.
+                    - Cause: Why it was said, and why it's true or false.
+                    - Contrast and Comparison: The contrary case, and an analogy or parallel saying that sharpens it.
+                    - Afterlife: How the words were taken up: idiom, misquotation, literary use, later occasions where they were repeated.
+                    - Exhortation: What the saying asks of you. One sentence if possible.
+                    - Cross-References
+                    - Sources: The attesting source first, then collections (Plutarch, Valerius, Erasmus), then studies.
+        - ## Saying
+        - ## Occasion
+        - ## Speaker
+        - ## Sense
+        - ## Cause
+        - ## Contrast & Comparison
+        - ## Afterlife
+        - ## Exhortation
+        - ## Cross-References
+        - ## Sources
+    - [[Annals and Histories]] [[Ussher Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Ussher Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Dating/{Event}`, e.g. `Dating/Baptism of Jesus`, `Dating/Fall of Jericho`, `Dating/Composition of Hebrews`.
+                - Anchor: Time as a question. The chronological problem is the point: when did the event occur, and how can it be reckoned?
+                - Boundary: Use this pattern whenever the date of an event requires argument, explanation, or comparison of alternatives. If the date is straightforward and uncontested, no Ussher entry is necessary; the Tacitus entry simply records it.
+                - Tags: `Time/{verdict year}`; add `Time/` for strong rival candidates; `Event/`; `Person/`; `Source/` for key witnesses. `Topic/` if relevant.
+                - Garden: the Tacitus entry occupies the chronological line under the adopted year. The Ussher entry supplies the dating argument and is linked from the Tacitus entry rather than appearing as a second chronological event.
+                - Add to the Lab index page.
+                - Description:
+                    - Question: The event whose date is disputed, the range of uncertainty, and why resolving it matters.
+                    - Anchors: The fixed or comparatively secure points from which dates are reckoned: regnal years, synchronisms, astronomical events, dated documents, genealogical intervals, and similar controls.
+                    - Candidates: Each serious proposed date or chronology, its basic reckoning, and its principal advocates. One block per candidate.
+                    - Evidence: The evidence that bears on the candidates, distinguishing primary testimony from later reconstruction and noting what each interpretation must explain.
+                    - Verdict: The date adopted for the corresponding Tacitus entry, the confidence (__certain__ / __probable__ / __possible__ / __open__), and the considerations that decide it.
+                    - Consequences: What else moves if this date moves; other Ussher and Tacitus entries affected.
+                    - Cross-References
+                    - Sources: Primary witnesses first, then chronologies and studies.
+        - ## Question
+        - ## Anchors
+        - ## Candidates
+        - ## Evidence
+        - ## Verdict
+        - ## Consequences
+        - ## Cross-References
+        - ## Sources
+    - [[Bibliography]] and [[Reading Log]] [[Photius Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Photius Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Source/{Title} - {Author}`, e.g. `Source/Mere Christianity - C.S. Lewis`. The tag page is the lab post — never create a second page for a book referenced elsewhere.
+                - Anchor: finishing a book (or starting one, for a "currently reading" entry).
+                - Boundary: ???
+                - Tags: `Person/{Author}`; `Concept/`, `Theme/` as they arise. `Topic/` if relevant.
+                - Garden: Link to lab post added to Bibliography (under its Subject shelf) and Reading Log (chronological, with date read and rating — those live on the Garden entry, not here).
+                - Add to the Lab index page.
+                - Description:
+                    - Opening Line
+                    - Contents = ToC. Optional for fiction.
+                    - Key Ideas = Luhmann's "literature notes" — personalized, keyword-like reading records. For fiction, this is usually themes and motifs rather than propositions.
+                    - Summary = Epitome, Précis, or Distillation.
+                        - An epitome is a concise summary that captures the essential features or spirit of a larger work, subject, or concept.
+                        - A précis is a careful, objective summary that reproduces the structure, logic, and tone of the original text.
+                        - A distillation is a thorough, paragraph-by-paragraph summary that covers the same ground as the original text but in far fewer words.
+                            - I started in, and began to underline one sentence — the key idea — from each and every paragraph. Then I went back through and summarized each of those sentences in my own words, in pen, in the margin. Then I went back through and typed those up so they'd flow together. Each paragraph was turned into a sentence, each section became a paragraph, and each chapter became a document. I call this "book distillation," and I used to have high schoolers do it on particularly hard philosophy books. Thanks to Mortimer Adler's [How to Read a Book](https://www.amazon.com/How-Read-Book-Classic-Intelligent/dp/0671212095/ref=sr_1_1?crid=18RVF19HCBSQS&keywords=How+to+Read+a+Book&qid=1707664736&s=books&sprefix=how+to+read+a+book%2Cstripbooks%2C299&sr=1-1) for the inspiration. - [[Brandon Hendrickson]] ([source](https://www.losttools.org/p/the-book-review))
+                    - Citations = Verbatim excerpts, one block each, with page or location. This is the canonical copy — Chrestomathy, Florilegium, and Zettelkasten all block-reference into these blocks rather than re-typing the passage.
+                    - Adversaria = links to related articles, book-specific lexicons, translations into other media. What the book spawned inside this graph (Dictionary entries, Syntopicon topics, Chrestomathy quotations) will already surface in Roam's linked references — no need to hand-list those here.
+        - ## Opening Line
+        - ## Contents
+        - ## Key Ideas
+        - ## Summary
+        - ## Citations
+        - ## Adversaria
+        - ## Review
+    - [[Cases of Conscience]] [[Perkins Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Perkins Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Question/{Question}`, e.g. `Question/Should I Correct My Child in Front of Guests?`
+                - Anchor: a real dilemma, yours or someone else's, that doctrine alone doesn't resolve — it needs the particulars weighed.
+                - Boundary: The test is whether personal context is doing the real work—a specific person's circumstances, requiring wisdom and discernment to weigh. If the answer depends on who's asking and their particulars → here. If the question holds regardless of who's asking → Summa. If it's primarily a judgment on a specific completed action → Quintilian.
+                - Tags: `Concept/` for the virtue or vice at stake; `Rule/` if a standing precept bears on it; `Person/` if it arose from a specific correspondence. `Topic/` if relevant.
+                - Garden: link from the relevant Rule of Life domain page, or a standalone Cases index if the volume warrants one.
+                - Add to the Lab index page.
+                - Inspiration:
+                    - Applied Theology: Cases of Wisdom, Discernment, and Conscience
+                    - William Perkins' __The Whole Treatise of the Cases of Conscience__
+                    - Ask Pastor Format
+                    - Letters in response to readers (e.g. many of C.S. Lewis' letters)
+                - Description:
+                    - Case = the question, stated as the person asking it would state it.
+                    - Grounds = the Scripture, principle, or precept that bears on it.
+                    - Distinctions = the look-alike cases that resolve differently, and what separates them. This is where the real thinking happens.
+                    - Resolution = the answer, plainly stated.
+                    - Objections = the strongest case for a different answer, and the reply.
+                    - Application = what this looks like in practice, on a Tuesday.
+        - ## Case
+        - ## Grounds
+        - ## Distinctions
+        - ## Resolution
+        - ## Objections
+        - ## Application
+        - ## Cross-References
+        - ## Sources
+    - [[Chrestomathy]] [[Erasmus Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Erasmus Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `{Key Phrase}`, e.g. `He Carries Fire in One Hand and Water in the Other`.
+                - Anchor: an exemplary phrase or short passage that teaches something reusable about how language works. The point is not merely that the passage is memorable, but that its form performs a rhetorical function worth imitating.
+                - Boundary: if the passage is being preserved primarily because of what it says or because it bears conviction-level significance → Florilegium. If it's a foreign word or fixed phrase kept in the original language → Lexicon. If the historical occasion and speaker are the point → Chreia. If the analysis requires the form of a whole poem, psalm, speech, or other genre-scale work → elsewhere; Chrestomathy works at the phrase or short-passage level. The same passage may appear as both Chrestomathy (for craft) and Florilegium (for conviction). They are written as separate Lab entries, each block-referencing the same source citation.
+                - Tags:
+                    - `Craft/{Device}` for the formal vocabulary that helps describe how the passage works: Metaphor, Antithesis, Anaphora, Chiasmus, Periodic Syntax, etc.
+                    - `Function/{Effect}` for what the language is trying to accomplish: Clarify, Intensify, Rebuke, Console, Persuade, Surprise, Conclude, Praise, Ridicule, etc.
+                    - `Occasion/{Situation}` where the social occasion materially matters: Lament, Farewell, Toast, Consolation, Call to Worship, etc.
+                    - `Source/{Book}` and `Person/{Author}` where applicable.
+                    - `Theme/` and `Concept/`strongly recommended.
+                    - `Topic/` if relevant.
+                    - Tagging is bottom-up and non-exclusive. Use only the dimensions that genuinely illuminate the passage; most entries will not need every tag type.
+                    - Device vocabulary is descriptive, not the endpoint. `Craft/Metaphor` tells you what formal resource is being used; the Move should explain what the writer does with it.
+                - Garden: link the entry under its reusable Move. A Move may begin with a single exemplary passage and gather additional examples later; multiple examples are not required before a Move exists.
+                - Add to the Lab index page.
+                - Quotation: if the source is a logged book, block-reference it from that Source Note's Citations section rather than retyping it. Otherwise quote it directly under Expression.
+                - Description:
+                    - Expression = the original phrase or short passage, verbatim, with author, work, and location.
+                    - Gloss = what the passage means in plain language. Keep it brief; this is not interpretation for its own sake.
+                    - Device = the inherited rhetorical or stylistic vocabulary that describes the important formal features of the passage. Use only what helps explain the effect.
+                    - Function = what the passage is trying to accomplish rhetorically in this context.
+                    - Move = the reusable writing lesson abstracted from the relationship between form and function. Phrase it as something a writer can do, not merely as the name of a device.
+                    - Effect = why the move works here: rhythm, expectation, imagery, compression, contrast, surprise, emotional pressure, pacing, sound, syntax, or other relevant features.
+                    - Transpositions = attempts to reproduce the Move in new material. Change subject, tone, genre, or context while preserving the underlying rhetorical action.
+                    - Cross-References
+                    - Sources
+        - ## Expression
+        - ## Gloss
+        - ## Device
+        - ## Function
+        - ## Move
+        - ## Effect
+        - ## Transpositions
+        - ## Cross-References
+        - ## Sources
+    - [[Commentary]] [[Calvin Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Calvin Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: the passage reference itself, `{Book} {Chapter}:{Verses}`, e.g. `Hebrews 1:1-3`. No prefix — specific enough not to collide; one entry per passage, revised over time.
+                - Anchor: a passage from personal Bible reading that rewards working through, not just noting.
+                - Boundary: If the doctrinal issue can be handled in a paragraph or two within the passage's context → include in this entry's Doctrine section. If it requires systematic argument with objections and replies independent of a single passage → create a Summa entry and link it from this passage.
+                - Tags: `Source/{Book}` (link to its Book Overview if one exists); `Topic/`, `Theme/`, `Concept/` as they arise.
+                - Garden: link from the relevant Book Overview page, under its passage list.
+                - Add to the Lab index page.
+                - Cross-references especially for O.T. use of O.T. and N.T. use of O.T.
+                - Example:
+                    - `Hebrews 1:1-3`
+                    - Text: God's final speech in the Son, after speaking partially through the prophets.
+                    - Structure: a single Greek sentence — five participial clauses building toward the Son's enthronement.
+                    - Exposition: the "many times and many ways" of verse 1 sets up the contrast completed in verse 2; the Son is not one more prophet but the content of all prior revelation.
+                    - Doctrine: Christ as the terminus of revelation. (See `Question/Is the Canon Closed?` in the Summa.)
+                    - Use: read Scripture as culminating in Christ, not as a flat list of equally-weighted words.
+                    - Cross-References: Psalm 2:8, Psalm 110:1
+        - ## Text
+        - ## Structure
+        - ## Exposition
+        - ## Doctrine
+        - ## Use
+        - ## Cross-References
+        - ## Sources
+    - [[Commentary]] [[Jerome Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Jerome Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Book/{Name}`, e.g. `Book/Hebrews`. Distinct from `Source/` — a Bible book isn't something read once and logged, it's a recurring canonical page accumulated over years of teaching and study.
+                - Anchor: preparing to teach or preach through a book, or finishing a season of study in one.
+                - Boundary: a specific passage → Passage Commentary (tags `Book/{Name}` back to this page). A non-biblical book you've read → Photius Pattern.
+                - Tags: `Person/{Traditional Author}`; `Concept/`, `Theme/`, `Topic/` as they arise.
+                - Garden: link from the Canon structure, in Testament and biblical order.
+                - Add to the Lab index page.
+                - Example:
+                    - `Book/Hebrews`
+                    - Author & Date: anonymous, traditionally linked to Paul's circle; likely pre-70 given the Temple's apparent standing.
+                    - Argument: Christ is better — better than angels, than Moses, than the Levitical priesthood — written to a congregation tempted to drift back to the old covenant under pressure.
+                    - Structure: doctrinal exposition (1–10) alternating with warning passages, then practical exhortation (11–13).
+                    - Canon: universally received in the East earlier than the West; disputed authorship slowed its acceptance in some Latin churches.
+        - ## Author and Date
+        - ## Occasion
+        - ## Argument
+        - ## Structure
+        - ## Major Themes
+        - ## Canon
+        - ## Key Passages
+        - ## Significance
+        - ## Cross-References
+        - ## Sources
+    - [[Confessions]] [[Newman Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Newman Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Conviction/{I [present-tense stance] ...}`, e.g. `Conviction/I Believe the Canon Closed with the Apostles`, `Conviction/I See Suffering as Purposeful, Not Random`. The title states the destination the post arrives at — write it only once Now is genuinely settled enough to say it that plainly.
+                - Anchor: a doctrinal conviction that has genuinely moved over time.
+                - Boundary: if the point is arguing the question itself, both sides, context-independent → Summa. If the point is the story of how your own mind moved on it → here.
+                - Tags: `Time/{year}` — the year the Turn began, for placement on the shared Confessions timeline. `Topic/`, `Concept/` as they arise. `Source/` for decisive books.
+                - Garden: placed on the Confessions timeline by `Time/`, interleaved with Augustine entries. Read as a sequence, the titles alone should read like a compressed memoir — write them with that in mind, not just as accurate labels.
+                - Add to the Lab index page.
+                - Description:
+                    - Then: what you believed, roughly when, and why it made sense at the time.
+                    - Turn: the argument, book, event, or relationship that began to move you. May still be in motion.
+                    - Now: the fuller statement behind the title — open by restating it in complete prose, then say what it actually costs to hold.
+                    - Cost: what changed as a result — practice, relationships, community, how others saw you.
+                    - Cross-References: the Summa entry if one exists; decisive Photius entries.
+                - Example:
+                    - `Conviction/I Believe the Canon Closed with the Apostles`
+                    - Then: {assumed ongoing prophetic experience was normal — inherited, not argued to}
+                    - Turn: {years of reading church history against watching claimed prophecy fail to cash out; no single book}
+                    - Now: I believe the canon closed with the apostolic witness to Christ; the church recognized it rather than conferred it.
+                    - Cost: {distance from a community that shaped my adult life; a season of doctrinal homelessness before landing here}
+                    - Cross-References: `Question/Whether the Canon Is Closed`
+        - ## Then
+        - ## Turn
+        - ## Now
+        - ## Cost
+        - ## Cross-References
+        - ## Sources
+    - [[Confessions]] [[Augustine Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Augustine Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Confession/{I [past-tense stance] ...}`, e.g. `Confession/I Watched My Prayers Become a Performance`, `Confession/I Realized I Was Afraid of Silence`. The title states the originating moment the post walks away from.
+                - Anchor: a period of interior life worth reckoning with as a whole — the gap between a conviction already held and a life still failing to catch up to it.
+                - Boundary: if the entry is "I used to think X, now I think Y" → Newman; the drama is in what you believe changing. If it's "I believe X and can't manage to live like it" → here.
+                - Tags: `Time/{year}` for placement on the shared Confessions timeline. `Concept/`, `Theme/` as they arise. `Person/` for anyone central to it. `Topic/` if relevant.
+                - Garden: placed on the Confessions timeline by `Time/`, interleaved with Newman entries, same note about the titles reading as a sequence.
+                - Add to the Lab index page.
+                - Description:
+                    - Memory: open by restating the title in fuller prose — what actually happened, what you noticed.
+                    - Desire: what you wanted, rightly or wrongly, in that moment or period.
+                    - Confession: where you fell short of what you already believed — named plainly.
+                    - Doubt: what you couldn't resolve — needn't be doctrinal.
+                    - Praise: where the post arrives — what you're grateful for regardless, in spite of or because of the above. This is the present-tense endpoint, the counterpart to Newman's Now; don't force it into tidy resolution if the period didn't have one.
+                - Example:
+                    - `Confession/I Watched My Prayers Become a Performance`
+                    - Memory: I noticed, one specific Sunday, that I was choosing words in prayer for how they'd sound if overheard.
+                    - Desire: {to be seen as devout, which is a different thing from wanting to actually be devout — I'd let the first stand in for the second for a long time}
+                    - Confession: {I'd held the doctrine of private prayer for years and practiced something closer to a performance of it}
+                    - Doubt: {not sure the noticing has changed the underlying pattern, or just made me better at hiding it from myself}
+                    - Praise: grateful the noticing happened at all — plenty of years it didn't.
+        - ## Memory
+        - ## Desire
+        - ## Confession
+        - ## Doubt
+        - ## Praise
+        - ## Cross-References
+        - ## Sources
+    - [[Confessions]] [[Pascal Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Pascal Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Reflection/{Key Insight}`, e.g. `Reflection/I Reach for Noise When Nothing Demands My Attention`, `Reflection/We Often Prefer Being Distracted to Being Happy`.
+                - Anchor: a personal observation that discloses something deeper about human nature, desire, habit, faith, or the ordinary conditions of life. The entry begins in something noticed and turns toward what it reveals.
+                - Boundary: if the point is how your belief changed over time → [[Newman Pattern]]. If the point is the gap between what you already believe and how you actually live → [[Augustine Pattern]]. If the insight is impersonal or argued as a general proposition independent of your own observation → Summa, Syntopicon, or another fitting structure. Pascal begins with something you actually noticed in life.
+                - Tags: `Time/{year}` for placement on the shared Confessions timeline; `Concept/`, `Theme/`, and `Person/` as they arise. `Topic/` if relevant.
+                - Garden: placed on the Confessions timeline by `Time/`, interleaved with Augustine and Newman entries. The numbered sequence may also be preserved as a secondary reading order for Pascal fragments.
+                - Add to the Lab index page.
+                - Form: intentionally fragmentary. A Pascal entry may be one sentence or several paragraphs; completeness is not required. The value is in preserving the recognition while it is still sharp.
+                - Numbering: entries may be numbered in the Garden in the spirit of the fragment tradition of the __Pensées__. The number marks sequence, not logical hierarchy.
+                - Description:
+                    - Observation: the concrete thing noticed — a habit, reaction, conversation, recurring behavior, small contradiction, or ordinary moment. Keep it particular enough that the insight has something real to grow from.
+                    - Reflection: what the observation seems to disclose about yourself, other people, human nature, faith, desire, habit, or the world. Follow the insight as far as it naturally goes, but do not force it into a complete argument or tidy resolution.
+                    - Cross-References: related Confessions entries, Concepts, Themes, Scripture, Sources, or other places where the same insight appears in fuller form.
+        - ## Observation
+        - ## Reflection
+        - ## Cross-References
+    - [[Criticism]] (Reviews) [[Lewis Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Lewis Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Review/{Title}`, e.g. `Review/The Abolition of Man`, `Review/Amusing Ourselves to Death`.
+                - Anchor: a work that deserves more than a reading log because you have a considered judgment about what it attempts and how well it succeeds.
+                - Boundary: if the goal is primarily to record what a book contains, summarize it, or preserve quotations → [[Photius Pattern]]. If the subject is a person, institution, movement, or other object rather than a work → [[Isocrates Pattern]]. If the real center is a disputed question or particular action → [[Quintilian Pattern]].
+                - Tags: `Source/{Work}` required; `Person/{Author}`; `Concept/`, `Theme/`, `Topic/` as they arise.
+                - Garden: link from the Criticism structure under Reviews. Link the Review from the corresponding Source page as well.
+                - Add to the Lab index page.
+                - Relationship to Photius: the `Source/{Title}` page remains the canonical record of the work. A Lewis Review is a separate piece of critical writing and should link to the Source page rather than duplicate its summary, contents, or citations unnecessarily.
+                - Posture: criticism here means considered evaluation, not fault-finding. A review may be predominantly appreciative, predominantly critical, or mixed.
+                - Description:
+                    - Work = identify the work and the occasion for reviewing it. Keep bibliographic material on the Source page.
+                    - Aim = what the author appears to be trying to accomplish, stated as fairly as possible.
+                    - Reading = your account of the work as a whole: the central insight, argument, imaginative achievement, or governing approach that determines how you evaluate it.
+                    - Merits = what succeeds, illuminates, persuades, delights, or deserves to be retained.
+                    - Faults = what fails, obscures, overreaches, omits, or deserves resistance.
+                    - Judgment = your considered assessment of the work taken as a whole. Do not force balance where the evidence does not warrant it.
+                    - Cross-References
+                    - Sources
+        - ## Work
+        - ## Aim
+        - ## Reading
+        - ## Merits
+        - ## Faults
+        - ## Judgment
+        - ## Cross-References
+        - ## Sources
+    - [[Criticism]] (Appraisals) [[Isocrates Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Isocrates Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Appraisal/{Subject}`, e.g. `Appraisal/Wendell Berry`, `Appraisal/Classical Christian Education`.
+                - Anchor: a person, institution, movement, practice, or cultural object about which you want to develop a considered evaluation.
+                - Boundary: If the primary organizational structure is chronological (birth, deeds, death) → Plutarch. If organized by critical categories (merits, faults, appraisal) → Isocrates.
+                - Tags: the canonical `Person/`, `Source/`, `Topic/`; `Concept/`, `Theme/` as they arise.
+                - Garden: link from the Criticism structure under Appraisals. Link from the canonical page for the subject where one exists.
+                - Add to the Lab index page.
+                - Posture: appraisal may include praise and blame, but neither is required. The goal is to identify what is admirable, deficient, useful, dangerous, characteristic, or worth learning from without pretending every subject requires an overall verdict.
+                - Description:
+                    - Subject = identify what is being appraised and the scope of the appraisal.
+                    - Measure = the standards, purposes, or expectations against which the subject is being considered. Make the criteria visible rather than smuggling them into the verdict.
+                    - Character = what most distinctly marks the subject: its central tendencies, strengths, weaknesses, assumptions, or habits.
+                    - Merits = what deserves appreciation, preservation, imitation, or serious attention.
+                    - Faults = what deserves criticism, qualification, correction, or caution.
+                    - Appraisal = what you finally make of the subject, including unresolved tensions where appropriate.
+                    - Cross-References
+                    - Sources
+        - ## Subject
+        - ## Measure
+        - ## Character
+        - ## Merits
+        - ## Faults
+        - ## Appraisal
+        - ## Cross-References
+        - ## Sources
+    - [[Criticism]] (Judgments) [[Quintilian Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Quintilian Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Judgment/{Question}`, e.g. `Judgment/Was Socrates Justly Condemned?`, `Judgment/Was This Product Redesign an Improvement?`.
+                - Anchor: a bounded question about a disputed action, decision, claim, proposal, or controversy where the useful work is weighing competing considerations before reaching a judgment.
+                - Boundary: If the question depends materially on specific historical facts and circumstances → here. If it can be argued from principles without those facts → Summa. If it requires weighing the asker's personal circumstances → Perkins.
+                - Tags: `Person/`, `Event/`, `Time/`, `Topic/`, `Concept/`, and `Theme/` as they apply.
+                - Garden: link from the Criticism structure under Judgments.
+                - Add to the Lab index page.
+                - Posture: weigh the strongest relevant considerations on each side. The goal is judgment, not artificial neutrality; opposing considerations need not be equally strong.
+                - Description:
+                    - Question = the precise matter being judged.
+                    - Facts = the relevant background that should be distinguished from interpretation or evaluation.
+                    - Considerations = the standards, interests, consequences, precedents, or other factors that actually bear on the question.
+                    - For = the strongest considerations supporting the action, claim, proposal, or affirmative answer.
+                    - Against = the strongest considerations opposing it.
+                    - Judgment = the conclusion reached, including important qualifications and uncertainty.
+                    - Cross-References
+                    - Sources
+            - ## Question
+            - ## Facts
+            - ## Considerations
+            - ## For
+            - ## Against
+            - ## Judgment
+            - ## Cross-References
+            - ## Sources
+    - [[Emblem Book]] [[Alciato Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Alciato Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Emblem/{Name}`, e.g. `Emblem/Festina Lente`.
+                - Anchor: an image or visual configuration with a fixed, historically established meaning — heraldry, national symbols, classical emblems, religious iconography, printer's devices, conventional attributes, and similar received visual forms.
+                - Boundary: if the phrase itself is the point and no image is essential → [[Buckley Pattern]] / Lexicon. If the meaning is open, associative, or constructed through comparison rather than historically received → Warburg Pattern.
+                - Tags: `Theme/`; `Concept/`; `Person/`, `Source/`, `Artifact/`, `Place/`, or `Tradition/` as useful; `Term/` if the motto also merits a Lexicon entry (link, don't duplicate).
+                - Garden: the Emblem Book is image-first. Block-reference the canonical pictura from the Lab post into the gallery; place the emblem name, motto or theme if useful, and Lab-post link in the sidenote rather than repeating explanatory prose on the structure page. The Lab post owns the historical instances, interpretation, variations, citations, and fuller explanation.
+                - Add to the Lab index page.
+                - Description:
+                    - Form: distinguish the emblem itself from any particular historical instance of it. The emblem is the stable relation of image, meaning, and where applicable motto; individual carvings, paintings, engravings, seals, or devices are witnesses to that form.
+                    - Motto: ???
+                    - Pictura: the Garden may use a normalized or AI-generated visual rendering of the emblem rather than reproducing one historical instance. The purpose is to isolate the essential symbolic form and create visual coherence across the Emblem Book. The generated pictura is a presentation device, not historical evidence. Historical instances and citations remain in the Lab post. The normalized pictura should preserve the historically attested elements that carry the emblem's meaning and avoid introducing symbolic features not supported by the documented tradition.
+                    - Instances: preserve representative historical examples when useful, especially when they show variation in how the same emblem is rendered.
+                    - Epigram: ???
+                    - Citations
+                - Example:
+                    - `Emblem/Festina Lente`
+                    - Motto: `Festina lente` — "Make haste slowly."
+                    - Pictura: a normalized rendering preserving the dolphin-and-anchor form for the Emblem Book gallery.
+                    - Instances: Aldus Manutius's printer's device; later emblematic and typographic uses.
+                    - Epigram: the dolphin's speed checked by the anchor's weight — swiftness governed by steadiness, urgency without recklessness.
+                    - Citations: Erasmus, Adagia II.i.1; Aldine printer's device.
+        - ## Motto
+        - ## Pictura
+        - ## Instances
+        - ## Epigram
+        - ## Citations
+        - ## Cross-References
+    - [[Encyclopedia]] [[Diderot Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Diderot Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: the topic itself, plain, e.g. `Biblical Theology`, `Personal Knowledge Management`, `Foreign Travel with Kids`.
+                - Anchor: a field you've accumulated real, lived experience in — not a survey of a subject in the abstract, but the syllabus you'd hand someone to bring them up to where you are. Every section is written from what you actually know and did, not textbook summary.
+                - Boundary: a single concept within the field → Syntopicon. A single book that shaped your understanding of it → Photius Pattern (link from Key Figures & Influential Works).
+                - Tags: `Subject/{Top-Level Encyclopedia Subject}`; `Concept/`, `Person/`, `Source/` as they arise, linked wherever mentioned in the body.
+                - Garden: link from the relevant structure — a Bibliography shelf's Syllabus, or its own index if the topic has no shelf.
+                - Add to the Lab index page.
+                - Inspiration:
+                    - Diderot personally visited workshops and interviewed artisans to document how things were actually made, rather than compiling from other books. That's precisely your pattern's anchor: "written from what you actually know and did, not textbook summary." It also has the nice property of naming the pattern that feeds your __Encyclopedia__ structure after the original encyclopedist. This is a strong inspiration because it lines up on both the __method__ (lived, practitioner-level knowledge) and the __destination__ (an encyclopedia).
+        - ## Lead Section (Summary)
+        - ## Overview
+        - ## History
+        - ## Fundamental Concepts
+        - ## Major Branches and Subfields
+        - ## Key Distinctions
+        - ## Key Figures and Influential Works
+        - ## Methods, Approaches, and Frameworks
+        - ## Lessons Learned
+        - ## Contemporary Issues or Debates
+        - ## Criticism and Controversies
+        - ## Cross-References
+        - ## Sources
+    - [[Florilegium]] [[Bede Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Bede Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Florilegium/{Key Phrase or Opening Words}`, e.g. `Florilegium/We Are What We Worship`. Distinct from Chrestomathy — same underlying quotation may exist under both titles if it qualifies for each pattern; that's expected, not a duplicate to resolve.
+                - Anchor: a passage — a sentence or a full paragraph — that's worldview-load-bearing: something you'd actually build a conviction on, independent of how well it's phrased.
+                - Boundary: chosen for rhetorical craft rather than conviction → Chrestomathy [[Erasmus Pattern]]. A phrase can qualify for both; they're written as separate entries, each block-referencing the same source citation.
+                - Tags: `Theme/` (required — this is the whole organizing key); `Source/` and `Person/` for the origin; `Concept/` if it crystallizes one. Revisit and re-cluster Theme tags periodically as the collection grows. `Topic/` if relevant.
+                - Garden: link from the Florilegium structure under the relevant category (Truth / Remembering / Imagination / Practice / Craft / Language) — not by Theme. Theme stays a required tag for cross-reference and periodic pruning, but no longer determines placement.
+                - Citation: block-referenced from the Source Note's Citations section (Photius Pattern) wherever the source is a logged book; quoted directly otherwise.
+                - Add to the Lab index page.
+                - Example:
+                    - `Florilegium/We Are What We Worship`
+                    - Citation: {block reference to Psalm 115:4-8, "Those who make them become like them; so do all who trust in them."}
+                    - Source: `Source/The Scriptures (ESV)`
+                    - Theme: `Theme/Worship and Formation`
+                    - Gloss: explaining why the patristic excerpt mattered doctrinally
+                    - Cross-References: G.K. Beale's book
+        - ## Citation
+        - ## Source
+        - ## Theme
+        - ## Gloss
+        - ## Cross-References
+    - [[Glossary of Concept Handles]] [[Safire Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Safire Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Term/{Coined Phrase}`, e.g. `Term/Chronological Snobbery`. Shares the `Term/` namespace with the Lexicon — one page per term. If a term earns treatment in both structures, write it under whichever pattern fits its primary reason for being collected, and link it into the other structure's Garden index directly. No duplicate pages.
+                - Anchor: a term — coined by you or someone else — that exposes a distinction ordinary language flattens, giving a handle to an idea that didn't have a crisp name before.
+                - Boundary: a foreign word or phrase kept in its original language → Lexicon. A closed, top-level idea like Justice or Beauty → Syntopicon.
+                - Tags: `Person/{Coiner}`; `Concept/` for the idea it names, if it maps onto an existing Syntopicon entry; `Source/` if it originates in a logged book.
+                - Garden: link from the Glossary's alphabetical index.
+                - Add to the Lab index page.
+                - Origin: typically a citation (block reference into the Source Note) or, if not from a logged book, a direct quotation with attribution.
+                - Inspiration:
+                    - William Safire's "On Language" column (__The New York Times__, 1979–2009). Each week, Safire noted a coined, revived, or newly-current word or phrase that had caught his ear — tracing its origin and explaining what made it useful — filtered entirely by his own taste for what deserved notice, not by any attempt at comprehensive coverage. A curator's eye for handles, not a lexicographer's net.
+                - Example:
+                    - `Term/Chronological Snobbery`
+                    - Definition: the uncritical assumption that whatever is intellectually or morally fashionable in our own age is superior to what came before, simply because it's more recent.
+                    - Origin: {block reference to Lewis's account in __Surprised by Joy__, where Owen Barfield first talked him out of the assumption}
+                    - Usage: a corrective in discussions of progress, tradition, and "the modern"; often paired with Lewis's related point that every age has its own blind spots.
+        - ## Definition
+        - ## Origin
+        - ## Usage
+        - ## Cross-References
+        - ## Sources
+    - [[History of Redemption]] [[Irenaeus Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Irenaeus Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Thread/{Name}`, e.g. `Thread/The Son as Representative of the Father`.
+                - Anchor: a developing biblical-theological connection traced through fragments in the Redemptive-Historical Narrative.
+                - Boundary: the Thread must involve real development across the biblical story, not merely repeated vocabulary or a single-passage observation. If the point can be handled entirely within one passage → Commentary. If the issue is primarily doctrinal or argumentative → Summa.
+                - Tags: `Concept/`, `Theme/`, `Person/`, `Place/`, `Topic/`, or `Source/` as useful. Era tagging belongs to the canonical fragments in the Redemptive-Historical Narrative rather than to the Thread itself.
+                - Garden:
+                    - Redemptive-Historical Narrative: contains the canonical fragments in chronological order under the biblical-theological eras.
+                    - Redemptive-Historical Threads: links to the full `Thread/{Name}` Lab posts.
+                - Add to the Lab index page.
+                - Admission: create a Thread once at least two genuinely related fragments form a meaningful redemptive-historical connection. The trajectory does not need to be complete.
+                - Growth: Threads are living documents. Add, remove, reorder, divide, or qualify fragments as the canonical trajectory becomes clearer.
+                - Shape: an ordered sequence of block references to fragments in the Redemptive-Historical Narrative. Brief connective commentary may be added between fragments where necessary to make the development explicit.
+                - Fragments: the canonical fragments live in the Redemptive-Historical Narrative on the structure page, not in the Thread post. Never duplicate their text inside a Thread; block-reference them so the same fragment can participate in multiple Threads.
+                - Fulfillment: a Thread does not need to reach its final fulfillment before it is created. As the trajectory develops, note where it reaches its clearest culmination or resolution, especially in Christ and the consummation where warranted by the texts.
+                - Description:
+                    - Thread = the ordered sequence of block-referenced fragments that exposes the developing biblical-theological trajectory. Add only as much connective commentary as is needed to make the development clear.
+                    - Fulfillment = where the Thread presently appears to reach its clearest culmination, transformation, or resolution. This may remain provisional while the Thread is still developing.
+                    - Cross-References = related Threads, Commentary entries, Summa questions, Concepts, and other relevant posts.
+                    - Sources = secondary works that materially inform the identification or interpretation of the Thread. The biblical texts themselves normally remain attached to the canonical fragments.
+        - ## Thread
+        - ## Fulfillment
+        - ## Cross-References
+        - ## Sources
+    - [[Household Liturgy]] [[Cranmer Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Cranmer Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `{Month} {Day} (Year {N}): {Theme}`, e.g. `January 1 (Year 1): Death by Living`. Four variants per calendar day, one per year of the rotation.
+                - Anchor: a day on the household's calendar — traditional feast, fast, or a family-specific remembrance — that recurs annually and needs a devotional shape.
+                - Boundary: a standing precept independent of date → Rule of Life. A specific point in linear history → Annals.
+                - Tags: `Day/{Month Day}` (bare, no year — lets the Garden day page collect all four variants automatically); `Cycle/Year {N}`; `Season/` (Advent, Lent, Eastertide, Ordinary Time, or family seasons); `Theme/` and `Topic/` if relevant.
+                - Garden: link from the household calendar day page under this year's slot; the day page shows all four years as they're written.
+                - Add to the Lab index page.
+                - Person (required): the biblical or historical figure this week centers on, tagged `Person/{Name}`. Draws on existing Person pages — a Plutarch Life if one's been written, a bare stub otherwise. Distinct from any `Person/` tagged inside Memory for family members present in that entry.
+                - Memory: a specific, lived moment — with family, in creation, in the ordinary — that struck you as more than itself. Absorbed from the archived Tilt-a-Whirl Pattern; when writing, let these questions shape the paragraph without needing separate headings for each: What did you sense? What happened? What did you see? What claim or question does the moment raise? What paradox sits inside it? What does it call you to worship? Be very free with allusions.
+                - Prayer = called "collects" in Cranmer; each of his prayers was a tightly built five-part prayer form (address to God, an attribute naming who God is, a petition, a stated purpose/aspiration, and a closing through Christ)
+                - Reference = external liturgy, poem, book selection, personal writing, eulogy, a piece from Every Moment Holy.
+        - ## Date
+        - ## Season
+        - ## Theme
+        - ## Scripture(s)
+        - ## Practice
+        - ## Memory
+        - ## Prayer
+        - ## Cross-References
+        - ## Reference
+    - [[Lexicon]] [[Buckley Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Buckley Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Word/{Headword}`, e.g. `Word/Schwerpunkt`, `Word/Solertia`.
+                - Anchor: a foreign word or fixed phrase you keep in the original language because English has no equivalent.
+                - Boundary: a coined English handle for a concept, with no foreign-language anchor → Glossary of Concept Handles. A motto paired with an established image → Alciato Pattern. Otherwise here.
+                - Tags: `Language/` (German, Latin, Greek); `Concept/` for the idea the word names; `Term/` linking to a glossary entry if there is also a coined English handle for the same idea. `Topic/` if relevant.
+                - Garden: link from the Lexicon's alphabetical index.
+                - Add to the Lab index page.
+                - Pronunciation in the headword line, stressed syllable in caps — same convention as the Annals.
+                - Citation: if quoting a logged book, block-reference the Source Note's Citations section rather than retyping it.
+                - Example:
+                    - `Word/Solertia`
+                    - Headword: Solertia (soh-LAIR-tee-ah), Latin, noun.
+                    - Gloss: "perfected ability," readiness of mind.
+                    - Sense: the capacity to judge rightly and act well in a sudden, unforeseen situation — not mere quickness, but clear-sighted decision under pressure.
+                    - Gap: English "shrewdness" carries a whiff of self-interest Solertia doesn't have; "presence of mind" is closer but names the state, not the virtue behind it.
+                    - Origin: classical Latin, taken up by Aquinas as a part of prudence; Pieper's modern discussion is the route by which most readers meet it now.
+                    - Usage: philosophical and theological writing on the virtues; not in ordinary speech.
+                    - Witnesses: {Pieper on solertia as objectivity in unexpected situations}; {Corazo on the ancients having single words for what moderns need sentences to say}
+                    - Cross-References: `Concept/Prudence`, `Rule/{any precept this informs}`
+        - ## Headword
+        - ## Gloss
+        - ## Sense
+        - ## Gap
+        - ## Origin
+        - ## Usage
+        - ## Witnesses
+        - ## Cross-References
+    - [[Pattern Language for Learning]] [[Alexander Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Alexander Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Pattern/{Name}`, e.g. `Pattern/Family Worship`, `Pattern/Selective Genealogy`, `Pattern/Logos as Center`.
+                - Anchor: a problem that recurs in some context, with a reusable structural solution — not a one-off dilemma (→ Cases of Conscience) and not a standing precept without a "how" (→ Rule of Life).
+                - Boundary: ???
+                - Tags: `Concept/`, `Theme/`, and `Topic/` as they arise.
+                - Garden: the Pattern Language structure is a tree with the eight roots at the top; every other pattern nests under whichever root(s) its Larger Patterns chain leads to.
+                - Roots: the language has exactly eight root patterns, one per knowledge category — Logos as Center (Semantic), Cognitive Toolkit (Personal), Core Beliefs (Logical), Narrative (Narrative), Habitual Praxis (Practical), Personal Liturgy (Symbolic), Sources of Authority (Reference), Network of Knowledge (Structural). Every other pattern must trace upward through Larger Patterns until it reaches one of these eight.
+                - A root pattern has no Larger Patterns section — only Smaller Patterns. Its Context and Problem may run long; it's establishing premises, not solving a bounded problem.
+        - ## Context
+        - ## Problem
+        - ## Solution
+        - ## Larger Patterns
+        - ## Smaller Patterns
+        - ## Diagram
+        - ## Examples
+        - ## Cross-References
+        - ## Sources
+    - [[Rule of Life]] (Virtues) [[Franklin Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Franklin Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Virtue/{Name}`, e.g. `Virtue/Diligence`, `Virtue/Hospitality`, `Virtue/Silence`. Closed, deliberately small — adding one is a considered act, the same discipline as adding a Concept to the Syntopicon.
+                - Anchor: none directly, like the Adler Pattern — this is populated backward. Create a bare stub (title only) the moment a virtue is worth naming; every Resolve/ and Discipline/ entry that serves it tags `Virtue/{Name}` as it's written, so the page accumulates linked references before it's ever filled out.
+                - Boundary: the test is whether you'd argue about what the word means, or whether you've already decided and just need to keep it. If you're still working out the definition in the abstract → Syntopicon instead. If the definition is settled and the real work is holding yourself to it → here. A Virtue may still cross-reference a Concept that shares its name — they're allowed to coexist; one is the argument, the other is the commitment.
+                - Tags: `Concept/` if a Syntopicon entry shares this virtue's name (cross-reference, don't duplicate the definition); `Person/` for whoever exemplifies it, if relevant. `Role/` is required for every virtue. `Topic/` if relevant.
+                - Garden: heading-level. The Rule of Life structure's headings ARE the Virtues — not a fixed list decided in advance, but whatever's been added here so far. Each Value heading gathers its own Resolve/ and Discipline/ entries via linked references, automatically.
+                - Add to the Lab index page.
+                - Order (optional): Franklin sequenced his thirteen deliberately, on the theory that mastering one made the next easier to acquire (he put Silence second so he'd talk less and listen more while forming the rest). Use the `Order::` field only if you actually intend a sequence; leave it blank if the list is just a flat set.
+                - Growth: periodically open the stub and review what's accumulated under it — which Resolve/ and Discipline/ entries actually serve this virtue versus ones tagged loosely and better reassigned. `Date Updated::` should reflect the last harvest, not the last typo fix, same convention as Adler.
+                - Description:
+                    - Definition: the virtue stated plainly, in your own words — what you mean by it, not a philosophical account of the concept (that's Syntopicon's job if one exists).
+                    - Why: why this earned a spot on a deliberately short list — the honest reason you need this one specifically, not just that it's generically good. (Franklin added Humility last, after a Quaker friend told him he was insufferably proud about the other twelve — the reason itself is worth recording.)
+                    - Examination: a periodic self-rating against this virtue — a running table, not a one-time verdict.
+                    - Cross-References: to other Virtues, and to the Concept entry if one shares this name.
+                - Example:
+                    - `Virtue/Diligence`
+                    - Definition: {lose no time; be always employed in something useful; cut off all unnecessary actions}
+                    - Why: {the recurring failure isn't laziness exactly, it's letting the useful thing get crowded out by the merely urgent one}
+                    - Examination:
+                        - {{[[table]]}}
+                            - **Week**
+                                - **Faults Noted**
+                                    - **Note**
+                            - 2024-11-03
+                                - ||
+                                    - {let two mornings slide into email before any real work}
+                            - 2024-11-10
+                                - |
+                                    - {better; one lapse, caught it by afternoon}
+                    - Cross-References: `Concept/Prudence` (shares ground but isn't the same page)
+        - ## Definition
+        - ## Why
+        - ## Examination
+        - ## Cross-References
+    - [[Rule of Life]] (Resolutions) [[Edwards Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Edwards Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Resolve/{Imperative}`, first person, in Edwards's own "Resolved: ..." form (drop "Resolved" from the tag itself). E.g. `Resolve/Never Do Anything I Would Be Afraid to Do If It Were the Last Hour of My Life`, `Resolve/Speak the Truth Even When My Voice Shakes`.
+                - Anchor: a commitment of character or orientation you're binding yourself to that has no schedulable practice — you catch yourself against it in the moment, you don't perform it on a cadence.
+                - Boundary: the test is whether you can honestly write a Discipline section without inventing one. If a concrete, repeatable practice would actually enact this → [[Benedict Pattern]] instead. If the "practice" would just be "remember this and try" → here.
+                - Tags: `Virtue/{Name}` (required — at least one; this is what lets the Garden gather Resolutions under the right Value heading automatically, the same mechanism the Irenaeus Pattern uses with `Era/`). `Concept/` if it crystallizes a named virtue; `Topic/` for the domain of life it bears on; `Person/` for anyone whose example prompted or exemplifies it. `Role/` is required for every resolution.
+                - Garden: no manual linking beyond the `Virtue/` tag(s) — the Rule of Life structure pulls each tagged Resolution under its Value heading automatically, alongside any Disciplines serving the same Value.
+                - Add to the Lab index page.
+                - Description:
+                    - Resolved = the vow itself, stated in first person, in Edwards's declarative form. This is the block others will cite; keep it clean and quotable.
+                    - Occasion = what prompted it, if there was a specific one (a failure, a conversation, a passage). Omit if it named itself gradually rather than at a moment.
+                    - Rationale = why this, and why it matters — may point up to the Foundation (Mission/Vision) if it's downstream of something stated there.
+                    - Temptation = the specific shape of the failure you're watching for — not a generic vice, but how it actually shows up for you.
+                    - Renewal = how and when you reread the whole set and recommit (Edwards read his weekly). This field also functions as a running log — add a dated line each time you actually do it, rather than treating it as a one-time plan.
+                    - Witnesses = others, living or historical, whose example gave you this resolution or who you look to for it — link `Person/` pages where one exists.
+                - Example:
+                    - `Resolve/Never Do Anything I Would Be Afraid to Do If It Were the Last Hour of My Life`
+                    - Resolved: {Never to do anything which I should be afraid to do, if it were the last hour of my life.}
+                    - Occasion: written as the first of seventy such resolutions, reread weekly from age nineteen.
+                    - Rationale: mortality as a clarifying lens rather than a morbid one — the test isn't fear of death but fear of having acted wrongly.
+                    - Temptation: rationalizing a compromise as small because there's time later to correct for it.
+                    - Renewal: {reread the full list each Sunday evening; log: 2024-11-03, 2024-11-10, ...}
+                    - Witnesses: `Person/Jonathan Edwards`
+                    - Value: `Value/Integrity`
+        - ## Resolved
+        - ## Occasion
+        - ## Rationale
+        - ## Temptation
+        - ## Renewal
+        - ## Witnesses
+        - ## Cross-References
+        - ## Sources
+    - [[Rule of Life]] (Disciplines) [[Benedict Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Benedict Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Discipline/{Imperative}`, e.g. `Discipline/Keep the Sabbath`, `Discipline/Begin the Day with Prayer`.
+                - Anchor: a standing discipline you're binding yourself to, independent of any single circumstance — not a one-off dilemma (→ Cases of Conscience).
+                - Boundary: ???
+                - Tags: `Concept/` for the virtue sought and vice resisted; `Topic/` for the domain of life; sources for the rule's witnesses as block references. `Role/` is required for every Discipline.
+                - Garden: link from the Rule of Life structure, ordered under "Disciplines".
+                - Add to the Lab index page.
+                - Example:
+                    - `Discipline/Keep the Sabbath`
+                    - Principle: one day in seven is set apart from ordinary work, without exception for busyness.
+                    - Rationale: {creation ordinance in Genesis 2:2-3; the fourth commandment; the Son of Man as Lord of the Sabbath}
+                    - Practice: sundown Saturday to sundown Sunday — no paid work, no household projects; worship, rest, extended family meal.
+                    - Discretion: {works of necessity and mercy are not violations; travel and ministry seasons may shift the day but not remove it}
+                    - Witnesses: {Benedict's ordering of the horarium around fixed prayer; Wilson on the Lord's Day as a weekly resurrection}
+                    - Examination: did this week actually stop, or did the day just move slower?
+        - ## Precept
+        - ## Rationale
+        - ## Practice
+        - ## Discretion
+        - ## Witnesses
+        - ## Examination
+        - ## Cross-References
+    - [[Rule of Life]] (Responsibilities) [[Luther Pattern]] [[Templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Luther Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Responsibility/{Duty}`, stated as an enduring obligation rather than a one-time task. E.g. `Responsibility/Provide for My Children`, `Responsibility/Teach My Children the Faith`, `Responsibility/Deal Honestly with Those I Employ`.
+                - Anchor: a duty that belongs to a role, office, or relation you actually occupy. The responsibility is not primarily chosen by you; it arises from what has been entrusted to you.
+                - Boundary: if the entry names a quality of character you want to cultivate → [[Franklin Pattern]]. If it is a personal commitment you have deliberately settled beforehand → [[Edwards Pattern]]. If it is a repeatable practice with a cadence or habitual form → [[Benedict Pattern]]. A Responsibility states what faithfulness in a role requires, even when no particular practice fully exhausts it. If the duty is grounded in Scripture or inherent in the nature of the role/office → Responsibility. If it is a personally adopted commitment that goes beyond strict role requirements → Resolution. If uncertain, prefer Responsibility for duties Scripture explicitly assigns to the role.
+                - Tags: `Role/` required; `Concept/`, `Topic/`, and `Person/` as they arise. `Source/` for Scripture or other witnesses that materially ground the duty.
+                - Garden: no manual linking beyond the `Role/` tag. Each Role page gathers its Responsibilities alongside any Virtues, Resolutions, and Disciplines that serve that role.
+                - Add to the Lab index page.
+                - Roles: tag at least one `Role/{Name}`. Multiple roles are allowed when the same duty genuinely belongs to more than one relation.
+                - Source of Duty: distinguish duties grounded directly in Scripture from prudent responsibilities inferred from the nature of the role. Do not present a personal preference as though it were inherent in the office.
+                - Inspiration:
+                    - Luther's __Table of Duties__ in the Small Catechism: duties organized according to the stations and relations in which people stand.
+                - Description:
+                    - Responsibility = the enduring duty itself, stated plainly and positively.
+                    - Ground = why this duty belongs to the role: Scripture first where applicable, then the nature and ends of the relation or office.
+                    - Scope = what the responsibility includes and, where useful, what it does not include. Keep it broad enough to survive changing circumstances.
+                    - Faithfulness = what fulfilling this responsibility generally looks like in ordinary life, without turning the section into a checklist or task list.
+                    - Limits = competing duties, legitimate exceptions, or boundaries on the responsibility. Useful especially where one role could wrongly consume another.
+                    - Examination = a question or small set of questions for periodically reviewing whether you are actually fulfilling the duty.
+                    - Cross-References = related Virtues, Resolutions, Disciplines, Cases of Conscience, and other Responsibilities.
+                    - Sources = Scripture and other witnesses supporting the responsibility.
+        - ## Responsibility
+        - ## Ground
+        - ## Scope
+        - ## Faithfulness
+        - ## Limits
+        - ## Examination
+        - ## Cross-References
+        - ## Sources
+    - [[Silva Rerum]] [[Eco Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Eco Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `List/{Name}`, e.g. `List/Apps for Spiritual Disciplines`.
+                - Anchor: something worth collecting that has no established pattern to hold it. If a real shape emerges and repeats, it may deserve its own pattern eventually — this is the holding pen, not a permanent exile.
+                - Boundary: ???
+                - Tags: `Theme/`, `Concept/`, `Topic/` as they apply.
+                    - List Type (tag, pick one):
+                        - Log (chronological record)
+                        - Plan (ordered sequence)
+                        - Options (menu to choose from)
+                        - Collection (thematic grouping)
+                        - Inventory (catalog of things owned/used)
+                        - Ranking (ordered by value or quality)
+                    - List Status (tag pick one):
+                        - Open
+                        - Closed
+                - Garden: link under list type sections on the structure (lists under each section can just be alphabetical)
+                - Add to the Lab index page.
+                - Examples of Open Lists:
+                    - Ships gathered at Aulis (Homer's Catalogue of Ships, __Iliad__ II)
+                    - I Hear America Singing (Whitman)
+                    - The Names of the Wind (any culture's list of wind-names — Homeric, Beaufort, indigenous)
+                    - What the Merchant's Ship Carried (Rabelais-style inventories of excess)
+                    - Borges's Chinese Encyclopedia (the famous fictional taxonomy in "The Analytical Language of John Wilkins")
+                    - Litanies of the Saints
+                    - Ecclesiastes 3 ("a time to...")
+                    - Sei Shōnagon's "Things That Make the Heart Beat Faster" (__The Pillow Book__)
+                    - Perec's __An Attempt at Exhausting a Place in Paris__ (an inventory that deliberately never exhausts anything)
+                - Example:
+                    - `List/Apps for Spiritual Disciplines`
+                    - List Type: Closed, Options
+                    - Purpose: apps worth trying for Bible reading, prayer, and Scripture memory.
+                    - Items: {app name, what it's for, one-line verdict, link}
+                    - Cross-References: `Pattern/Bible Intake`
+        - ## Description
+        - ## Items
+        - ## Cross-References
+        - ## Sources
+    - [[Summa]] [[Aquinas Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Aquinas Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Topic/{Question}`, e.g. `Topic/Is Man Is Capable of Any Good Apart from Grace`
+                - Anchor: a disputed question worth working through both sides of, where the value is in the argument, not just the answer.
+                - Boundary: If the entry is fundamentally an engagement with Scripture—exegetical, interpretive, or applicational—it belongs here, even when it touches politics, science, or personal conduct. If personal circumstances determine the answer → Cases of Conscience. If weighing a specific disputed action → Criticism (Quintilian).
+                - Tags: `Topic/`, `Concept/`, `Theme/` as they arise; `Claim/{Thesis}` for the "I Answer that" conclusion, stated as a bare declarative sentence.
+                - Garden: link from the Summa structure under its Topic.
+                - Add to the Lab index page.
+                - Example:
+                    - `Question/Is the Canon Is Closed`
+                    - Objections: {1. new prophetic gifts continue in some traditions; 2. the church, not Scripture, decided the canon and could revisit it}
+                    - On the Contrary: {Revelation 22:18-19 pronounces a curse on anyone who adds to "this book"}
+                    - I Answer that: {the canon closed with the apostolic witness to Christ; the church recognized, not conferred, canonicity} → `Claim/The Canon Closed with the Apostolic Witness`
+                    - Replies to Objections: {reply to 1: ...; reply to 2: ...}
+        - ## Question
+        - ## Objections
+        - ## On the Contrary
+        - ## I Answer that
+        - ## Replies to Objections
+        - ## Cross-References
+        - ## Sources
+    - [[Syntopicon]] [[Adler Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Adler Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Concept/{Name}`, e.g. `Concept/Justice`, `Concept/Beauty`. Closed, top-level vocabulary — new concepts are added deliberately, not casually.
+                - Anchor: none, directly — this pattern is populated backward. Start with a bare stub (just the title) the moment a concept is worth tracking; every other pattern that touches this idea tags `Concept/{Name}` as it's written, so the page accumulates linked references before it's ever an entry.
+                - Boundary: a coined English handle or foreign phrase naming a narrower idea → Concept Handle Pattern or Lewis Pattern, cross-referenced back here. A specific disputed question about the concept → Summa, linked from Outline of Topics.
+                - Tags: `Topic/` under specific sub-questions within Outline of Topics, once the outline exists — not required on the stub. Adler topics are internal to Concept/ entries and should not be created as separate namespace tags. They may, however, include existing topics or create new topics within the sentence length outline points (e.g. `[[Justice]] as a necessary motivation for [[Political Action]]`)
+                - Garden: link from the Syntopicon's alphabetical index.
+                - Add to the Lab index page.
+                - Growth: periodically open the stub and cull its linked references — from Rules, Cases, Terms, Annals, wherever — sorting what's there into Definitions and an Outline of Topics. This is a living document by design; `Date Updated::` should reflect the last harvest, not the last typo fix.
+                - Citations added throughout — under definitions, under specific topics, in notes — as block references into the relevant Source Note.
+                - Description:
+                    - Cross-references are to other concepts.
+                    - Further Reading links to key essays or books on the concept itself, not every source referenced in Citations.
+        - ## Definitions
+        - ## Outline of Topics
+        - ## Notes
+        - ## Cross-References
+        - ## Further Reading
+    - [[Tractatus]] [[Wittgenstein Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Wittgenstein Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Proposition/{Claim}`, e.g. `Proposition/God Is One`, `Proposition/The Son Is Fully Divine`, `Proposition/Justification Is by Grace Through Faith`.
+                - Anchor: a doctrinal proposition personally affirmed and worth placing within a larger hierarchical doctrinal architecture.
+                - Boundary: if the point is to argue a disputed theological question → [[Aquinas Pattern]] / Summa. If the point is to trace how a doctrine develops across Scripture → [[Irenaeus Pattern]] / History of Redemption. If the point is a personal history of changing conviction → [[Newman Pattern]]. The Wittgenstein Pattern records the settled doctrinal proposition itself and its relation to broader and narrower propositions.
+                - Tags: `Concept/`, `Topic/`, `Source/`, `Person/`, `Book/`, `Theme/` as useful; Scripture references as appropriate.
+                - Garden: the Tractatus Structure arranges Proposition pages hierarchically through decimal numbering. The Structure owns the sequence and numbering; Proposition pages own the doctrinal claims, witnesses, Scripture, distinctions, and supporting material.
+                - Add to the Lab index page.
+                - Canonical Object: the Proposition page is the canonical page for the doctrinal claim. Historical confessions, catechisms, doctrinal statements, Scripture references, and personal notes serve as witnesses or support rather than separate duplicates of the proposition.
+                - Admission: create a Proposition when the claim is sufficiently settled to be included in the author's doctrinal architecture. It does not need to be exhaustive or fully defended before being added.
+                - Growth: Propositions may begin thin and gain witnesses, Scripture, distinctions, subordinate propositions, and cross-references over time.
+                - Hierarchy: every Proposition should occupy a meaningful place in the Tractatus hierarchy. Decimal numbering belongs to the Structure page rather than the Proposition title so propositions can be moved without renaming canonical pages.
+                - Logical Relation: subordination should indicate genuine doctrinal dependence, specification, implication, or unfolding rather than mere topical similarity.
+                - Witnesses: historical formulations from confessions, catechisms, creeds, doctrinal statements, theologians, or other sources that materially support or clarify the Proposition.
+                - Scripture: include the principal biblical texts that ground the Proposition. Prefer links to developed Commentary or other canonical Scripture-related pages where available.
+                - Provenance: distinguish clearly between inherited historical wording and the author's own formulation.
+                - Personal Formulation: the canonical Proposition may be written in the author's own words when no inherited formulation is adequate or when synthesis is necessary. Historical witnesses remain attached beneath it.
+                - Variants: record materially different but compatible formulations when useful. Do not multiply canonical Proposition pages merely because wording differs.
+                - Disagreement: when a historic witness differs materially from the affirmed Proposition, link the relevant Summa question, Criticism entry, or other developed treatment rather than forcing disagreement into the Proposition itself.
+                - Cross-Domain Behavior: Propositions should be linked to the Syntopicon, Summa, Commentary, History of Redemption, Sources, and other structures whenever those posts materially develop, support, qualify, or dispute the claim.
+                - Essay Role: backbone-heavy. A Proposition or cluster of related Propositions may provide the doctrinal framework for a later Essay, while supporting material can be drawn from Summa, Commentary, History of Redemption, Syntopicon, Criticism, Florilegium, Sources, and other structures.
+                - AI Guidance: an AI may suggest placement, parent-child relationships, possible duplicate Propositions, missing witnesses, relevant Scripture, related Concepts, and underdeveloped branches. It must not write the Proposition, synthesize the author's final doctrinal wording, or silently alter the hierarchy.
+                - Description:
+                    - Proposition = the doctrinal claim itself, stated as clearly and compactly as possible.
+                    - Distinctions = clarifications necessary to prevent misunderstanding or collapse neighboring doctrines.
+                    - Scripture = principal biblical grounding.
+                    - Witnesses = historic confessional, catechetical, doctrinal, or theological formulations that support or illuminate the claim.
+                    - Variants = compatible formulations or wording differences worth preserving.
+                    - Cross-References = related Summa questions, Concepts, Commentary, History of Redemption Threads, Sources, and other relevant posts.
+                    - Sources = primary and secondary sources materially informing the Proposition.
+        - ## Proposition
+        - ## Distinctions
+        - ## Scripture
+        - ## Witnesses
+        - ## Variants
+        - ## Cross-References
+        - ## Sources
+    - [[Travel Sketchbook]] [[Gerald Pattern]] [[roam/templates]]
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: [[Gerald Pattern]]
+            - Tags::
+            - Notes:
+                - Naming: `Place/{Name}`, e.g. `Place/Palace of Fine Arts`, `Place/Lake Louise`, `Place/Colonia del Sacramento`.
+                - Anchor: a place personally encountered in travel that is worth preserving visually and descriptively.
+                - Boundary: if the primary point is the historical event associated with the place → Annals and Histories. If the primary point is a person connected to the place → Plutarch. If the entry is really about the trip or route as a whole rather than one place → the Topographia structure page should hold that itinerary context. A `Place/` tag may appear in multiple patterns. Tacitus and Chreia reference places where events occurred; Gerald creates canonical Place/ pages for personally visited sites. Use the finest-grained Place that merits its own page. A city-level Place (e.g. `Place/Rome`) may be referenced by Tacitus and also have child Place pages created by Gerald (e.g. `Place/Colosseum`). No conflict.
+                - Tags: `Place/`, `Concept/`, and `Theme/` required; `Time/{year}`; `Country/`, `Region/`, or `City/` as useful; `Person/`, `Event/`, `Source/` when relevant. Also tag `Kind/` (see options below):
+                    - Kind/Nature
+                    - Kind/Curiosity
+                    - Kind/Cultural Artifact
+                - Garden: link from the Topographia Itinerum structure under the relevant journey, region, or geographic section.
+                - Add to the Lab index page.
+                - Cross-domain use: link to historical events, persons, concepts, sources, or other structures when the place supports later synthesis.
+                - Privacy: prefer places, landscapes, buildings, streets, objects, and environmental details over identifiable family photographs for the public site. People may remain incidental where appropriate.
+                - Posture: this is a topographical plate, not a travel essay. Preserve what made the place visually, historically, atmospherically, or personally distinctive.
+                - Whimsy: unusual details, legends, rumors, mistaken impressions, overheard remarks, or family sayings are welcome when they help preserve the character of the place.
+                - Description:
+                    - View = the original photograph or selected image of the place.
+                    - Plate = sketch or illustrated rendering derived from the View; It should simplify or interpret the view without inventing major features that were not present.
+                    - Place = name, location, and identifying context.
+                    - Date = when the place was visited.
+                    - Features = short list of the visual or physical elements that define the scene.
+                    - Observation = what was actually noticed there: atmosphere, scale, texture, light, architecture, landscape, sound, weather, or other concrete impressions; write from actual encounter first. Historical context, local stories, hearsay, oddities, and remembered remarks may be included, but distinguish clearly between what was personally observed, what was learned later, and what belongs to local lore.
+                    - Context = historical, cultural, geographical, architectural, or natural background that makes the place more intelligible.
+                    - Memory = the personal circumstance of encountering the place: what was happening, what stood out, what the family noticed, or why the place remained memorable.
+                    - Lore = optional legends, hearsay, local stories, oddities, rumors, or notable anecdotes connected to the place.
+                    - Significance = why this place deserves to remain in the collection rather than as an ordinary travel photograph.
+                    - Cross-References
+                    - Sources
+        - ## View
+        - ## Plate
+        - ## Place
+        - ## Date
+        - ## Features
+        - ## Observation
+        - ## Context
+        - ## Memory
+        - ## Lore
+        - ## Significance
+        - ## Cross-References
+        - ## Sources
+- ## **Archived Templates**
+    - ??? (Dialogue) Boethius Pattern
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: Boethius Pattern
+            - Tags::
+            - Notes:
+                - Naming: the question under debate, plain, e.g. `Why Do the Wicked Prosper?`
+                - Anchor: an internal wrestling you want to work out as a conversation — voiced as two or more positions in dialogue, without necessarily resolving cleanly.
+                - Boundary: if it resolves into one settled thesis with objections → Summa.
+                - Tags: `Concept/`, `Theme/` as they arise.
+        - ## Question
+        - ## Voices
+        - ## Turns
+        - ## Where It Rests
+        - ## Cross-References
+        - ## Sources
+    - Household Liturgy Tilt-a-Whirl Pattern
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: Tilt-a-Whirl Pattern
+            - Tags::
+            - Notes:
+                - Naming: a short evocative phrase for the moment, plain, e.g. `The Sound of My Daughter Laughing at Nothing`.
+                - Anchor: a specific, lived moment — with family, in creation, in the ordinary — that struck you as more than itself.
+                - Must have `Theme/`
+                - Be very free with allusions.
+                - Tags: `Person/` for whoever was there; `Place/`, `Time/` if worth marking; `Concept/`.
+        - ## Sense
+        - ## Experience
+        - ## Description
+        - ## Claim/Question
+        - ## Paradox
+        - ## Worship
+        - ## Cross-References
+    - Annals & Histories Diegema Episode 
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Event/The Sacking of Troy`
+            - Notes:
+                - Time (e.g. `Time/1184 BC`), People (e.g. `Person/Agamemnon`), and Places (e.g. `Place/Troy`) should be added as tags.
+                - Example
+                    - Situation
+                        - What was happening? Set the scene (time, place, context).
+                    - Characters
+                        - Who was involved? What roles did they play?
+                    - Action
+                        - What happened? Lay out the sequence clearly and succinctly.
+                    - Conflict or Turning Point
+                        - What crisis, change, or decision defined the episode?
+                    - Consequence
+                        - What followed? How did things change or resolve?
+                    - Reflection
+                        - Why does this episode matter? What does it reveal or connect to?
+            - ## Situation
+            - ## Characters
+            - ## Action
+            - ## Conflict or Turning Point
+            - ## Consequence
+            - ## Reflection
+    - Annals & Histories Diogenes Profile
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Person/Odysseus`
+            - Notes:
+                - Template: Details (Birth, Death, Place, etc.), Anecdotes, Quotations, Associations (Friends, Rivals, Disciples, Ideologies, Schools, etc.), Writings or Ideas, Reputation, Curiosities and Contradictions, Cross-Reference, References
+                    - ## Person's Name
+                        - Birth / Death:
+                        - Timeframe:
+                        - Region / School / Role:
+                    - ## Anecdotes
+                        - Record 1–3 short stories or episodes that reveal personality, habits, or eccentricities.
+                    - ## Sayings
+                        - Memorable lines or phrases attributed to them. If disputed, note the variation.
+                    - ## Associations
+                        - People, groups, or schools they were connected to (friends, rivals, disciples).
+                    - ## Writings or Ideas
+                        - Any works they authored, major claims, or contributions they’re remembered for.
+                    - ## Reputation
+                        - How were they viewed in their own time? How has that changed?
+                    - ## Curiosities or Contradictions
+                        - Details that don’t fit the mold — odd facts, conflicting reports, unresolved tensions.
+                    - ## Cross-References
+                        - Links to related people, events, ideas, or sources.
+                - Example: Socrates
+                    - **Anecdotes**: Refused to flee execution; walked barefoot through Athens even in winter.
+                    - **Sayings**: “The unexamined life is not worth living.”
+                    - **Associations**: Mentor to Plato; debated with Sophists; enemy of Athenian populism.
+                    - **Writings**: None — known only through disciples
+                    - **Reputation**: Regarded as both a corrupter and a gadfly; martyr to philosophy.
+                    - **Curiosities**: Described as ugly, poor, magnetic, immune to temptation
+                    - **Cross-References**: Plato, Alcibiades, Apology, Trial of Socrates
+        - ## Details
+        - ## Anecdotes
+        - ## Quotations
+        - ## Associations
+        - ## Writings or Ideas
+        - ## Reputation
+        - ## Curiosities and Contradictions
+        - ## Cross-References
+        - ## References
+    - Annals & Histories Herodotus Custom
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Custom/Egyptian Embalming`
+            - Notes:
+                - Template:
+                    - ## Name of Custom or Object
+                        - People / Culture:
+                        - Timeframe or Era:
+                    - ## Description
+                        - What was the custom, ritual, or practice? Describe it in physical and procedural terms.
+                    - ## Function
+                        - What purpose did it serve — religious, civic, hygienic, economic, symbolic?
+                    - ## Beliefs or Values
+                        - What underlying worldview or assumptions shaped this practice?
+                    - ## Comparison
+                        - (Optional) How does this differ from other known practices — ancient or modern?
+                    - ## Reflection
+                        - Why is this custom significant? What does it reveal about the people who practiced it?
+                - Example: Egyptian Embalming
+                    - **People / Culture**: Egyptians
+                    - **Timeframe**: 5th century BC (as observed by Herodotus)
+                    - **Description**: Removal of organs, drying body with natron, wrapping in linen
+                    - **Function**: Preparation for the afterlife; preservation of the body
+                    - **Beliefs or Values**: Belief in bodily resurrection; high honor for the dead
+                    - **Comparison**: Unlike Greek cremation; emphasizes permanence rather than release
+                    - **Reflection**: The body mattered deeply to Egyptian metaphysics — it wasn’t just a vessel, but a part of the soul’s continued identity
+        - ## Details
+        - ### People/Culture
+        - ### Timeframe/Era
+        - ## Description
+        - ## Function
+        - ## Worldview
+        - ## Comparison
+        - ## Reflection
+    - Annals & Histories Augustine Theme
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Theme/Peace through Victory`
+            - Notes:
+                - Template:
+                    - ## Name of Idea
+                        - Historical Moment or Context:
+                        - Domain(s): (e.g. political, theological, literary, philosophical)
+                    - ## Core Claim
+                        - What is the central idea, doctrine, or principle being examined?
+                    - ## Origin
+                        - Where did this idea emerge or first take root? (Author, culture, conflict, or document)
+                    - ## Manifestation
+                        - Where and how did this idea show up in action? (Institution, event, movement, artifact)
+                    - ## Conflict or Rival
+                        - What competing idea, practice, or system opposed it?
+                    - ## Trajectory or Legacy
+                        - How did the idea evolve or echo over time? Was it fulfilled, corrupted, forgotten, revived?
+                    - ## Telos
+                    - ## Reflection
+                        - Why does this idea matter? What does its story reveal about human nature, society, or truth?
+                - Example: Peace through Victory
+                    - **Context**: Rome after the Punic Wars
+                    - **Domain**: Political theology
+                    - **Core Claim**: True peace can be achieved through conquest and suppression of rivals
+                    - **Origin**: Stoic-Roman synthesis in late Republic
+                    - **Manifestation**: Roman imperial propaganda; Augustus as “bringer of peace”
+                    - **Rival**: Christian concept of peace through suffering and reconciliation
+                    - **Legacy**: Reappears in empire-building logic from Charlemagne to Pax Americana
+                    - **Reflection**: Augustine saw this as a false peace — built on fear and dominance, not justice and love
+        - ## Claim
+        - ## Origin
+        - ## Manifestions
+        - ## Conflict or Rival
+        - ## Trajectory or Legacy
+        - ## Telos
+        - ## Reflection
+    - Annals & Histories Chreia Expansion
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Quotation/{Key Phrase from Quotation}`
+            - Notes:
+                - People (e.g. `Person/Socrates`) and Places (e.g. `Place/Delphi`) should be added as tags
+                - Template:
+                    - ## Quoted Saying
+                        - Chreia Expansion
+                        - Attributed To:
+                        - Source or Context:
+                    - ## Interpretation
+                        - What does this saying or action mean at face value?
+                    - ## Situation
+                        - When or where was it said or done? What was the occasion or background?
+                    - ## Commentary
+                        - Why does this matter? What truth, tension, irony, or wisdom is embedded here?
+                    - ## Application
+                        - How might this insight apply across time, domains, or personal situations?
+                    - ## Cross-References
+                        - Link to related people, events, ideas, or patterns (optional).
+                - Example: "Know thyself." - Inscription at Delphi
+                    - **Attributed To**: Various, including Chilon of Sparta and Socrates
+                    - **Source**: Inscribed on the Temple of Apollo at Delphi
+                    - **Interpretation**: Self-awareness is foundational to wisdom
+                    - **Situation**: Offered as guidance for those seeking oracles or divine insight
+                    - **Commentary**: The phrase reverses the impulse to seek answers outside oneself; knowledge must begin in humility and interior clarity
+                    - **Application**: Relevant to philosophy, therapy, leadership, theology
+                    - **Cross-References**: Socratic method, Augustinian introspection, modern psychology
+        - ## Quotation
+        - ## Description
+        - ## Situation
+        - ## Commentary
+        - ## Application
+    - Commentary Book Overview
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Source/Hebrews`
+            - Notes: Topics (e.g. `Topic/On Baptism`) and Themes (e.g. `Theme/Death and Rebirth`) should be added as tags.
+        - ## Overview
+        - ## Author & Date
+        - ## Structure
+        - ## Major Themes & Topics
+        - ## Key Passages
+        - ## Key Ideas
+        - ## Canon Connections
+        - ## Practical & Theological Significance
+        - ## References
+    - Confession Tilt-a-Whirl Pattern
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Theme/Death and Rebirth`
+            - Notes: Be very free with allusions
+        - ## Sense
+        - ## Experience
+        - ## Description
+        - ## Claim/Question
+        - ## Paradox
+        - ## Worship
+    - Warburg Pattern
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: Warburg Pattern
+            - Tags::
+            - Notes:
+                - Naming: `Image/{Short Description}`, e.g. `Image/Grieving Woman with Raised Arms`.
+                - Anchor: an image whose meaning you're building through comparison, not received — a recurring gesture, composition, or motif you're tracking across sources.
+                - Boundary: if the meaning is already fixed and citable → Alciato Pattern.
+                - Tags: `Place/`, `Time/`, `Theme/`, `Concept/` as they apply; `Source/` for where the image comes from.
+                - Garden: link from the Emblem Book gallery, and cross-listed wherever a related image lives, since comparison is the point.
+                - Add to the Lab index page.
+                - Example:
+                    - `Image/Grieving Woman with Raised Arms`
+                    - Image: {Botticelli's Nastagio degli Onesti panel, the fleeing woman with arms flung upward}
+                    - Statement: {a figure in extremis, caught mid-gesture, arms thrown wide in grief or flight}
+                    - Description: {billowing drapery, wind-caught hair, the body twisted against its own momentum}
+                    - Commentary: {this is a Warburg "pathos formula" — the same wind-blown, arms-raised posture recurs in classical maenads and again in Ghirlandaio; the pose is a borrowed vessel for heightened emotion, not an invention of any one artist}
+                    - Theme: `Theme/Grief`, `Theme/Flight`
+                    - Cross-References: link to other images sharing this gesture as they're collected
+        - ## Image
+        - ## Statement
+        - ## Description
+        - ## Commentary
+        - ## Cross-References
+        - ## Sources
+    - Seneca Pattern
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Type:: [[Lab Post]]
+            - Pattern:: Seneca Pattern
+            - Tags::
+            - Notes:
+                - Naming: `Should {Agent} {Action}?`, e.g. `Should Alexander Invade Persia?`
+                - Inspired by Suasoria in the progymnasmata
+                - Anchor: a concrete decision facing a specific historical, fictional, or hypothetical agent, argued as advice rather than analyzed as settled history.
+                - Boundary: a doctrinal or factual dispute → Summa. A real personal dilemma of your own → Cases of Conscience.
+                - Tags: `Person/` for the agent; `Time/` if tied to a real moment; `Concept/`, `Theme/` as they arise.
+        - ## Situation
+        - ## Case For or Against
+        - ## Counsel
+        - ## Cross-References
+        - ## Sources
+    - Rule of Life (Vice or Virtue)
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Concept/Justice`
+            - Notes:
+                - Topics should be added as tags (e.g. `Topic/On the Longing for Cosmic Justice`)
+                - Citations should be added throughout (under definitions, under specific topics, in notes, etc.) as block references.
+                - Cross-references are to other concepts (e.g. `Concept/Morality`)
+                - Further reading should link to key essays, books, etc. on the concept (e.g. `Source/Making Sense of God - Timothy Keller`), not just every source referenced in the Citations
+        - ## Definitions
+        - ## Outline of Topics
+        - ## Notes
+        - ## Cross-References
+        - ## Further Reading
+    - Rule of Life (Spiritual Formation)
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Pattern/Morning Prayer`
+            - Notes:
+        - ## Context
+        - ## Problem
+        - ## Solution
+        - ## Diagram
+        - ## Examples
+        - ## Summary (w/ Cross-References)
+        - ## Questions
+        - ## Resources
+    - Rule of Life (Life Issue)
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Topic/On Anger`
+            - Notes: Virtues (e.g. `Concept/Patience`) and vices (e.g. `Concept/Anger`) should be added as tags.
+        - 
+    - Zettelkasten Permanent Note
+        - # Metadata
+            - Date Created::
+            - Date Updated::
+            - Tags::
+            - Type:: [[Lab Post]]
+            - Naming: `Claim/{Declarative Statement}`
+            - Notes: 
+                - Source (e.g. `Source/Mere Christianity - C.S. Lewis`) should be added under source
+        - ## Summary
+        - ## Cross-References
+        - ## Source

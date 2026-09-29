@@ -1,0 +1,20 @@
+- # Metadata
+    - Date Created:: [[September 1st, 2026]]
+    - Date Updated:: [[September 1st, 2026]]
+    - Subtitle:: A list of the books I've read and re-read since 2026.
+    - Type:: [[Garden Post]]
+    - Notes:
+        - Format for each row of the table:
+            - The Screwtape Letters
+                - C.S. Lewis
+                    - 02/24/2017
+                        - ★★★
+                            - [Review](Link to Review)
+    - Tasks:
+        - {{[[TODO]]}} Add books (retroactively) from this year
+- {{[[table]]}}
+    - **Title**
+        - **Author**
+            - **Date Read**
+                - **Rating**
+                    - **Review**

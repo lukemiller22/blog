@@ -1,0 +1,31 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle::
+    - Type:: [[Garden Post]] 
+    - Notes:
+        - Criticism is the structure for writing that interprets, evaluates, reviews, or judges something. It is broader than fault-finding and does not assume that every subject requires praise, blame, or a strong moral verdict.
+        - The structure is organized by the object of evaluation:
+            - Reviews ([[Lewis Pattern]]) = a work.
+            - Appraisals ([[Isocrates Pattern]]) = a person, institution, movement, practice, or other subject.
+            - Judgments ([[Quintilian Pattern]]) = a bounded disputed question, action, decision, claim, proposal, or controversy.
+        - Reviews ask: "What is this work trying to do, how well does it do it, and what is worth retaining or resisting?"
+        - A Lewis Review is distinct from the [[Photius Pattern]]. Photius is the canonical Source note for contents, summary, citations, and reading records; Lewis is a separate piece of critical writing that develops a considered judgment about the work.
+        - Appraisals ask: "What should I make of this subject?"
+        - An Isocrates Appraisal may be appreciative, critical, or mixed. Praise and blame are historical inspirations, not requirements. The goal is to identify what is characteristic, admirable, deficient, useful, cautionary, or worth learning from.
+        - Appraisals should make their Measure visible: the standards, purposes, or expectations by which the subject is being evaluated rather than leaving those criteria implicit.
+        - Judgments ask: "How should I judge this particular disputed question after weighing the relevant considerations?"
+        - A Quintilian Judgment distinguishes facts from evaluation, identifies the considerations that actually bear on the question, weighs the strongest case on each side, and reaches a qualified judgment where possible.
+        - Judgments do not require artificial neutrality or equal treatment of unequal arguments. The purpose is fair weighing followed by a reasoned conclusion.
+        - Boundary between the three patterns:
+            - Work → Review.
+            - Subject → Appraisal.
+            - Question → Judgment.
+        - If the issue is fundamentally doctrinal, exegetical, or theological, it belongs in the Summa rather than Criticism.
+        - If personal circumstances determine what I or another particular person should do, it belongs in Cases of Conscience.
+        - If the primary purpose is biography rather than evaluation, it belongs in the Plutarch Pattern.
+        - The classical inspirations remain useful as disciplines of thought, but they do not control the structure rigidly. Isocrates contributes praise and blame, Quintilian contributes fair weighing and judgment, and Lewis supplies the model of criticism as thoughtful engagement with a work.
+        - The aim is not to become a professional critic or commentator, but to provide durable forms for developing considered judgments instead of leaving reactions as scattered impressions.
+- # Reviews
+- # Appraisals
+- # Judgments

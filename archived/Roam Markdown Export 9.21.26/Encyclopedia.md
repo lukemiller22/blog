@@ -1,0 +1,18 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: A personal wiki of subjects I find interesting and useful.
+    - Type:: [[Garden Post]]
+    - Tasks:
+        - {{[[TODO]]}} Write Preface
+        - {{[[TODO]]}} Write Top-Level Subject Introductions
+- # Preface
+- # [[Subject/Theology]]
+- # [[Subject/Philosophy]]
+- # [[Subject/Natural Science]]
+- # [[Subject/History]]
+- # [[Subject/Culture]]
+- # [[Subject/Society]]
+- # [[Subject/Applied Science]]
+- # [[Subject/Practice and Craft]]
+- # [[Subject/Liberal Arts]]

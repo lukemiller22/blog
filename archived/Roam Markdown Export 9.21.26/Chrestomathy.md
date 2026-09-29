@@ -1,0 +1,22 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: A collection of passages for learning to write well.
+    - Type:: [[Garden Post]]
+    - Notes:
+        - Purpose tagging is bottom-up and tentative — not a closed vocabulary, and not meant to force every entry into one shelving hierarchy. Tag honestly across up to three independent dimensions, applying whichever fit (most entries will only need one or two):
+            - Occasion (after Menander Rhetor) — what social moment the words are for. Candidates so far: Call to Worship, Toast/Dedication, Greeting, Send-off/Farewell, Congratulation, Lament, Consolation.
+            - Function (after Aristotle's three rhetorical genres) — what the words are trying to do. Candidates so far: Rebuke, Warning, Exhortation, Persuasion, Praise, Invective, Wit and Satire.
+            - Craft (after Dylan O'Sullivan's Index of Rhetorical Forms) — the inherited rhetorical or stylistic vocabulary that describes how the words work: Metaphor, Humor, Chiasmus, Antithesis, Anaphora, Periodic Syntax, etc. This vocabulary is descriptive, not the endpoint of the structure.
+        - The central teaching unit is the Move: a reusable writing lesson abstracted from the relationship between form and function. Device names identify the formal resource; the Move explains what a writer can do with it. E.g. not merely `Metaphor`, but "Make an abstract condition visible by turning it into a physical scene."
+        - A strong single example can generate a Move. Multiple examples are not required before a Move earns a place in the Garden; later examples can accumulate under it, deepen it, reveal variations, or eventually suggest that it should be split into more precise Moves.
+        - Don't build Garden headings directly from Occasion, Function, or Craft categories. These remain analytical tags and cross-reference vocabulary rather than the primary shelving system.
+        - Garden organization should center on practical form-function Moves: specific enough to teach something usable, but general enough to transfer beyond the original passage. Avoid both bare device buckets (`Metaphor`, `Chiasmus`) and overly broad writing lessons (`Write a Great Speech`, `Tell a Better Story`).
+        - Genre-level analysis (a whole psalm, parable, poem, or speech's form, à la Ryken's Complete Handbook of Literary Forms in the Bible) is probably NOT this structure's job — Chrestomathy holds single phrases/short passages. Genre-scale material likely belongs elsewhere. Open question, not yet decided.
+        - Perell's writingexamples.com confirms that a useful writing lesson can be induced from a single sharp example rather than requiring a taxonomy or corpus first. Chrestomathy borrows that example-driven approach, but narrows its focus toward form and function: the lesson should arise from what the language is doing and how it does it.
+        - O'Sullivan's rhetorical-device vocabulary remains useful as analytical infrastructure. Chrestomathy does not aim to reproduce an index of devices; it uses that vocabulary to sharpen observation and then translates the observation into a practical Move.
+        - Entries stay single-quote or short-passage studies (`Expression / Gloss / Device / Function / Move / Effect / Transpositions`). The Garden collects the Moves and lets additional examples gather under them over time.
+    - Background and Inspiration:
+    - Tasks:
+        - {{[[TODO]]}} Add Preface: Classical chrestomathies and Erasmus's Adagia included prefatory material explaining why collect such passages, how to use them, for whom they're intended.
+- # Preface

@@ -1,0 +1,43 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle:: Redemptive-historical threads in Scripture.
+    - Type:: [[Garden Post]]
+    - Notes:
+        - The History of Redemption is built around two complementary views of the same material:
+            - **Redemptive-Historical Narrative** = the chronological backbone.
+            - **Redemptive-Historical Threads** = thematic ways through that narrative.
+        - The Redemptive-Historical Narrative contains the canonical fragments. Each fragment records one meaningful biblical-theological development at its proper place in the unfolding story of redemption.
+        - Fragments are stored once, under the appropriate biblical-theological era. They are not duplicated inside Thread posts.
+        - A fragment may contribute to multiple Threads. When it does, the Thread block-references the canonical fragment from the Narrative so that the same observation can be reused in several trajectories without rewriting it.
+        - A `Thread/{Name}` Lab post gathers two or more genuinely related fragments into a developing biblical-theological trajectory.
+        - Threads do not need to be complete before they are created. Create one once at least two meaningful connections are visible, then let it grow over time as further canonical relationships become clear.
+        - A Thread is therefore a living synthesis rather than a finished essay. Fragments may be added, removed, reordered, divided, or qualified as the trajectory develops.
+        - The Thread section consists primarily of an ordered sequence of block references to canonical fragments. Add brief connective commentary only where necessary to make the development between fragments clear.
+        - The Fulfillment section records where the Thread presently appears to reach its clearest culmination, transformation, or resolution. It may remain provisional while the Thread is still developing.
+        - The Redemptive-Historical Threads section of the structure page links to the full `Thread/{Name}` Lab posts rather than reproducing their contents.
+        - The same material can therefore be read in two directions:
+            - Chronologically through the Redemptive-Historical Narrative: What develops next in the biblical story?
+            - Thematically through a Thread: How does this particular promise, type, motif, institution, or principle develop across the story?
+        - The Narrative owns the fragments; the Threads interpret relationships among them.
+        - If an observation can be handled entirely within one passage without reference to its place in the larger canonical story, it belongs in Commentary. If the issue is primarily doctrinal or argumentative, it belongs in the Summa.
+        - The goal is to preserve local exegetical observations once, then allow larger biblical-theological patterns to emerge and mature through reuse rather than duplication.
+    - Tasks:
+        - {{[[TODO]]}} Write Introduction: include acknowledgements (D.A. Carson)
+        - {{[[TODO]]}} Write Era Overviews
+- # Introduction
+- # Redemptive-Historical Narrative
+    - ## Creation and Fall
+    - ## Patriarchs
+    - ## Exodus and Wilderness
+    - ## Conquest and Judges
+    - ## United Kingdom
+    - ## Divided Kingdom
+    - ## Exile and Return
+    - ## Christ
+    - ## Apostles
+    - ## Restoration of All Things
+- # Redemptive-Historical Threads
+    - ## Seed
+    - ## Temple
+    - ## Sacrifice

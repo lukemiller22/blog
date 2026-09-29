@@ -1,0 +1,29 @@
+- # Metadata
+    - Date Created::
+    - Date Updated::
+    - Subtitle::
+    - Type:: [[Garden Post]]
+    - Notes:
+        - The Rule of Life records enduring commitments that shape who I am and am becoming. It is not a task list, calendar, or project manager.
+        - The structure can be read along two axes:
+            - By form: Virtues, Responsibilities, Resolutions, and Disciplines.
+            - By role: Husband, Father, Church Member, Citizen, Employer, etc. `Role/` tags let the same entry surface wherever it belongs without duplicating it.
+        - Virtues ([[Franklin Pattern]]) describe qualities of character I want to cultivate. They answer: "What kind of person should I become?" A virtue may apply across many roles and does not need a `Role/` tag unless a particular role is especially relevant.
+        - Responsibilities ([[Luther Pattern]]) describe enduring duties that belong to a role, office, or relation I actually occupy. They answer: "What has been entrusted to me?" These duties are not primarily chosen by me; they arise from the role itself. Every Responsibility should have at least one `Role/` tag.
+        - Resolutions ([[Edwards Pattern]]) describe commitments I have deliberately settled beforehand. They answer: "What have I decided I will or will not do when the relevant situation arises?" They differ from Responsibilities because they are personally adopted commitments rather than duties inherent in an office, and from Disciplines because they may have no regular cadence.
+        - Disciplines ([[Benedict Pattern]]) describe repeatable practices that embody or train faithfulness. They answer: "What practice will help order my life toward this end?" A Discipline should be concrete and recurring enough that it can actually be practiced, but it still belongs here rather than on a task list because it represents an enduring rule rather than a one-time action.
+        - Roles are an organizing axis rather than a fifth kind of Lab post. A Role page gathers the Virtues, Responsibilities, Resolutions, and Disciplines connected to that station in life.
+        - Responsibilities should remain at the level of enduring stewardship rather than collapsing into tasks. E.g. `Responsibility/Teach My Children the Faith` may be expressed through `Discipline/Lead Family Worship`, but the discipline does not exhaust the responsibility.
+        - The same principle applies across the structure:
+            - Virtue = character
+            - Responsibility = entrusted duty
+            - Resolution = settled commitment
+            - Discipline = recurring practice
+            - Role = the station in which any of the above may apply
+        - Mission, vision, and other governing statements belong above these as part of the Rule's Prologue or foundation. They state the ends toward which the Rule is ordered; the patterns below describe the character, duties, commitments, and practices by which that life is pursued.
+- # Prologue
+- # Virtues
+- # Resolutions
+- # Disciplines
+- # Responsibilies
+- # Examination

@@ -1,0 +1,109 @@
+- # Metadata
+    - Date Created::
+      
+    - Date Updated::
+    - Subtitle:: A selective and developing record of human history.
+    - Type:: [[Garden Post]]
+    - Background and Inspiration:
+        - **Tacitus Pattern & Roman Annalistic Tradition:******
+        - 1. **Consular year organization** -
+        - https://histos.org/index.php/histos/article/view/203, where each year was
+        - identified by the two serving consuls (e.g., "In the consulship of Marcus Aemilius
+        - and Gaius Papius..."). This was standard from Fabius Pictor (3rd century BC)
+        - through imperial historiography.
+        - 2. **Hybrid imperial-republican structure** - https://penelope.uchicago.edu/Thayer/E/R
+        - oman/Texts/Tacitus/Annals/Introduction*.html by superimposing annalistic
+        - (republican) year-structure onto imperial history organized by reigns. His Annals
+        - divides into reign-blocks: Tiberius (6 books), Caligula/Claudius (6 books), Nero
+        - (4 books).
+        - 3. **Standard annalistic elements** - https://www.academia.edu/3238149/Structuring_Rom
+        - an_history_the_consular_year_and_the_Roman_historical_tradition: consular dating
+        - formulae, grain shortages/famines, and obituaries of prominent individuals. These
+        - were considered essential framework material.
+        - 4. **Medieval annals simplicity** - https://www.encyclopedia.com/religion/encyclopedia
+        - s-almanacs-transcripts-and-maps/annals-and-chronicles, often just one line per
+        - year: "793: Heathen men destroyed God's church at Lindisfarne." Many years had no
+        - entry at all.
+        - 5. **Chronicles vs. Annals distinction** -
+        - https://historum.com/t/difference-between-chronicles-and-annals.17669/ than annals
+        - and often covered both past and present; annals were strictly year-by-year
+        - retrospective records by usually anonymous compilers.
+        - **Plutarch Pattern & Biographical Tradition:******
+        - 6. **Parallel structure** - https://www.britannica.com/topic/Parallel-Lives, matching
+        - one Greek with one Roman figure chosen for psychological comparison, not
+        - chronological proximity.
+        - 7. **Synkrisis (comparison)** -
+        - https://onlinelibrary.wiley.com/doi/10.1002/9781118316450.ch27 comparing virtues
+        - and failings. Introductions stress congruences; conclusions stress differences.
+        - Four pairs lost their synkriseis.
+        - 8. **Moral purpose over chronology** -
+        - https://academic.oup.com/book/47273/chapter/422653364 of the comparative project,
+        - setting in motion the reader's moral judgment and development of ethical
+        - self-understanding. Plutarch cared more about character than deeds.
+        - 9. **Vasari's developmental structure** - https://www.britannica.com/topic/Lives-of-th
+        - e-Most-Eminent-Painters-Sculptors-and-Architects: "infancy" (Cimabue/Giotto),
+        - "youthful vigour" (Donatello/Brunelleschi/Masaccio), "mature perfection"
+        - (Leonardo/Raphael/Michelangelo). This showed artistic evolution across
+        - generations.
+        - **Chreia Pattern & Saying Collections:******
+        - 10. **Eight-part elaboration system** - https://bmcr.brynmawr.edu/2004/2004.10.20/
+        - taught students to develop a saying through: (1) praise, (2) paraphrase, (3)
+        - rationale, (4) from the opposite, (5) analogy, (6) example, (7) testimony of
+        - ancients, (8) brief epilogue. This system lasted 1000+ years.
+        - 11. **Distinction from apophthegm** -
+        - https://ancientwisdoms.ac.uk/library/gnomologia/intro-greek-gnomologia/index.html;
+        - apophthegm is just the terse saying. Chreia answers: who said it, when, and under
+        - what circumstances.
+        - 12. **Educational progression** - https://www.jstor.org/stable/j.ctt32bz9r: primary
+        - (copying for literacy), secondary (grammar exercises), advanced (elaboration into
+        - argumentative essays). It was the workhorse of ancient rhetorical education.
+        - 13. **Valerius Maximus's thematic organization** -
+        - https://bmcr.brynmawr.edu/2004/2004.06.56/: virtues (bravery, fidelity,
+        - gratitude), vices (anger, cruelty), and customs (omens, dreams). Each chapter:
+        - Roman examples first, then foreign examples.
+        - 14. **Attestation as essential** - Your Chreia template correctly emphasizes this:
+        - collections like Plutarch's Apophthegmata, Valerius, and later Erasmus's Adagia
+        - were "famously unreliable." Distinguishing record from tradition from literary
+        - invention is critical.
+    - Tasks:
+        - {{[[TODO]]}} Write the Era Summaries
+- # Ancient Civilizations (4000 - 700 BC)
+    - ## 4000-3501 BC
+    - ## 3500-3001 BC
+    - ## 3000-2501 BC
+    - ## 2500-2001 BC
+    - ## 2000-1501 BC
+    - ## 1500-1001 BC
+    - ## 1000-701 BC
+- # Classical Era (700 BC - AD 500)
+    - ## 700-601 BC
+    - ## 600-501 BC
+    - ## 500–401 BC
+    - ## 400–301 BC
+    - ## 300–201 BC
+    - ## 200–101 BC
+    - ## 100–1 BC
+    - ## AD 1–100
+    - ## AD 101–200
+    - ## AD 201–300
+    - ## AD 301–400
+    - ## AD 401–500
+- # Medieval Era (AD 500 - 1500)
+    - ## AD 501–600
+    - ## AD 601–700
+    - ## AD 701–800
+    - ## AD 801–900
+    - ## AD 901–1000
+    - ## AD 1001–1100
+    - ## AD 1101–1200
+    - ## AD 1201–1300
+    - ## AD 1301–1400
+    - ## AD 1401–1500
+- # Early Modern Era (1500 - 1800)
+    - ## 1501–1600
+    - ## 1601–1700
+    - ## 1701–1800
+- # Modern Era (1800 - Present)
+    - ## 1801–1900
+    - ## 1901–2000
+    - ## 2001–Present
