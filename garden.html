@@ -5,8 +5,70 @@
     <title>Garden - Luke Miller</title>
     <link rel="stylesheet" href="tufte-blog.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      article {
+        position: relative;
+      }
+      .section-controls {
+        margin-bottom: 2rem;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .section-controls input {
+        padding: 0.5rem;
+        margin-right: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: white;
+        width: 300px;
+      }
+      .post-entry {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+      .post-entry.hidden {
+        display: none;
+      }
+      .post-title {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+      }
+      .post-title a {
+        text-decoration: none;
+        color: #333;
+      }
+      .post-title a:hover {
+        text-decoration: underline;
+      }
+      .post-subtitle {
+        font-size: 1rem;
+        color: #666;
+        font-style: italic;
+        margin: 0.25rem 0 0.5rem 0;
+      }
+      .post-meta {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
+      .no-results {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        margin: 2rem 0;
+        display: none;
+      }
+      @media (max-width: 760px) {
+        .section-controls input {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+      }
+    </style>
   </head>
-
   <body>
     <nav>
       <ul>
@@ -17,12 +79,69 @@
         <li><a href="about.html">About</a></li>
       </ul>
     </nav>
-
     <article>
       <h1>Garden</h1>
       
-      <section>
+      <div class="section-controls">
+        <input type="text" id="searchInput" placeholder="Search posts..." />
+        <span id="resultCount">1 posts</span>
+      </div>
+
+      <section id="sectionPosts">
+        <div class="post-entry" data-title="travel sketchbook">
+             <h3 class="post-title">
+               <a href="garden/travel-sketchbook.html">Travel Sketchbook</a>
+             </h3>
+             <div class="post-subtitle">A traveler's notebook of places.</div>
+             <div class="post-meta">
+               Created: September 30, 2026 | Updated: September 30, 2026
+             </div>
+             <div class="hidden-content" style="display: none;">paris, france (september, 2023) ⊕ eiffel tower, paris · 2023 ⊕ medici fountain, paris · 2023 ⊕ versaille gardens · 2023 ⊕ notre dame cathedral, paris · 2023 ⊕ arc de triomphe, paris · 2023</div>
+           </div>
       </section>
+      
+      <div class="no-results" id="noResults">
+        No posts match your search criteria.
+      </div>
     </article>
+
+    <script>
+      const searchInput = document.getElementById('searchInput');
+      const resultCount = document.getElementById('resultCount');
+      const noResults = document.getElementById('noResults');
+      const allPosts = document.querySelectorAll('.post-entry');
+
+      function filterPosts() {
+        const searchTerm = searchInput.value.toLowerCase();
+        let visibleCount = 0;
+
+        allPosts.forEach(post => {
+          const title = post.dataset.title;
+          const content = post.querySelector('.hidden-content').textContent.toLowerCase();
+          
+          const matchesSearch = !searchTerm || title.includes(searchTerm) || content.includes(searchTerm);
+          
+          if (matchesSearch) {
+            post.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            post.classList.add('hidden');
+          }
+        });
+
+        resultCount.textContent = `${visibleCount} post${visibleCount !== 1 ? 's' : ''}`;
+        
+        if (visibleCount === 0) {
+          noResults.style.display = 'block';
+        } else {
+          noResults.style.display = 'none';
+        }
+      }
+
+      searchInput.addEventListener('input', filterPosts);
+      
+      // Initial filter
+      filterPosts();
+    </script>
   </body>
 </html>

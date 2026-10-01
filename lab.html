@@ -5,8 +5,70 @@
     <title>Lab - Luke Miller</title>
     <link rel="stylesheet" href="tufte-blog.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      article {
+        position: relative;
+      }
+      .section-controls {
+        margin-bottom: 2rem;
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .section-controls input {
+        padding: 0.5rem;
+        margin-right: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: white;
+        width: 300px;
+      }
+      .post-entry {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+      .post-entry.hidden {
+        display: none;
+      }
+      .post-title {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+      }
+      .post-title a {
+        text-decoration: none;
+        color: #333;
+      }
+      .post-title a:hover {
+        text-decoration: underline;
+      }
+      .post-subtitle {
+        font-size: 1rem;
+        color: #666;
+        font-style: italic;
+        margin: 0.25rem 0 0.5rem 0;
+      }
+      .post-meta {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
+      .no-results {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        margin: 2rem 0;
+        display: none;
+      }
+      @media (max-width: 760px) {
+        .section-controls input {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+      }
+    </style>
   </head>
-
   <body>
     <nav>
       <ul>
@@ -17,12 +79,109 @@
         <li><a href="about.html">About</a></li>
       </ul>
     </nav>
-
     <article>
       <h1>Lab</h1>
       
-      <section>
+      <div class="section-controls">
+        <input type="text" id="searchInput" placeholder="Search posts..." />
+        <span id="resultCount">5 posts</span>
+      </div>
+
+      <section id="sectionPosts">
+        <div class="post-entry" data-title="place/eiffel tower">
+             <h3 class="post-title">
+               <a href="lab/placeeiffel-tower.html">Place/Eiffel Tower</a>
+             </h3>
+             
+             <div class="post-meta">
+               Created: September 30, 2026 | Updated: September 30, 2026 | Tags: Architecture, Night, Landmark
+             </div>
+             <div class="hidden-content" style="display: none;">plate</div>
+           </div>
+        <div class="post-entry" data-title="place/medici fountain">
+             <h3 class="post-title">
+               <a href="lab/placemedici-fountain.html">Place/Medici Fountain</a>
+             </h3>
+             
+             <div class="post-meta">
+               Created: September 30, 2026 | Updated: September 30, 2026 | Tags: Fountain, Trees, Reflection, 2023, Change, Jealousy, Love
+             </div>
+             <div class="hidden-content" style="display: none;">plate context marie de' medici had the luxembourg grotto built around 1630, modeled after the nymphaea and fountains that decorated italian gardens. since then it has been known as the "medici fountain." thomas francini, intendant general of waters and fountains of the king, is said to have drawn up the plans. built against the structures that it concealed, the fountain formed, to the east, the end of the long vista running alongside the palace. its facade consisted of three niches separated by columns adorned with bosses and shell decorations, and was crowned by a pediment bearing the arms of france and the medici. it was decorated with river figures commissioned from the sculptor pierre biard. on either side it continued into a wall decorated with arcades. chalgrin, architect of the luxembourg palace, restored it after the revolution with the sculptors ramey, duret, and talamona, and decorated the central niche with a small venus. in 1862, haussmann's construction of the rue de médicis caused the fountain to be moved about thirty meters closer to the palace. the architect alphonse de gisors then had the long basin, about fifty meters in length, constructed in front of it and commissioned new sculptures from ottin. the central niche is occupied by the group representing "polyphemus surprising acis and galatea," while the two side niches contain a faun and a huntress. the rear facade consists of a bas-relief, created in 1807 by valois for the former fountain on the rue du regard, topped by two graceful naiads by the sculptor klagmann. lore the central sculpture comes from book xiii of ovid's metamorphoses. galatea is a nereid, a sea nymph and daughter of nereus. galatea is in love with acis, a handsome young sicilian shepherd. but polyphemus, the enormous one-eyed cyclops (from the odyssey), has fallen desperately in love with her. ovid makes polyphemus surprisingly comic at first. love has turned this terrifying monster into an awkward suitor. he starts worrying about his appearance. he combs his coarse hair, trims his beard, looks at himself in the water, and composes a long love song for galatea. he boasts about his livestock, his cave, his fruit trees, his milk and cheese, and even two bear cubs he has saved as a present for her. but the comedy gradually becomes threatening. polyphemus knows galatea prefers acis, and his love is intensely possessive. in the same song in which he declares his love for her, he fantasizes about tearing acis apart. this brings us to the precise moment depicted by the medici fountain. the lovers lie beneath the rock while the enormous polyphemus stands above them, preparing to throw the stone that will kill acis. polyphemus discovers acis and galatea together. galatea escapes into the sea. acis runs, but polyphemus tears a massive piece of rock from the mountain and hurls it at him. the rock crushes acis. galatea cannot restore him to human life. instead, she uses her divine power so that his blood becomes water. in ovid's telling, the blood beneath the rock gradually changes into a stream; reeds emerge, water gushes through a crack in the rock, and acis reappears as a river god. from then on, he continues to exist as the sicilian river bearing his name. memory the peacefulness of the fountain catches you off guard after walking through the surrounding streets of paris. then, you read the description on the sign and learn that the tranquil garden fountain ends in a rather violent mythological scene of the jealous cyclops polyphemus discovering galatea with acis. leave it to the french to make a murder scene picturesque and peaceful.</div>
+           </div>
+        <div class="post-entry" data-title="place/versaille gardens">
+             <h3 class="post-title">
+               <a href="lab/placeversaille-gardens.html">Place/Versaille Gardens</a>
+             </h3>
+             
+             <div class="post-meta">
+               Created: September 30, 2026 | Updated: September 30, 2026 | Tags: Gardens, Palace, History, 2023, Nature, Order
+             </div>
+             <div class="hidden-content" style="display: none;">plate context the gardens of versailles were transformed for louis xiv beginning in 1661, principally by landscape architect andré le nôtre. covering roughly 2,000 acres, they were conceived as an extension of the palace itself, with immense sightlines, geometric parterres, carefully shaped trees, sculptures, canals, and hundreds of fountains imposing order on the landscape. much of the garden's character comes from its bosquets, enclosed outdoor "rooms" hidden behind hedges. visitors moving through them would suddenly encounter fountains, sculptures, theaters, and other surprises. the scale created unusual engineering challenges too, especially supplying enough water for the fountains, leading to ambitious reservoirs, aqueducts, pumping systems, and the enormous machine de marly on the seine. louis xiv was so particular about how the gardens should be experienced that he personally wrote instructions prescribing the route visitors should take through them. lore one of the most interesting things about the gardens of versailles is that they were essentially a massive engineering project disguised as a garden. louis xiv wanted an astonishing number of fountains, but versailles sits on relatively flat ground and had no adequate natural water supply. engineers eventually built the enormous machine de marly, a system of waterwheels and pumps on the seine, to help supply versailles. even then, there often wasn't enough water to run all the fountains simultaneously. during louis xiv's walks, fountain keepers reportedly coordinated with one another so that the fountains near the king were turned on as he approached and shut off after he passed. even nature itself was made to appear ordered around the king. memory i remember sitting in the gardens at versailles watching the fountains move in time with the music. each display was relatively short, almost like a little performance scattered throughout the gardens. we'd stop, watch the water rise and fall with the music, and then wander on to find the next one.</div>
+           </div>
+        <div class="post-entry" data-title="place/notre dame cathedral">
+             <h3 class="post-title">
+               <a href="lab/placenotre-dame-cathedral.html">Place/Notre Dame Cathedral</a>
+             </h3>
+             
+             <div class="post-meta">
+               Created: September 30, 2026 | Updated: September 30, 2026 | Tags: Architecture, Gothic, History, 2023
+             </div>
+             <div class="hidden-content" style="display: none;">plate</div>
+           </div>
+        <div class="post-entry" data-title="place/arc de triomphe">
+             <h3 class="post-title">
+               <a href="lab/placearc-de-triomphe.html">Place/Arc de Triomphe</a>
+             </h3>
+             
+             <div class="post-meta">
+               Created: September 30, 2026 | Updated: September 30, 2026 | Tags: Monument, Empire, Étoile, 2023, Memory, Victory
+             </div>
+             <div class="hidden-content" style="display: none;">plate</div>
+           </div>
       </section>
+      
+      <div class="no-results" id="noResults">
+        No posts match your search criteria.
+      </div>
     </article>
+
+    <script>
+      const searchInput = document.getElementById('searchInput');
+      const resultCount = document.getElementById('resultCount');
+      const noResults = document.getElementById('noResults');
+      const allPosts = document.querySelectorAll('.post-entry');
+
+      function filterPosts() {
+        const searchTerm = searchInput.value.toLowerCase();
+        let visibleCount = 0;
+
+        allPosts.forEach(post => {
+          const title = post.dataset.title;
+          const content = post.querySelector('.hidden-content').textContent.toLowerCase();
+          
+          const matchesSearch = !searchTerm || title.includes(searchTerm) || content.includes(searchTerm);
+          
+          if (matchesSearch) {
+            post.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            post.classList.add('hidden');
+          }
+        });
+
+        resultCount.textContent = `${visibleCount} post${visibleCount !== 1 ? 's' : ''}`;
+        
+        if (visibleCount === 0) {
+          noResults.style.display = 'block';
+        } else {
+          noResults.style.display = 'none';
+        }
+      }
+
+      searchInput.addEventListener('input', filterPosts);
+      
+      // Initial filter
+      filterPosts();
+    </script>
   </body>
 </html>
