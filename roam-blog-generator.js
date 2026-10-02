@@ -311,20 +311,25 @@ class RoamBlogGenerator {
         if (hasImage && nextChildIsLink) {
           // Handle clickable image case
           let linkUrl;
+          let isExternalLink = false;
           if (isBareUrl) {
             // Use bare URL as-is
             linkUrl = nextChildString;
+            isExternalLink = true;
           } else if (isWikiLink && this.isPublished(wikiLinkMatch[1])) {
             // Resolve wiki-link to page URL (unpublished pages leave the image unlinked)
             linkUrl = this.getPageUrl(wikiLinkMatch[1], currentSection);
+            isExternalLink = false;
           }
 
           content = this.formatInlineContent(child.string, currentSection);
 
           if (linkUrl) {
+            // Only open external links in new tab; internal wiki links navigate normally
+            const targetAttr = isExternalLink ? ' target="_blank"' : '';
             content = content.replace(
               /<img src="([^"]+)" alt="([^"]*)" style="([^"]*)" \/>/g,
-              `<a href="${linkUrl}" target="_blank"><img src="$1" alt="$2" style="$3 cursor: pointer;" /></a>`
+              `<a href="${linkUrl}"${targetAttr}><img src="$1" alt="$2" style="$3 cursor: pointer;" /></a>`
             );
           }
 
@@ -754,7 +759,7 @@ class RoamBlogGenerator {
         margin-bottom: 0.5rem;
       }
       .no-results {
-        text-align: center;
+        text-align: left;
         color: #666;
         font-style: italic;
         margin: 2rem 0;
