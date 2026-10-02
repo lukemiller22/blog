@@ -121,7 +121,7 @@ h2 {
 h3 {
     font-style: normal;  /* Removed italic */
     font-weight: 400;
-    font-size: 1.7rem;
+    font-size: 2.0rem;
     margin-top: 2rem;
     margin-bottom: 1.4rem;
     line-height: 1;
@@ -215,7 +215,11 @@ blockquote {
 blockquote p {
     width: 55%;
     margin-right: 40px;
-    margin-top: 0; /* Remove top margin from first paragraph */
+    margin-top: 0;
+    margin-bottom: 1.4rem; /* Add space between paragraphs */
+}
+
+blockquote p:last-of-type {
     margin-bottom: 0; /* Remove bottom margin from last paragraph */
 }
 
@@ -515,7 +519,7 @@ label.margin-toggle:not(.sidenote-number) {
 }
 
 .backlinks h3 {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     margin-bottom: 1rem;
 }
 

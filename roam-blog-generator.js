@@ -275,23 +275,52 @@ class RoamBlogGenerator {
 
         // Check if this is a blockquote with potential citation
       if (child.string.trim().startsWith('>')) {
-        const blockquoteContent = child.string.replace(/^>\s*/, '').trim();
-        let processedContent = this.formatInlineContent(blockquoteContent, currentSection);
-        
-        // Check if there are children (potential citations)
+        // Split on newlines followed by "> " to handle multi-paragraph quotes in the same string
+        const textContent = child.string.trim();
+        const paragraphTexts = textContent.split(/\n\s*>\s*/);
+
+        // Process each paragraph
+        const paragraphs = paragraphTexts.map(p => {
+          const cleaned = p.replace(/^>\s*/, '').trim();
+          return this.formatInlineContent(cleaned, currentSection);
+        });
+
+        let paragraphsHTML = paragraphs.map(p => `<p>${p}</p>`).join('\n');
         let citationHTML = '';
+
+        // Check if there are children
         if (child.children && child.children.length > 0) {
-          // Process children as citations
-          const citations = child.children
-            .filter(c => c.string && c.string.trim())
-            .map(c => this.formatInlineContent(c.string.trim(), currentSection));
-          
+          // Separate blockquote paragraphs from citations
+          const quoteParagraphs = [];
+          const citations = [];
+
+          child.children.forEach(c => {
+            if (c.string && c.string.trim()) {
+              if (c.string.trim().startsWith('>')) {
+                // This is a continuation paragraph of the blockquote
+                const paragraphContent = c.string.replace(/^>\s*/, '').trim();
+                quoteParagraphs.push(this.formatInlineContent(paragraphContent, currentSection));
+                c._processed = true;
+              } else {
+                // This is a citation
+                citations.push(this.formatInlineContent(c.string.trim(), currentSection));
+                c._processed = true;
+              }
+            }
+          });
+
+          // Add continuation paragraphs to the blockquote
+          if (quoteParagraphs.length > 0) {
+            paragraphsHTML += '\n' + quoteParagraphs.map(p => `<p>${p}</p>`).join('\n');
+          }
+
+          // Add citations if present
           if (citations.length > 0) {
             citationHTML = `<footer>${citations.join(' ')}</footer>`;
           }
         }
-        
-        html += `<blockquote><p>${processedContent}</p>${citationHTML}</blockquote>\n`;
+
+        html += `<blockquote>${paragraphsHTML}${citationHTML}</blockquote>\n`;
         return; // Skip normal processing for blockquote
       }
         
@@ -363,7 +392,7 @@ class RoamBlogGenerator {
     text = this.resolveBlockRefs(text, currentSection);
 
     // Handle images: ![](URL) -> <img> tags
-    text = text.replace(/!\[\]\(([^)]+)\)/g, '<img src="$1" alt="" style="max-width: 100%; height: auto;" />');
+    text = text.replace(/!\[\]\(([^)]+)\)/g, '<img src="$1" alt="" style="max-width: 100%; max-height: 1086px; height: auto; object-fit: contain;" />');
 
     // Handle Roam blockquotes (lines starting with >)
     if (text.trim().startsWith('>')) {
