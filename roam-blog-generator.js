@@ -9,6 +9,7 @@ class RoamBlogGenerator {
     this.backlinks = new Map();
     this.pageToSection = new Map();
     this.uidMap = new Map(); // Map from uid -> { string, pageTitle }
+    this.cssVersion = Date.now(); // Cache busting for CSS
 
     this.processRoamData();
   }
@@ -736,7 +737,7 @@ class RoamBlogGenerator {
   <head>
     <meta charset="utf-8"/>
     <title>${sectionName} - Luke Miller</title>
-    <link rel="stylesheet" href="tufte-blog.css"/>
+    <link rel="stylesheet" href="tufte-blog.css?v=${this.cssVersion}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       article {
@@ -933,6 +934,7 @@ class RoamBlogGenerator {
     }).join('\n');
 
     streamHTML = streamHTML.replace('{{stream-posts}}', streamPostsHTML);
+    streamHTML = streamHTML.replace('tufte-blog.css', `tufte-blog.css?v=${this.cssVersion}`);
     await fs.writeFile('dist/index.html', streamHTML);
     console.log('✅ Index.html (Stream) generated');
     
@@ -961,7 +963,7 @@ for (const post of streamPosts) {
       <head>
         <meta charset="utf-8"/>
         <title>${post.title} - Stream - Luke Miller</title>
-        <link rel="stylesheet" href="../tufte-blog.css"/>
+        <link rel="stylesheet" href="../tufte-blog.css?v=${this.cssVersion}"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
       </head>
       <body>
@@ -1031,7 +1033,7 @@ for (const post of streamPosts) {
   <head>
     <meta charset="utf-8"/>
     <title>${post.title} - ${section.name} - Luke Miller</title>
-    <link rel="stylesheet" href="../tufte-blog.css"/>
+    <link rel="stylesheet" href="../tufte-blog.css?v=${this.cssVersion}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       .post-subtitle {
@@ -1087,6 +1089,7 @@ for (const post of streamPosts) {
       </ul>
     </nav>`
         );
+        content = content.replace('tufte-blog.css', `tufte-blog.css?v=${this.cssVersion}`);
         await fs.writeFile(`dist/${page}`, content);
       }
     }
